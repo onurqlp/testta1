@@ -198,7 +198,7 @@ export default function SchreibenView() {
    <button className="sch-link" onClick={returnToSets}>‹ Çalışmalara dön</button>
    <section className="sch-finished"><span className="sch-overline">YEREL DEMO KAYDI</span><h2>{task.title} · Tamamlandı</h2><p>Form ve e-posta taslağın bu cihazda saklandı. Otomatik sınav puanı verilmedi; metni öğretmen değerlendirmelidir.</p><div><span><b>{Object.values(active.form).filter(Boolean).length}</b> / 10 doldurulan alan</span><span><b>{wordCount(active.email)}</b> kelime</span><span>{active.mode==='timed'?'Süreli çalışma':'Serbest çalışma'}</span></div></section>
    <article className="sch-preview-finished"><h3>Kaydedilen e-posta</h3><pre lang="de">{active.email||'(Metin yazılmadı)'}</pre><h3>Form yanıtları</h3><div className="sch-model-fields">{task.fields.map(f=><span key={f.id}><b>{f.label}: </b>{active.form[f.id]||'—'}</span>)}</div></article>
-   <div className="sch-actions"><button className="sch-outline" onClick={()=>setShowModel(x=>!x)}>{showModel?'Örnek çözümü gizle':'Örnek çözümü göster'}</button><button className="sch-primary" onClick={()=>void refreshDraft()}>Yeni denemeye başla</button></div>
+   <div className="sch-actions"><button className="sch-outline" onClick={()=>setShowModel(x=>!x)}>{showModel?'Örnek çözümü gizle':'Örnek çözümü göster'}</button><a className="sch-outline" href={'#/support?service=writing-single&draft='+encodeURIComponent(active.id)}>Öğretmene incelet · DEMO ›</a><button className="sch-primary" onClick={()=>void refreshDraft()}>Yeni denemeye başla</button></div>
    {showModel&&<div className="sch-example"><strong>Özgün örnek yanıt</strong><pre lang="de">{task.modelEmail}</pre><p>{task.modelFormNote}</p></div>}
   </>}
  </div>
