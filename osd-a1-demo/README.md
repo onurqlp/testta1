@@ -1,6 +1,6 @@
 # AYDA ÖSD A1 Prüfungstraining — DEMO
 
-**Durum:** Aşama 5 / 8 · 25 Ekim 2026 · Yalnızca eğitim amaçlı demo
+**Durum:** Aşama 6 / 8 · 25 Ekim 2026 · Yalnızca eğitim amaçlı demo
 
 ## Kaynak ve dağıtım
 - Mevcut AYDA canlı uygulamalarından ayrı.
@@ -61,8 +61,16 @@ npm run preview
 - Otomatik konuşma değerlendirme, ses çözümleme, haricî API, sunucuya dosya yükleme, ücret ve randevu yoktur
 - [Aşama 5 kaynak ve kılavuz](docs/sprechen-stage5.md)
 
+## Aşama 6 — TAM DENEME + İLERLEME
+- İki tam özgün dört becerili demo denemesi: Lesen 25, Hören ~10, Schreiben 20, sözlü hazırlık 10 + Sprechen ~10 dakika.
+- Bölüm onayları, süre dolması, ara ver/devam et, sıfırlanmayan tarih tabanlı sayaçlar, IndexedDB v2 `examSessions`.
+- Gerçek Lesen/Hören yanıt sonuçları, Schreiben yerel açıklamaları ve puansız Sprechen mikrofon kaydı.
+- Gerçek geçmiş/yanlışlar, 7 günlük grafik, dört beceri kırılımı, tamamlanmamış taslaklar ve tekrar önerileri.
+- Tüm yerel veriyi (ses Blobları dahil) Base64 içerikli JSON yedeğine aktarma; iki onayla veriyi sıfırlama.
+- [Aşama 6 teknik dokümantasyonu](docs/exam-stage6.md)
+
 ## Önemli demo sınırlamaları
-Şu anda dört beceri için bağımsız çalışma modülleri açıktır. Tam bütünleşik sınav (Aşama 6), öğretmen hizmetleri (Aşama 7), gerçek rezervasyon ve ödeme aktif değildir. Aşama 6–7 ayrı ayrı geliştirilecektir. Ana uygulama test edilmeden mevcut AYDA canlı sistemlerine aktarılmaz.
+Şu anda dört beceri için bağımsız çalışma ve bütünleşik demo denemesi aktiftir. Öğretmen hizmetleri, randevu ve ödeme Aşama 7 kapsamındadır, henüz açık değildir. Ana uygulama test edilmeden mevcut AYDA canlı sistemlerine aktarılmaz.
 
 Öğrenci çalışma verisi demo sürümünde sadece tarayıcıdaki IndexedDB alanında tutulur; bulut senkronu yoktur ve tarayıcı verilerinin temizlenmesiyle kaybolabilir.
 

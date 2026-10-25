@@ -1,5 +1,5 @@
-// AYDA ÖSD A1 demo v0.5: offline read/listen best-effort cache; no personal data uploaded.
-const CACHE='ayda-a1-demo-v5-static';
+// AYDA ÖSD A1 demo v0.6: offline read/listen best-effort cache; no personal data uploaded.
+const CACHE='ayda-a1-demo-v6-static';
 const AUDIO=[
  '/audio/alltag-01-aufgabe1.mp3','/audio/alltag-01-aufgabe2.mp3','/audio/alltag-01-aufgabe3.mp3',
  '/audio/unterwegs-02-aufgabe1.mp3','/audio/unterwegs-02-aufgabe2.mp3','/audio/unterwegs-02-aufgabe3.mp3'

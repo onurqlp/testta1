@@ -4,7 +4,7 @@ import type {Attempt} from '../../storage/models'
 import type {WritingDraft} from '../schreiben/model'
 import type {SpeakingSession} from '../sprechen/model'
 import type {ExamRun} from '../exam/model'
-import {PART_LABELS} from '../exam/model'
+import {PART_LABELS,readingResult,hearingResult} from '../exam/model'
 import {computeProgress,type ProgressSummary} from './model'
 import './progress.css'
 
@@ -89,4 +89,26 @@ export default function ProgressView(){
    <section className="p6-backup"><div><h3>Veriler ve yerel yedek</h3><p>Şu ana kadar {summary.writingDrafts} açık Schreiben taslağı ve {summary.recordingCount} kayıt referansı mevcut. JSON yedeği cihazdaki ses dosyalarını Base64 olarak da içerir; dosya büyük olabilir. Sunucuya otomatik gönderim yapılmaz.</p></div><div className="p6-backup-actions"><button disabled={busy} onClick={()=>void backup()}>JSON yedeğini indir</button><button disabled={busy} className="destructive" onClick={()=>void erase()}>Tüm kayıtları sıfırla</button></div></section>
   </>}
  </div>
+}
+
+export function ExamMistakes(){
+ const [rows,setRows]=useState<{id:string;title:string;date:string;prompt:string;user:string;answer:string;why:string}[]>([])
+ const [error,setError]=useState('')
+ useEffect(()=>{
+  let active=true
+  listRecords<ExamRun>('examSessions').then(exams=>{
+   if(!active)return
+   setRows(exams.filter(e=>e.kind==='integrated-exam'&&e.status==='finished')
+     .flatMap(e=>[...readingResult(e).wrongItems.map(q=>({q,skill:'Lesen'})),
+       ...hearingResult(e).wrongItems.map(q=>({q,skill:'Hören'}))]
+      .map(({q,skill})=>({id:e.id+q.id,title:'Tam deneme '+(e.setIndex+1)+' · '+skill,
+        date:e.finishedAt||e.updatedAt,prompt:q.prompt,user:q.user,answer:q.answer,why:q.why}))))
+  }).catch(()=>setError('Tam deneme yanlışları okunamadı.'))
+  return()=>{active=false}
+ },[])
+ return <section className="p6-panel"><h3>Tam denemelerdeki yanlışlar</h3>
+ {error&&<p role="alert" className="p6-error">{error}</p>}
+ {rows.length===0?<p className="p6-empty">Bütünleşik denemelerde henüz kaydedilmiş yanlış cevap yok. Boş bırakılan sorular yanlış sayılmaz.</p>:
+ rows.map(r=><article className="p6-error-item" key={r.id}><small>{r.title} · {new Date(r.date).toLocaleDateString('tr-TR')}</small><strong lang="de">{r.prompt}</strong><p>Senin cevabın: {r.user} · Doğru: {r.answer}</p><span>{r.why}</span></article>)}
+ </section>
 }
