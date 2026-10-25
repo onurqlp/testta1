@@ -1,13 +1,14 @@
 {
   "name": "ayda-osd-a1-demo",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.3.0",
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "tsc -p tsconfig.json && vite build",
     "preview": "vite preview --host 0.0.0.0",
-    "test": "vitest run"
+    "test": "vitest run",
+    "check:audio": "node scripts/check-audio.mjs"
   },
   "dependencies": {
     "react": "^19.0.0",

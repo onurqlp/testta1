@@ -1,6 +1,6 @@
 # AYDA ÖSD A1 Prüfungstraining — DEMO
 
-**Durum:** Aşama 2 / 8 · 25 Ekim 2026 · Yalnızca eğitim amaçlı demo
+**Durum:** Aşama 3 / 8 · 25 Ekim 2026 · Yalnızca eğitim amaçlı demo
 
 ## Kaynak ve dağıtım
 - Mevcut AYDA canlı uygulamalarından ayrı.
@@ -32,8 +32,18 @@ npm run preview
 - Doğru/yanlış/boş sayaçları gerçek kullanıcı girdisinden hesaplanır. Resmî ÖSD 30 puanlık değerlendirme taklit edilmez.
 - [Aşama 2 test ve içerik raporu](docs/lesen-stage2.md)
 
+## Aşama 3 — HÖREN (çalışıyor)
+- İki set / toplam 30 özgün soru / 6 yerel, gerçek oynatılır MP3 dosyası
+- 5 ses–6 resim, beş boşluk doldurma, beş kısa röportaj tipi / iki set
+- Sentetik çevrimdışı Almanca ses (espeak-ng + FFmpeg). Gerçek insan stüdyosu kaydı ya da resmî ÖSD sesi değildir.
+- Çalışma modu sınırsız tekrar ve transkript; sınav modu tekrar hakları 1 / 2 / 1, yaklaşık 10 dakika
+- Oynatma hakları, kısmi ses pozisyonu, aktif soru, işaretleme, soru yanıtları ve geçmiş IndexedDB'de
+- Hören yanlışları da Yanlışlarım listesinde, Hören sonuçları da İlerlemem kartında gösterilir.
+- Sesler service worker önbelleğiyle bağlantısız kullanım için indirilir (tarayıcı depolaması müsaitse).
+- [Aşama 3 ses ve test belgesi](docs/hoeren-stage3.md)
+
 ## Önemli demo sınırlamaları
-Şu anda Hören/Schreiben/Sprechen alıştırmaları, ses dosyaları, gerçek rezervasyon ve ödeme yoktur. Kullanıcıya çalışıyor gibi sunulmaz. Aşama 3–7 arasında ayrı ayrı geliştirilecektir. Ana uygulama test edilmeden mevcut AYDA canlı sistemlerine aktarılmaz.
+Şu anda Hören/Schreiben/Sprechen alıştırmaları, ses dosyaları, gerçek rezervasyon ve ödeme yoktur. Kullanıcıya çalışıyor gibi sunulmaz. Aşama 4–7 arasında ayrı ayrı geliştirilecektir. Ana uygulama test edilmeden mevcut AYDA canlı sistemlerine aktarılmaz.
 
 Öğrenci çalışma verisi demo sürümünde sadece tarayıcıdaki IndexedDB alanında tutulur; bulut senkronu yoktur ve tarayıcı verilerinin temizlenmesiyle kaybolabilir.
 

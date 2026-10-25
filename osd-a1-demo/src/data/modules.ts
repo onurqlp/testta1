@@ -20,7 +20,7 @@ export const modules: StudyModule[] = [
   {
     id: 'hoeren', title: 'Hören', subtitle: 'Dinleme', summary: 'Dinle, anla, cevapla',
     stage: 3, accent: 'purple',
-    detail: 'Gerçek ses dosyaları, oynatma kuralları ve dinleme soruları Aşama 3’te eklenecek. Şu anda ses oynatımı yok.'
+    detail: 'İki ÖSD A1 dinleme seti, gerçek Almanca MP3 sesler, transkript, dinleme hakları ve kalıcı kayıt.'
   },
   {
     id: 'schreiben', title: 'Schreiben', subtitle: 'Yazma', summary: 'Form ve kısa e-posta',
