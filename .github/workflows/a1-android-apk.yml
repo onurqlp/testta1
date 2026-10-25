@@ -2,17 +2,75 @@ name: Build AYDA A1 Demo Android APK
 on:
   push:
     branches: [demo/osd-a1-stage1-20261025]
-    paths: ['.github/workflows/a1-android-apk.yml']
+    paths:
+      - '.github/workflows/a1-android-apk.yml'
+      - 'osd-a1-demo/android/**'
+      - 'osd-a1-demo/src/**'
+      - 'osd-a1-demo/public/**'
+      - 'osd-a1-demo/index.html'
+      - 'osd-a1-demo/package.json'
+      - 'osd-a1-demo/vite.config.ts'
+      - 'osd-a1-demo/scripts/**'
   workflow_dispatch:
+
 permissions:
   contents: write
+
 jobs:
   android-debug-apk:
     runs-on: ubuntu-latest
-    timeout-minutes: 28
+    timeout-minutes: 30
     steps:
       - name: Checkout A1 demo branch only
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Read original AYDA ÖSD A1 guide model images
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: onurqlp/osda1rehber
+          ref: main
+          path: osd-guide-source
+          persist-credentials: false
+      - name: Node.js 22
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Test and bundle A1 Web UI + entire 11-task exam guide
+        working-directory: osd-a1-demo
+        run: |
+          npm install --no-fund --no-audit
+          npm run test
+          npm run check:audio
+          npm run build
+          test -s dist/index.html
+          test -s dist/rehber/a1/index.html
+          test -s dist/rehber/a1/content.js
+          test -s dist/rehber/a1/app.js
+          test -s dist/audio/alltag-01-aufgabe1.mp3
+      - name: Embed official example paper images and AYDA teaching scenes inside APK
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p osd-a1-demo/dist/rehber/a1/assets/model osd-a1-demo/dist/rehber/a1/assets/scene
+          cp -a osd-guide-source/a1/assets/model/. osd-a1-demo/dist/rehber/a1/assets/model/
+          for scene in shop cafe kitchen; do
+            cp "osd-guide-source/assets/${scene}.webp" "osd-a1-demo/dist/rehber/a1/assets/scene/${scene}.webp"
+          done
+          sed -i 's#https://osd.aydadil.com/a1/assets/model/#assets/model/#g' osd-a1-demo/dist/rehber/a1/app.js
+          sed -i 's#https://osd.aydadil.com/assets/#assets/scene/#g' osd-a1-demo/dist/rehber/a1/content.js
+          test -s osd-a1-demo/dist/rehber/a1/assets/model/za1-page-02.jpg
+          test -s osd-a1-demo/dist/rehber/a1/assets/model/za1-page-12.jpg
+          test -s osd-a1-demo/dist/rehber/a1/assets/scene/shop.webp
+          if grep -q 'https://osd.aydadil.com/a1/assets/model/' osd-a1-demo/dist/rehber/a1/app.js; then
+            echo "Remote image link remained" >&2; exit 1
+          fi
+      - name: Package web application and guide inside the Android APK
+        shell: bash
+        run: |
+          mkdir -p osd-a1-demo/android/app/src/main/assets/web
+          cp -a osd-a1-demo/dist/. osd-a1-demo/android/app/src/main/assets/web/
+          test -s osd-a1-demo/android/app/src/main/assets/web/index.html
+          test -s osd-a1-demo/android/app/src/main/assets/web/rehber/a1/content.js
+          test -s osd-a1-demo/android/app/src/main/assets/web/sw.js
       - name: Java 17
         uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165cb
         with:
@@ -35,35 +93,53 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'
-      - name: Assemble unsigned-release-free debug WebView
+      - name: Assemble debug APK with embedded A1 guide
         working-directory: osd-a1-demo/android
         run: gradle --no-daemon --stacktrace :app:assembleDebug
-      - name: Validate Android manifest and APK contents
+      - name: Validate embedded guide, exam audio and manifest
         working-directory: osd-a1-demo/android
+        shell: bash
         run: |
-          test -s app/build/outputs/apk/debug/app-debug.apk
-          "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging app/build/outputs/apk/debug/app-debug.apk | head -12
-          "$ANDROID_HOME/build-tools/35.0.0/aapt" dump permissions app/build/outputs/apk/debug/app-debug.apk | tee permissions.txt
+          set -euo pipefail
+          apk=app/build/outputs/apk/debug/app-debug.apk
+          test -s "$apk"
+          unzip -l "$apk" | tee apk-contents.txt
+          for file in \
+            assets/web/index.html \
+            assets/web/rehber/a1/index.html \
+            assets/web/rehber/a1/content.js \
+            assets/web/rehber/a1/app.js \
+            assets/web/rehber/a1/style.css \
+            assets/web/rehber/a1/ux-review.css \
+            assets/web/rehber/a1/assets/model/za1-page-02.jpg \
+            assets/web/rehber/a1/assets/model/za1-page-12.jpg \
+            assets/web/rehber/a1/assets/scene/shop.webp \
+            assets/web/audio/alltag-01-aufgabe1.mp3 \
+            assets/web/sw.js; do
+            grep -Fq "$file" apk-contents.txt || { echo "Missing APK content: $file" >&2; exit 1; }
+          done
+          "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging "$apk" | head -12
+          "$ANDROID_HOME/build-tools/35.0.0/aapt" dump permissions "$apk" | tee permissions.txt
           grep -q 'android.permission.INTERNET' permissions.txt
           grep -q 'android.permission.RECORD_AUDIO' permissions.txt
           if grep -Eq 'android.permission.(CAMERA|ACCESS_FINE_LOCATION|READ_EXTERNAL_STORAGE)' permissions.txt; then
             echo "Unexpected Android permission" >&2; exit 1
           fi
-          cp app/build/outputs/apk/debug/app-debug.apk app/build/outputs/apk/debug/AYDA-OSD-A1-DEMO-v0.8.apk
-          sha256sum app/build/outputs/apk/debug/AYDA-OSD-A1-DEMO-v0.8.apk
-      - name: Upload downloadable APK artifact
+          cp "$apk" app/build/outputs/apk/debug/AYDA-OSD-A1-REHBER-v0.9.apk
+          sha256sum app/build/outputs/apk/debug/AYDA-OSD-A1-REHBER-v0.9.apk
+      - name: Upload downloadable guide APK
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: AYDA-OSD-A1-DEMO-v0.8-APK
-          path: osd-a1-demo/android/app/build/outputs/apk/debug/AYDA-OSD-A1-DEMO-v0.8.apk
+          name: AYDA-OSD-A1-REHBER-v0.9-APK
+          path: osd-a1-demo/android/app/build/outputs/apk/debug/AYDA-OSD-A1-REHBER-v0.9.apk
           retention-days: 30
-      - name: Publish only as GitHub debug DEMO prerelease
+      - name: Publish GitHub demo APK prerelease
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create osd-a1-demo-v0.8.0 \
-            osd-a1-demo/android/app/build/outputs/apk/debug/AYDA-OSD-A1-DEMO-v0.8.apk \
+          gh release create osd-a1-demo-v0.9.0 \
+            osd-a1-demo/android/app/build/outputs/apk/debug/AYDA-OSD-A1-REHBER-v0.9.apk \
             --target "$GITHUB_SHA" \
-            --title "AYDA ÖSD A1 v0.8.0 Android DEMO APK (debug)" \
-            --notes "Debug-signed test APK only. No Play Store publishing, payments, live booking, login or production release signature. Opens only https://ayda-osd-a1-demo.vercel.app. Requires compatible Android System WebView." \
+            --title "AYDA ÖSD A1 v0.9 — APK with integrated ZA1 guide" \
+            --notes "Demo APK, Android WebView and the complete ÖSD A1 demo v0.9 frontend including 11-task guide embedded. The app keeps its existing HTTPS origin and local IndexedDB records, with no Vercel redeploy needed. Guide example paper images, teaching scenes, tasks and audio are packaged locally (third-party links and YouTube still require network); commercial distribution requires separate ÖSD rights review. Debug-signed for testing only, not for Play Store." \
             --prerelease --latest=false
