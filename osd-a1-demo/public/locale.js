@@ -257,7 +257,7 @@
     'Bu uygulamada destek seçimi demo amaçlıdır. Gerçek rezervasyon oluşturulmaz.':['Support selection in this app is for demonstration only. No actual booking is made.','Die Auswahl der Unterstützung dient in dieser App nur zur Demonstration. Es wird keine echte Buchung vorgenommen.'],
     'Kişisel ilerlemen bu cihazda saklanır.':['Your progress is stored on this device.','Dein Lernstand wird auf diesem Gerät gespeichert.'],
     'Aşama ':['Stage ','Stufe '], 'görev':['task','Aufgabe'], 'görevler':['tasks','Aufgaben'],
-    'AYDA | ÖSD A1 Prüfungstraining DEMO':['AYDA | ÖSD A1 Exam Preparation DEMO','AYDA | ÖSD-A1-Prüfungstraining DEMO'],
+    'AYDA | ÖSD A1 Prüfungstraining DEMO':['AYDA | ÖSD A1 Exam Preparation DEMO','AYDA | ÖSD-A1-Prüfungsvorbereitung DEMO'],
     'Yeminli tercüme':['Certified translation','Beglaubigte Übersetzung'], 'Tümünü gör':['View all','Alle ansehen'],
     'Geri dön':['Go back','Zurück'], 'Devam':['Continue','Weiter'], 'Yardım':['Help','Hilfe'], 'Uyarı':['Warning','Hinweis'],
     'Kapat':['Close','Schließen'], 'Kurslar':['Courses','Kurse'], 'Dersler':['Lessons','Unterricht'],
