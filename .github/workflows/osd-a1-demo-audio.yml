@@ -1,0 +1,39 @@
+name: Build AYDA A1 demo listening audio
+on:
+  push:
+    branches:
+      - demo/osd-a1-stage1-20261025
+    paths:
+      - 'osd-a1-demo/scripts/hoeren-scripts.json'
+      - 'osd-a1-demo/scripts/render-hoeren-audio.py'
+      - '.github/workflows/osd-a1-demo-audio.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: true
+          fetch-depth: 1
+      - name: Install German offline speech synthesis + encoder
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y espeak-ng ffmpeg
+      - name: Generate playable MP3 files
+        run: python3 osd-a1-demo/scripts/render-hoeren-audio.py
+      - name: Assert six audio assets
+        run: |
+          test "$(find osd-a1-demo/public/audio -name '*.mp3' | wc -l)" -eq 6
+          ffprobe -v error -show_entries format=duration,size -of csv=p=0 osd-a1-demo/public/audio/alltag-01-aufgabe1.mp3
+      - name: Commit only new demo audio assets
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add osd-a1-demo/public/audio/*.mp3
+          if ! git diff --cached --quiet; then
+            git commit -m "assets(osd-a1): render six original German listening MP3s"
+            git push origin HEAD:demo/osd-a1-stage1-20261025
+          fi
