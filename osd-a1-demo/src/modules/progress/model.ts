@@ -18,6 +18,7 @@ export interface ProgressSummary {
 }
 const isExam=(row:ExamRun)=>row?.kind==='integrated-exam'&&row.version===1
 const pathBy=(part:ExamPart)=>'#/module/'+part
+const localDay=(iso:string)=>{const d=new Date(iso);return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')}
 const fmt=(a:Attempt)=>{
  if(a.correctCount===undefined)return 'Öznel/puanlanmayan çalışma'
  const answered=a.answeredCount??a.answers.length
@@ -67,12 +68,12 @@ export function computeProgress(
   date:a.finishedAt!,kind:'finished' as const,details:fmt(a),path:pathBy(a.module as ExamPart)
  })),
  ...examDone.map(e=>({id:e.id,title:'Tam deneme · Set '+(e.setIndex+1),module:'exam' as const,
-  date:e.finishedAt!,kind:'finished' as const,details:readingResult(e).correct+' Lesen doğru · '+hearingResult(e).correct+' Hören doğru',path:'#/exam'})),
+  date:e.finishedAt!,kind:'finished' as const,details:readingResult(e).correct+' Lesen doğru · '+hearingResult(e).correct+' Hören doğru',path:'#/exam?run='+encodeURIComponent(e.id)})),
  ...inProgress.filter(a=>PARTS.includes(a.module as ExamPart)).map(a=>({
   id:a.id,title:PART_LABELS[a.module as ExamPart]+' · devam ediyor',module:a.module as ExamPart,
   date:a.updatedAt,kind:'active' as const,details:'Cihazda kayıtlı çalışma',path:pathBy(a.module as ExamPart)})),
  ...examsActive.map(e=>({id:e.id,title:'Tam deneme · Set '+(e.setIndex+1),module:'exam' as const,
-  date:e.updatedAt,kind:'active' as const,details:PART_LABELS[e.part]+' bölümünde kaldı',path:'#/exam'})),
+  date:e.updatedAt,kind:'active' as const,details:PART_LABELS[e.part]+' bölümünde kaldı',path:'#/exam?run='+encodeURIComponent(e.id)})),
  ...writtenDrafts.map(d=>({id:d.id,title:'Schreiben taslağı',module:'schreiben' as const,
   date:d.updatedAt,kind:'active' as const,details:d.email.trim()?'Yazılı metin saklandı':'Form veya e-posta taslağı',path:'#/module/schreiben'})),
  ...speakingActive.map(s=>({id:s.id,title:'Sprechen provası',module:'sprechen' as const,
@@ -80,9 +81,9 @@ export function computeProgress(
  ].sort((a,b)=>b.date.localeCompare(a.date))
  const finishedDates=[...done.map(a=>a.finishedAt!),...examDone.map(e=>e.finishedAt!)]
  const activity=Array.from({length:7},(_,i)=>{
-  const d=new Date(now);d.setUTCDate(d.getUTCDate()-6+i)
-  const day=d.toISOString().slice(0,10)
-  return {day,count:finishedDates.filter(x=>x.slice(0,10)===day).length}
+  const d=new Date(now);d.setHours(12,0,0,0);d.setDate(d.getDate()-6+i)
+  const day=localDay(d.toISOString())
+  return {day,count:finishedDates.filter(x=>localDay(x)===day).length}
  })
  const recommendations:{module:ExamPart;reason:string}[]=[]
  for(const s of skills){
@@ -95,5 +96,5 @@ export function computeProgress(
  uniqueTasks:unique.size,examFinished:examDone.length,examActive:examsActive.length,
  writingDrafts:writtenDrafts.length,recordingCount:speak.reduce((n,s)=>n+Object.keys(s.recordings||{}).length,0)+exams.filter(e=>e.speaking.recording).length,
  correct:skills.reduce((n,s)=>n+s.correct,0),wrong:skills.reduce((n,s)=>n+s.wrong,0),blank:skills.reduce((n,s)=>n+s.blank,0),
- skills,activity,recent:all.slice(0,25),recommendations}
+ skills,activity,recent:all,recommendations}
 }
