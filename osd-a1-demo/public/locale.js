@@ -11,6 +11,7 @@
     'AYDA DİL AKADEMİSİ':['AYDA LANGUAGE ACADEMY','AYDA SPRACHAKADEMIE'],
     'Prüfungstraining':['Exam preparation','Prüfungstraining'],
     'ÖSD A1 Prüfungstraining':['ÖSD A1 exam preparation','ÖSD-A1-Prüfungsvorbereitung'],
+    'AYDA | ÖSD A1 Prüfungstraining DEMO':['AYDA | ÖSD A1 Exam Preparation DEMO','AYDA | ÖSD-A1-Prüfungsvorbereitung DEMO'],
     'ÖSD SINAV HAZIRLIĞI':['ÖSD EXAM PREPARATION','ÖSD-PRÜFUNGSVORBEREITUNG'],
     'Almancana güven.':['Trust your German.','Vertrau auf dein Deutsch.'],
     'Sınava hazır ol.':['Be ready for the exam.','Mach dich prüfungsbereit.'],
@@ -338,7 +339,7 @@
     }
     const elements = root.nodeType === 1 ? [root, ...root.querySelectorAll('*')] : [...root.querySelectorAll('*')];
     for (const el of elements) {
-      for (const attr of ['aria-label', 'title', 'placeholder']) {
+      for (const attr of ['aria-label', 'title', 'placeholder', 'alt']) {
         if (!el.hasAttribute?.(attr)) continue;
         const value = el.getAttribute(attr);
         const tr = reverse[locale]?.get(value) || value;
@@ -354,6 +355,8 @@
   }
   window.AydaLocale = { key: KEY, get: () => locale, set: setLocale, t: translate, apply, catalog };
   document.documentElement.lang = locale === 'tr' ? 'tr' : locale === 'de' ? 'de' : 'en';
+  const initialTitle = translate(document.title, locale);
+  if (initialTitle !== document.title) document.title = initialTitle;
   const start = () => {
     apply(document.body);
     new MutationObserver(records => {
