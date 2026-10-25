@@ -27,7 +27,8 @@ try{
   if(label==='mobile-390'){
    await page.goto(url+'/#/exam',{waitUntil:'networkidle'})
    await page.getByRole('button',{name:/Yeni deneme başlat/}).first().click()
-   check(await page.getByRole('button',{name:/Ara ver/}).count()>0,'integrated exam starts')
+   await page.getByRole('button',{name:/Ara ver/}).waitFor({state:'visible',timeout:7000})
+   check(true,'integrated exam starts')
    await page.getByRole('button',{name:/Ara ver/}).click()
    await page.waitForTimeout(250)
    await page.reload({waitUntil:'networkidle'})
@@ -43,6 +44,7 @@ try{
    await page.locator('input[type="date"]').fill(localDate)
    await page.locator('.teach7-date-grid select').selectOption('14:00')
    await page.getByRole('button',{name:/Yerel demo talebini kaydet/}).click()
+   await page.locator('.teach7-history .teach7-request').first().waitFor({state:'visible',timeout:7000})
    check((await page.locator('body').innerText()).includes('Demo seçim kaydedildi'),'teacher demo creates only local request')
    await page.reload({waitUntil:'networkidle'})
    check((await page.locator('.teach7-history .teach7-request').count())===1,'teacher demo request persists in IndexedDB')
