@@ -142,13 +142,3 @@ jobs:
           name: AYDA-OSD-A1-AYDA-UI-v0.10-APK
           path: osd-a1-demo/android/app/build/outputs/apk/debug/AYDA-OSD-A1-AYDA-UI-v0.10.apk
           retention-days: 30
-      - name: Publish GitHub demo APK prerelease
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh release create osd-a1-demo-v0.10.0 \
-            osd-a1-demo/android/app/build/outputs/apk/debug/AYDA-OSD-A1-AYDA-UI-v0.10.apk \
-            --target "$GITHUB_SHA" \
-            --title "AYDA ÖSD A1 v0.10 — Official AYDA logo and branded exam guide" \
-            --notes "Demo APK, Android WebView and the complete ÖSD A1 demo v0.10 frontend including 11-task guide embedded. The app keeps its existing HTTPS origin and local IndexedDB records, with no Vercel redeploy needed. Guide example paper images, teaching scenes, tasks and audio are packaged locally (third-party links and YouTube still require network); commercial distribution requires separate ÖSD rights review. Uses the verified canonical AYDA homepage logo, brand palette and Android launcher icon. Debug-signed for testing only, not for Play Store." \
-            --prerelease --latest=false
