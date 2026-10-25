@@ -68,7 +68,7 @@ export default function SchreibenView() {
    try{
      const row=await readRecord<WritingDraft>('drafts',draftId(task.id,newMode))
      const draft=row||newDraft(task.id,newMode)
-     if(!row)await putRecord('drafts',draft)
+     if(!row){await putRecord('drafts',draft);setAllDrafts(old=>[draft,...old.filter(d=>d.id!==draft.id)])}
      setCurrent(draft);setSection('form');setScreen(draft.finishedAt?'finished':'editing')
      setNow(Date.now());setSaveStatus('saved')
    }catch{setMessage('Çalışma açılamadı. Tarayıcının yerel veri iznini kontrol edin.')}

@@ -25,7 +25,7 @@ export const modules: StudyModule[] = [
   {
     id: 'schreiben', title: 'Schreiben', subtitle: 'Yazma', summary: 'Form ve kısa e-posta',
     stage: 4, accent: 'gold',
-    detail: 'Form doldurma, kısa e-posta çalışmaları, yerel düzeltme önerileri ve taslak kaydı Aşama 4’te açılacak.'
+    detail: 'Beş özgün form ve kişisel e-posta seti, cihaz üstünde kural kontrolü, sürüm geri yükleme ve kalıcı taslak.'
   },
   {
     id: 'sprechen', title: 'Sprechen', subtitle: 'Konuşma', summary: 'Redemittel ve prova',
