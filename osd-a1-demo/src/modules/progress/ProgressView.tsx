@@ -15,6 +15,7 @@ export default function ProgressView(){
  const [error,setError]=useState('')
  const [busy,setBusy]=useState(false)
  const [filter,setFilter]=useState<'all'|'finished'|'active'>('all')
+ const [visibleLimit,setVisibleLimit]=useState(25)
  const reload=useCallback(async()=>{
   const [a,d,s,e]=await Promise.all([
     listRecords<Attempt>('attempts'),
@@ -56,7 +57,8 @@ export default function ProgressView(){
   }catch{setError('Veriler sıfırlanamadı. Başka bir sekmede uygulama açıksa kapatıp yeniden dene.')}
   finally{setBusy(false)}
  }
- const show=summary?.recent.filter(r=>filter==='all'||r.kind===filter)||[]
+ const matching=summary?.recent.filter(r=>filter==='all'||r.kind===filter)||[]
+ const show=matching.slice(0,visibleLimit)
  const peak=Math.max(0,...(summary?.activity.map(x=>x.count)||[]))
  return <div className="p6">
   <header className="p6-hero"><span>GERÇEK CİHAZ KAYITLARI</span><h2>İlerlemeni burada gör.</h2><p>Sayfadaki tüm sayılar senin çözüm, taslak ve tam deneme kayıtlarından hesaplanır. Örnek veri, hayalî başarı oranı veya resmî ÖSD geçme tahmini yoktur.</p></header>
@@ -82,8 +84,9 @@ export default function ProgressView(){
      </div>)}
     </section>
    </div>
-   <section className="p6-panel"><div className="p6-panel-header"><h3>Gerçek geçmişin</h3><div className="p6-filter"><button className={filter==='all'?'active':''} onClick={()=>setFilter('all')}>Tümü</button><button className={filter==='finished'?'active':''} onClick={()=>setFilter('finished')}>Bitenler</button><button className={filter==='active'?'active':''} onClick={()=>setFilter('active')}>Devam eden</button></div></div>
-    {show.length===0?<p className="p6-empty">Seçili filtreye uygun kayıt bulunmuyor.</p>:show.map(ev=><a href={ev.path} key={ev.id} className="p6-activity"><div><b>{ev.title}</b><span>{ev.details}</span></div><div><small>{new Date(ev.date).toLocaleString('tr-TR')}</small><strong>{ev.kind==='active'?'Devam et ›':'İncele ›'}</strong></div></a>)}
+   <section className="p6-panel"><div className="p6-panel-header"><h3>Gerçek geçmişin</h3><div className="p6-filter"><button className={filter==='all'?'active':''} onClick={()=>{setFilter('all');setVisibleLimit(25)}}>Tümü</button><button className={filter==='finished'?'active':''} onClick={()=>{setFilter('finished');setVisibleLimit(25)}}>Bitenler</button><button className={filter==='active'?'active':''} onClick={()=>{setFilter('active');setVisibleLimit(25)}}>Devam eden</button></div></div>
+    {show.length===0?<p className="p6-empty">Seçili filtreye uygun kayıt bulunmuyor.</p>:show.map(ev=><a href={ev.path} key={ev.id} className="p6-activity"><div><b>{ev.title}</b><span>{ev.details}</span></div><div><small>{new Date(ev.date).toLocaleString('tr-TR')}</small><strong>{ev.module==='exam'?(ev.kind==='active'?'Denemeyi sürdür ›':'Sonucu aç ›'):'Bölümü aç ›'}</strong></div></a>)}
+    {matching.length>visibleLimit&&<button type="button" className="p6-load-more" onClick={()=>setVisibleLimit(n=>n+25)}>Daha eski kayıtları göster ({matching.length-visibleLimit} kaldı)</button>}
    </section>
    <section className="p6-panel"><h3>Neleri tekrar çalışmalısın?</h3>{summary.recommendations.length?summary.recommendations.map((r,i)=><a key={r.module+i} href={'#/module/'+r.module} className="p6-recommendation"><strong>{PART_LABELS[r.module]}</strong><span>{r.reason}</span><b>Çalış ›</b></a>):<p className="p6-empty">Kayıtlardan çıkarılabilen somut eksik şu an yok. Yeni çalışmalar yaptıkça öneriler oluşur. Bu ifade sınava hazır olduğunu kanıtlamaz.</p>}</section>
    <section className="p6-backup"><div><h3>Veriler ve yerel yedek</h3><p>Şu ana kadar {summary.writingDrafts} açık Schreiben taslağı ve {summary.recordingCount} kayıt referansı mevcut. JSON yedeği cihazdaki ses dosyalarını Base64 olarak da içerir; dosya büyük olabilir. Sunucuya otomatik gönderim yapılmaz.</p></div><div className="p6-backup-actions"><button disabled={busy} onClick={()=>void backup()}>JSON yedeğini indir</button><button disabled={busy} className="destructive" onClick={()=>void erase()}>Tüm kayıtları sıfırla</button></div></section>
