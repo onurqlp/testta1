@@ -22,7 +22,6 @@ export default function SchreibenView() {
  const [saveStatus,setSaveStatus]=useState<'saved'|'saving'|'error'>('saved')
  const [showFormFeedback,setShowFormFeedback]=useState(false)
  const [showModel,setShowModel]=useState(false)
- const [showTeacher,setShowTeacher]=useState(false)
  const [now,setNow]=useState(Date.now)
  const [finishing,setFinishing]=useState(false)
  const [restoreChoice,setRestoreChoice]=useState('')
@@ -64,7 +63,7 @@ export default function SchreibenView() {
    if(value&&!value.finishedAt&&!(value.mode==='timed'&&countDown(value)===0)&&!submitLock.current)update(reviseDraft(value,partial))
  }
  const choose=async(task:WritingTask,newMode:WritingMode)=>{
-   setMessage('');setShowFormFeedback(false);setShowModel(false);setShowTeacher(false);setRestoreChoice('')
+   setMessage('');setShowFormFeedback(false);setShowModel(false);setRestoreChoice('')
    try{
      const row=await readRecord<WritingDraft>('drafts',draftId(task.id,newMode))
      const draft=row||newDraft(task.id,newMode)
@@ -115,7 +114,7 @@ export default function SchreibenView() {
  const clock=active?countDown(active,now):0
  const goodForms=formReview.filter(x=>x.status==='matches').length
  const issuesBySeverity=(severity:Issue['severity'])=>emailIssues.filter(x=>x.severity===severity)
- const returnToSets=()=>{setScreen('sets');setMessage('');setShowModel(false);setShowTeacher(false)}
+ const returnToSets=()=>{setScreen('sets');setMessage('');setShowModel(false)}
  const refreshDraft=async()=>{
    const a=activeRef.current
    if(!a)return
@@ -193,7 +192,7 @@ export default function SchreibenView() {
     {active.snapshots.length>0&&<div className="sch-revisions"><select aria-label="Önceki sürüm" value={restoreChoice} onChange={e=>setRestoreChoice(e.target.value)} disabled={locked}><option value="">Önceki sürümü seç</option>{active.snapshots.map(s=><option key={s.id} value={s.id}>{s.label}</option>)}</select><button className="sch-outline" onClick={restoreVersion} disabled={!restoreChoice||locked}>Geri yükle</button></div>}</div>
    <div className="sch-bottom-actions"><button className="sch-outline" onClick={()=>setShowModel(x=>!x)}>{showModel?'Örnek cevabı gizle':'Örnek cevabı göster'}</button><button className="sch-primary" onClick={()=>void finish('submitted')} disabled={finishing}>{finishing?'Kaydediliyor…':'Çalışmayı tamamla ✓'}</button></div>
    {showModel&&<div className="sch-example"><strong>Örnek Form + E-Posta</strong><p>{task.modelFormNote}</p><div className="sch-model-fields">{task.fields.map(field=><span key={field.id}><b>{field.label}: </b>{field.answer}</span>)}</div><pre lang="de">{task.modelEmail}</pre><small>Bu bir örnek yanıt; aynı anlama gelen farklı A1 cümleleri de doğru olabilir.</small></div>}
-   <div className="sch-teacher"><strong>Gerçek öğretmen kontrolü</strong><p>Yerel motor dilin tamamını veya görev anlamını denetleyemez. İnsan öğretmenle ayrıntılı inceleme daha sonraki aşamanın hizmetidir.</p><button onClick={()=>setShowTeacher(x=>!x)}>Öğretmen kontrolü bilgisi</button>{showTeacher&&<p className="sch-service-note">DEMO: Talep gönderme ve ödeme henüz açık değil. Metnin herhangi bir sunucuya gönderilmedi.</p>}</div>
+   <div className="sch-teacher"><strong>Öğretmen kontrolü · DEMO</strong><p>Bir insanın mektubunu incelemesi için örnek hizmet ekranını açabilirsin. Bu taslak sunucuya gönderilmez ve ödeme alınmaz.</p><a href={'#/support?service=writing-single&draft='+encodeURIComponent(active.id)}>Bu taslakla öğretmen desteği demosuna geç ›</a></div>
   </>}
   {screen==='finished'&&active&&task&&<>
    <button className="sch-link" onClick={returnToSets}>‹ Çalışmalara dön</button>
