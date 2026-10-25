@@ -43,11 +43,17 @@ export default function ExamView(){
  const setRun=(s:ExamRun|null)=>{ref.current=s;setActive(s)}
  const refresh=async()=>{
    const rows=await listRecords<ExamRun>('examSessions')
-   setList(rows.filter(isExam).sort((a,b)=>b.updatedAt.localeCompare(a.updatedAt)))
+   const ordered=rows.filter(isExam).sort((a,b)=>b.updatedAt.localeCompare(a.updatedAt))
+    setList(ordered)
+    return ordered
  }
  useEffect(()=>{
   mounted.current=true
-  refresh().catch(()=>setError('Sınav geçmişi okunamadı. Yerel depolama iznini kontrol et.'))
+  refresh().then(rows=>{
+      const id=new URLSearchParams(window.location.hash.split('?')[1]||'').get('run')
+      const requested=rows.find(x=>x.id===id)
+      if(requested&&mounted.current){setRun(requested);setView(requested.status==='finished'?'report':'session')}
+    }).catch(()=>setError('Sınav geçmişi okunamadı. Yerel depolama iznini kontrol et.'))
    .finally(()=>{if(mounted.current)setLoading(false)})
   return()=>{mounted.current=false;audio.current?.pause();if(media.current?.state==='recording')media.current.stop();mic.current?.getTracks().forEach(t=>t.stop())}
  },[])
@@ -83,7 +89,12 @@ export default function ExamView(){
    if(r?.state==='recording')r.stop()
    if(stopPromise.current)await stopPromise.current
  }
- const exit=()=>{if(recording||recordBusy)return;stopAudio();setRun(null);setView('list');setError('');void refresh().catch(()=>{})}
+ const exit=()=>{
+    if(recording||recordBusy||saving||finishing)return
+    stopAudio();setRun(null);setView('list');setError('')
+    if(window.location.hash.includes('?run='))window.location.hash='#/exam'
+    void refresh().catch(()=>{})
+  }
  const pause=async()=>{
    const s=ref.current
    if(!s||s.status!=='active'||recording||recordBusy)return
@@ -131,7 +142,7 @@ export default function ExamView(){
   const i=window.setInterval(()=>{
     const elapsed=Math.floor((Date.now()-startAt.current)/1000)
     setRecordSeconds(elapsed)
-    if(elapsed>=120&&media.current?.state==='recording')media.current.stop()
+    if(elapsed>=600&&media.current?.state==='recording')media.current.stop()
   },500)
   return()=>window.clearInterval(i)
  },[recording])
@@ -175,7 +186,9 @@ export default function ExamView(){
   player.currentTime=pending?(s.hearing.positions[part]||0):0
   // User gesture synchronously triggers play() on mobile.
   void player.play().then(()=>{
-   if(!pending)edit(old=>playHearing(old,part))
+   const current=ref.current
+    if(!current||current.id!==s.id||current.part!=='hoeren'||current.hearing.part!==part||current.status!=='active'){player.pause();return}
+    if(!pending)edit(old=>playHearing(old,part))
    setIsPlaying(true)
   }).catch(()=>setShowAudioError('Ses başlatılamadı. İnternet ve ses izinlerini kontrol et.'))
  }
@@ -186,7 +199,12 @@ export default function ExamView(){
   lastAudioSave.current=p.currentTime
   edit(old=>rememberHearing(old,old.hearing.part,p.currentTime))
  }
- const beginRecord=async()=>{
+ useEffect(()=>{
+    const onHide=()=>{if(document.hidden&&audio.current&&!audio.current.paused)audio.current.pause()}
+    document.addEventListener('visibilitychange',onHide)
+    return()=>document.removeEventListener('visibilitychange',onHide)
+  },[])
+  const beginRecord=async()=>{
   const s=ref.current
   if(!s||s.part!=='sprechen'||s.speaking.phase!=='speech'||s.status!=='active'||recording||recordBusy)return
   if(!navigator.mediaDevices?.getUserMedia||typeof MediaRecorder==='undefined'){setError('Mikrofon kaydı bu tarayıcıda desteklenmiyor. HTTPS üzerinde güncel bir tarayıcı aç.');return}
@@ -250,7 +268,7 @@ export default function ExamView(){
    {list.some(x=>x.status==='finished')&&<section className="exam6-history"><h3>Bitirdiğin sınav denemeleri</h3>{list.filter(x=>x.status==='finished').map(x=><button key={x.id} onClick={()=>open(x)}><span><strong>Deneme {x.setIndex+1}</strong><small>{new Date(x.finishedAt!).toLocaleString('tr-TR')}</small></span><b>{readingResult(x).correct} / {readingResult(x).total} Lesen · {hearingResult(x).correct} / {hearingResult(x).total} Hören</b></button>)}</section>}
   </>}
   {(view==='session'||view==='report')&&active&&sets&&<div className="exam6-session">
-   <div className="exam6-head"><button className="exam6-back" disabled={recording||recordBusy} onClick={exit}>‹ Deneme listesi</button><div><small>{saving?'Kaydediliyor…':'Cihazda kayıtlı'}</small>{view==='session'&&<strong className="exam6-clock">{timeText(remaining(active,now))}</strong>}</div></div>
+   <div className="exam6-head"><button className="exam6-back" disabled={recording||recordBusy||saving||finishing} onClick={exit}>‹ Deneme listesi</button><div><small>{saving?'Kaydediliyor…':error?'Kayıt/işlem uyarısı':'Cihazda kayıtlı'}</small>{view==='session'&&<strong className="exam6-clock">{timeText(remaining(active,now))}</strong>}</div></div>
    <div className="exam6-title"><strong>Deneme {active.setIndex+1}</strong><span>{active.status==='finished'?'Tamamlandı':active.status==='paused'?'Ara verildi':'Devam ediyor'}</span></div>
    <div className="exam6-parts">{PARTS.map((p,i)=><div className={(p===currentPart?'current ':'')+(active.sections[p].finishedAt?'done':'')} key={p}><span>{i+1}</span><small>{PART_LABELS[p]}</small></div>)}</div>
    {view==='session'&&<>
@@ -298,7 +316,7 @@ export default function ExamView(){
        <h3>Aufgabe 3 · Rollenspiel</h3>{scene?<div className="exam6-german-text"><b>{scene.title}</b><p lang="de">{scene.prompts[active.speaking.step].question}</p><small>{scene.prompts[active.speaking.step].hintTr}</small><div className="exam6-question-nav"><button disabled={active.speaking.step===0} onClick={()=>edit(s=>({...s,speaking:{...s.speaking,step:Math.max(0,s.speaking.step-1)}}))}>‹ Önceki soru</button><button disabled={active.speaking.step===2} onClick={()=>edit(s=>({...s,speaking:{...s.speaking,step:Math.min(2,s.speaking.step+1)}}))}>Sonraki soru ›</button></div></div>:<p>Rol oyunu için önce bir resim seç.</p>}
        <button className="exam6-link" onClick={()=>setPhraseOpen(x=>!x)}>{phraseOpen?'Redemittel gizle':'Redemittel göster'}</button>
        {phraseOpen&&<div className="exam6-phrases">{[...phraseBank[1],...phraseBank[2],...phraseBank[3]].map((p,i)=><div key={i}><strong lang="de">{p.de}</strong><small>{p.tr}</small></div>)}</div>}
-       {!oralPrep&&<section className="exam6-recorder"><h4>Mikrofonla sözlü prova</h4><p>Cihazdan izin alarak kaydedilir; dışarı aktarılmaz. En fazla 2 dakika.</p><button className="exam6-primary" disabled={recordBusy} onClick={()=>void(recording?afterRecord():beginRecord())}>{recording?'■ Kaydı durdur '+timeText(recordSeconds):'● Sesimi kaydet'}</button>{active.speaking.recording&&<span>Kaydedilmiş ses: {timeText(active.speaking.recording.duration)}</span>}{recordUrl&&<audio controls src={recordUrl}/>}</section>}
+       {!oralPrep&&<section className="exam6-recorder"><h4>Mikrofonla sözlü prova</h4><p>Cihazdan izin alarak kaydedilir; dışarı aktarılmaz. En fazla 10 dakika.</p><button className="exam6-primary" disabled={recordBusy} onClick={()=>void(recording?afterRecord():beginRecord())}>{recording?'■ Kaydı durdur '+timeText(recordSeconds):'● Sesimi kaydet'}</button>{active.speaking.recording&&<span>Kaydedilmiş ses: {timeText(active.speaking.recording.duration)}</span>}{recordUrl&&<audio controls src={recordUrl}/>}</section>}
        <label className="exam6-write"><span>Prova notu (isteğe bağlı)</span><textarea value={active.speaking.notes} rows={3} onChange={e=>edit(s=>({...s,speaking:{...s.speaking,notes:e.target.value}}))}/></label>
       </section>}
      <div className="exam6-finish"><div><b>{oralPrep?'Hazırlığı tamamla ve konuşmaya geç':'Bölümü bitir'}</b><small>Geçmeden önce kayıtlar ve boş yanıtlar onay ekranında kontrol edilir.</small></div><button className="exam6-primary" disabled={recording||recordBusy||saving||finishing} onClick={confirmSection}>{oralPrep?'Konuşmayı başlat':'Bölümü onayla ›'}</button></div>
