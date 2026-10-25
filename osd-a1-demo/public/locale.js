@@ -265,7 +265,7 @@
   const clean = value => String(value || '').trim();
   const normalize = value => clean(value).replace(/\s+/g, ' ');
   const reverse = { de: new Map(), en: new Map() };
-  Object.entries(catalog).forEach(([tr, values]) => { reverse.de.set(values[0], tr); reverse.en.set(values[1], tr); });
+  Object.entries(catalog).forEach(([tr, values]) => { reverse.en.set(values[0], tr); reverse.de.set(values[1], tr); });
   let locale = 'tr';
   try { const saved = localStorage.getItem(KEY); if (valid.includes(saved)) locale = saved; } catch { /* Private browsing may disable storage. */ }
   let applying = false;
@@ -280,7 +280,7 @@
     const source = reverse[locale]?.get(value) || reverse.de.get(value) || reverse.en.get(value) || normalize(value);
     if (to === 'tr') return source;
     const values = catalog[source];
-    if (values) return values[to === 'de' ? 0 : 1];
+    if (values) return values[to === 'en' ? 0 : 1];
     const titleSuffix = source.match(/^(.+) · Adım adım$/);
     if (titleSuffix) return `${translate(titleSuffix[1], to)} · ${to === 'de' ? 'Schritt für Schritt' : 'Step by step'}`;
     const dynamic = source.match(/^Tamamlanan: (\d+) çalışma · (\d+) gerçek yanlış$/);
@@ -333,7 +333,7 @@
         const original = local[attr];
         const values = catalog[original];
         if (locale === 'tr') el.setAttribute(attr, original);
-        else if (values) el.setAttribute(attr, values[locale === 'de' ? 0 : 1]);
+        else if (values) el.setAttribute(attr, values[locale === 'en' ? 0 : 1]);
       }
     }
     applying = false;
