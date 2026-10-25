@@ -119,9 +119,10 @@ Bağımsız AYDA hazırlık demosudur; resmî ÖSD ürünü değildir. Telifli �
 - `npm run test` AYDA logo hash'ini, kaynak renkleri, rehber bağlarını ve görev kapsamını kontrol eder.
 
 
-## Site v0.11 — AYDA hizmetleri (APK koduna dokunulmadı)
+## Site v0.12 — AYDA hizmetleri ve güncel web cache'i (26.10.2026)
 - React uygulamasında `#/services` rotası ve altta **Hizmetler** sekmesi; öğretmen desteği `#/support` üzerinden korunur.
 - Kurumsal logo ve renkler `/branding/ayda-logo.png`, `brand.css`, `services.css`.
 - A1–B2 online grup, A1–C1 özel ders, ÖSD/telc/Goethe hazırlık; Almanca–Türkçe yeminli tercüme ve noter onayı süreç desteği; Almanya başvuru/denklik yönlendirmesi.
 - WhatsApp bağlantıları ve resmî AYDA sayfalarına yönlendirme. Demo içinde belge yüklemesi, ödeme veya randevu kayıt sistemi eklenmedi.
-- Android kabuk ve imza, uygulama kimliği, WebView ayarları, dosyaları **değiştirilmedi**; yeni UI web dağıtımında görünür.
+- Android kabuk ve imza, uygulama kimliği, WebView ayarları ve APK dosyaları **değiştirilmedi**. APK, `assets/web/` içindeki gömülü web dosyalarını önce kullandığı için bu web güncellemesini otomatik almaz; mevcut APK ayrı kalır.
+- Service worker önbellek sürümü v0.12 olarak yenilendi; mevcut kullanıcı kayıtları ayrı IndexedDB alanında korunur.
