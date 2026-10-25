@@ -1,0 +1,62 @@
+name: Build AYDA A1 Demo Android APK
+on:
+  push:
+    branches: [demo/osd-a1-stage1-20261025]
+    paths: ['.github/workflows/a1-android-apk.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  android-debug-apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 28
+    steps:
+      - name: Checkout A1 demo branch only
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Java 17
+        uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165cb
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Android SDK tools
+        uses: android-actions/setup-android@v3
+      - name: Install API 35 and build tools
+        run: |
+          sdkmanager --install "platforms;android-35" "build-tools;35.0.0"
+          yes | sdkmanager --licenses > /dev/null || true
+      - name: Gradle 8.9
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+      - name: Assemble unsigned-release-free debug WebView
+        working-directory: osd-a1-demo/android
+        run: gradle --no-daemon --stacktrace :app:assembleDebug
+      - name: Validate Android manifest and APK contents
+        working-directory: osd-a1-demo/android
+        run: |
+          test -s app/build/outputs/apk/debug/app-debug.apk
+          "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging app/build/outputs/apk/debug/app-debug.apk | head -12
+          "$ANDROID_HOME/build-tools/35.0.0/aapt" dump permissions app/build/outputs/apk/debug/app-debug.apk | tee permissions.txt
+          grep -q 'android.permission.INTERNET' permissions.txt
+          grep -q 'android.permission.RECORD_AUDIO' permissions.txt
+          if grep -Eq 'android.permission.(CAMERA|ACCESS_FINE_LOCATION|READ_EXTERNAL_STORAGE)' permissions.txt; then
+            echo "Unexpected Android permission" >&2; exit 1
+          fi
+          cp app/build/outputs/apk/debug/app-debug.apk app/build/outputs/apk/debug/AYDA-OSD-A1-DEMO-v0.8.apk
+          sha256sum app/build/outputs/apk/debug/AYDA-OSD-A1-DEMO-v0.8.apk
+      - name: Upload downloadable APK artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: AYDA-OSD-A1-DEMO-v0.8-APK
+          path: osd-a1-demo/android/app/build/outputs/apk/debug/AYDA-OSD-A1-DEMO-v0.8.apk
+          retention-days: 30
+      - name: Publish only as GitHub debug DEMO prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create osd-a1-demo-v0.8.0 \
+            osd-a1-demo/android/app/build/outputs/apk/debug/AYDA-OSD-A1-DEMO-v0.8.apk \
+            --target "$GITHUB_SHA" \
+            --title "AYDA ÖSD A1 v0.8.0 Android DEMO APK (debug)" \
+            --notes "Debug-signed test APK only. No Play Store publishing, payments, live booking, login or production release signature. Opens only https://ayda-osd-a1-demo.vercel.app. Requires compatible Android System WebView." \
+            --prerelease --latest=false
