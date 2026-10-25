@@ -4,6 +4,7 @@ import { openDatabase, readLastView, readProgressOverview, saveLastView } from '
 import type { LastView, ProgressOverview } from './storage/models'
 import LesenView, { LesenMistakes } from './modules/lesen/LesenView'
 import HoerenView, { HoerenMistakes } from './modules/hoeren/HoerenView'
+import SchreibenView from './modules/schreiben/SchreibenView'
 
 type IconName = 'book' | 'headphones' | 'pen' | 'mic' | 'home' | 'grid' | 'chart' | 'help' | 'arrow' | 'clock' | 'check' | 'alert' | 'layers' | 'refresh' | 'spark' | 'shield' | 'back' | 'chevron'
 type TabId = 'home' | 'works' | 'progress' | 'support'
@@ -145,7 +146,7 @@ function App() {
             <span className="module-number">0{i + 1}</span>
             <strong>{module.title}</strong><span className="module-sub">{module.subtitle}</span>
             <span className="module-summary">{module.summary}</span>
-            <span className="module-bottom"><span>{module.id==='lesen'?'32 soru · Kullanıma açık':module.id==='hoeren'?'30 soru · Gerçek ses':'Aşama '+module.stage+'te açılacak'}</span><Icon name="arrow" size={18}/></span>
+            <span className="module-bottom"><span>{module.id==='lesen'?'32 soru · Kullanıma açık':module.id==='hoeren'?'30 soru · Gerçek ses':module.id==='schreiben'?'5 yazma seti · Yerel kontrol':'Aşama '+module.stage+'te açılacak'}</span><Icon name="arrow" size={18}/></span>
           </button>)}
         </section>
         <div className="section-heading second-section"><div><span className="kicker">SINAV YOLCULUĞU</span><h2>Hedefine giden yol</h2></div></div>
@@ -155,13 +156,13 @@ function App() {
       </>}
       {path === '/works' && <>
         <div className="page-head"><span className="kicker">A1 ÇALIŞMA ALANI</span><h1>Çalışmalar</h1><p>Her beceriyi ayrı ayrı geliştireceğiz. Hazır olduğunda ilgili alana dokun.</p></div>
-        <div className="works-grid">{modules.map(module=><button key={module.id} className="work-row" onClick={() => navigate('/module/'+module.id)}><span className={'work-icon '+module.accent}><ModuleIcon id={module.id}/></span><span className="work-copy"><strong>{module.title} <span>· {module.subtitle}</span></strong><small>{module.summary}</small><i>{module.id==='lesen'?'32 özgün soru · Çalışmaya başla':module.id==='hoeren'?'30 özgün soru · 6 MP3 ses dosyası':'Aşama '+module.stage+' — Hazırlanıyor'}</i></span><Icon name="chevron" size={20}/></button>)}</div>
+        <div className="works-grid">{modules.map(module=><button key={module.id} className="work-row" onClick={() => navigate('/module/'+module.id)}><span className={'work-icon '+module.accent}><ModuleIcon id={module.id}/></span><span className="work-copy"><strong>{module.title} <span>· {module.subtitle}</span></strong><small>{module.summary}</small><i>{module.id==='lesen'?'32 özgün soru · Çalışmaya başla':module.id==='hoeren'?'30 özgün soru · 6 MP3 ses dosyası':module.id==='schreiben'?'5 form + e-posta · İnternetsiz kontrol':'Aşama '+module.stage+' — Hazırlanıyor'}</i></span><Icon name="chevron" size={20}/></button>)}</div>
         <button className="exam-wide" onClick={()=>navigate('/exam')}><Icon name="clock" size={25}/><span><strong>Tam Deneme Sınavı</strong><small>Aşama 6'da aktif olacak</small></span><Icon name="arrow" size={20}/></button>
       </>}
       {section && <>
         <div className="breadcrumb"><button onClick={()=>navigate('/works')}><Icon name="back" size={16}/> Çalışmalar</button><Icon name="chevron" size={15}/><b>{section.title}</b></div>
         <div className={'module-title-panel '+section.accent}><span className="module-title-icon"><ModuleIcon id={section.id} size={30}/></span><div><span>A1 · {section.subtitle.toUpperCase()}</span><h1>{section.title}</h1><p>{section.summary}</p></div></div>
-        {section.id==='lesen'?<LesenView/>:section.id==='hoeren'?<HoerenView/>:<EmptyState icon="layers" title={section.title + ' çalışmaları hazırlanıyor'} description={section.detail} stage={section.stage}/>}
+        {section.id==='lesen'?<LesenView/>:section.id==='hoeren'?<HoerenView/>:section.id==='schreiben'?<SchreibenView/>:<EmptyState icon="layers" title={section.title + ' çalışmaları hazırlanıyor'} description={section.detail} stage={section.stage}/>}
       </>}
       {path === '/exam' && <><div className="page-head"><span className="kicker">SINAV SİMÜLASYONU</span><h1>Deneme Sınavı</h1><p>Gerçeğe yakın sınav deneyimi, ölçülebilir sonuçlar ve devam etme özelliği.</p></div><EmptyState icon="clock" title="Tam deneme henüz açık değil" stage={6} description="Lesen, Hören, Schreiben ve Sprechen bölümleri hazırlandıktan sonra sınav oturumu oluşturulacak. Şu anda örnek sonuç veya sahte sınav sunulmuyor."/></>}
       {path === '/mistakes' && <><div className="page-head"><span className="kicker">TEKRAR ALANI</span><h1>Yanlışlarım</h1><p>Gerçek çözdüğün sorulardan oluşacak kişisel tekrar listen.</p></div><><LesenMistakes/><HoerenMistakes/></></>}
@@ -178,14 +179,14 @@ function App() {
         <div className="notice-card"><Icon name="alert" size={21}/><div><strong>Demo aşaması</strong><p>Buradaki hizmetler tanıtım amaçlıdır; takvim, ödeme ve öğretmen değerlendirmesi henüz aktif değildir.</p></div></div>
       </>}
       {path === '/about' && <>
-        <div className="page-head"><span className="kicker">BİLGİ VE YASAL</span><h1>Uygulama hakkında</h1><p>ÖSD A1 Prüfungstraining · AYDA Dil Akademisi · Demo 0.3</p></div>
-        <div className="panel legal"><h2>Bağımsız hazırlık materyali</h2><p>Bu uygulama AYDA Dil Akademisinin bağımsız eğitim demosudur. Resmî ÖSD ürünü değildir; ÖSD tarafından onaylandığı iddia edilmez.</p><h2>Kaynaklar ve sınav biçimi</h2><p>ÖSD Zertifikat A1 sınavının resmî yapısı ve süreleri ÖSD'nin yayımladığı güncel sınav sayfası, modellsatz broşürü ve yürütme kurallarından kontrol edilmiştir.</p><a href="https://www.osd.at/portfolio-item/osd-zertifikat-a1-za1/" target="_blank" rel="noopener noreferrer">ÖSD resmî bilgilendirme sayfası ↗</a><h2>Gizlilik</h2><p>Bu demo üyelik, ödeme ve öğrenci verisi toplamaz. Yerel çalışma bilgileri yalnızca kullandığın tarayıcının veri alanında saklanır; silersen kaybolabilir.</p><h2>Hazırlık planı</h2><p>Lesen (32 soru) ve Hören (30 soru, 6 MP3) kullanıma açılmıştır. Schreiben, Sprechen ve diğer hizmetler sonraki aşamalarda eklenecek. APK ve Play Store yayını henüz yoktur.</p></div>
+        <div className="page-head"><span className="kicker">BİLGİ VE YASAL</span><h1>Uygulama hakkında</h1><p>ÖSD A1 Prüfungstraining · AYDA Dil Akademisi · Demo 0.4</p></div>
+        <div className="panel legal"><h2>Bağımsız hazırlık materyali</h2><p>Bu uygulama AYDA Dil Akademisinin bağımsız eğitim demosudur. Resmî ÖSD ürünü değildir; ÖSD tarafından onaylandığı iddia edilmez.</p><h2>Kaynaklar ve sınav biçimi</h2><p>ÖSD Zertifikat A1 sınavının resmî yapısı ve süreleri ÖSD'nin yayımladığı güncel sınav sayfası, modellsatz broşürü ve yürütme kurallarından kontrol edilmiştir.</p><a href="https://www.osd.at/portfolio-item/osd-zertifikat-a1-za1/" target="_blank" rel="noopener noreferrer">ÖSD resmî bilgilendirme sayfası ↗</a><h2>Gizlilik</h2><p>Bu demo üyelik, ödeme ve öğrenci verisi toplamaz. Yerel çalışma bilgileri yalnızca kullandığın tarayıcının veri alanında saklanır; silersen kaybolabilir.</p><h2>Hazırlık planı</h2><p>Lesen (32 soru), Hören (30 soru, 6 MP3) ve Schreiben (5 yazma seti, yerel taslak/kural kontrolü) kullanıma açılmıştır. Sprechen ve diğer hizmetler sonraki aşamalarda eklenecek. APK ve Play Store yayını henüz yoktur.</p></div>
       </>}
     </main>
     <nav className="bottom-nav" aria-label="Alt gezinme">
       {([{id:'home',label:'Ana Sayfa',icon:'home',to:'/home'},{id:'works',label:'Çalışmalar',icon:'grid',to:'/works'},{id:'progress',label:'İlerlemem',icon:'chart',to:'/progress'},{id:'support',label:'Destek',icon:'help',to:'/support'}] as {id:TabId;label:string;icon:IconName;to:string}[]).map(tab=><button key={tab.id} className={activeTab===tab.id?'active':''} aria-current={activeTab===tab.id?'page':undefined} onClick={()=>navigate(tab.to)}><Icon name={tab.icon} size={22}/><span>{tab.label}</span></button>)}
     </nav>
-    <footer className="desktop-footer">AYDA DİL AKADEMİSİ <span>·</span> ÖSD A1 Prüfungstraining <span>·</span> Demo 0.3 — 25.10.2026</footer>
+    <footer className="desktop-footer">AYDA DİL AKADEMİSİ <span>·</span> ÖSD A1 Prüfungstraining <span>·</span> Demo 0.4 — 25.10.2026</footer>
   </div>
 }
 
