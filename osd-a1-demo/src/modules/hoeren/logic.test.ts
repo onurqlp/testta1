@@ -41,9 +41,11 @@ describe('ÖSD A1 dinleme denemesi',()=>{
    expect(hasPendingPlayback(a,1)).toBe(false)
    expect(canReplay(a,1)).toBe(false)
    a=registerPlay(a,2)
-   expect(canReplay(a,2)).toBe(true)
-   a=registerPlay(a,2)
+   expect(canReplay(a,2)).toBe(true) // yarım kalan ilk ses
    a=completePlayback(a,2)
+   expect(canReplay(a,2)).toBe(true) // ikinci defa dinleme hakkı
+   a=registerPlay(a,2)
+   expect(a.plays[2]).toBe(2)
    a=completePlayback(a,2)
    expect(canReplay(a,2)).toBe(false)
    a=registerPlay(a,3)

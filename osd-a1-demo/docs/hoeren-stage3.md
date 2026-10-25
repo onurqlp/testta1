@@ -9,3 +9,6 @@ Ses varlıkları `public/audio/*.mp3` altına yalnızca GitHub Actions'ın yetki
 Oynatma: çalışma modunda sınırsız; sınav modunda Aufgabe 1/3 için birer, Aufgabe 2 için iki hak; kalıcı `plays` sayacı. Oynatmayı kullanıcı başlatır (mobil autoplay kısıtları). Ağ/ses hata durumu gösterilir; yanlışlıkla tüketilen oynatma hakkı olası yükleme hatasında geri verilmeye çalışılır. Tarayıcı yenilenince sınavdaki tüketilmiş ses hakları yenilenmez. Ses kaydının yarıda kesilmesi durumunda, özellikle sınav modunda geri dönüş mümkün olmayabileceği anlatılır.
 İşaretlenen sorular, cevaplar, sayfa konumu, puanlar ve geçmiş IndexedDB v1 ile saklanır. Resmî ÖSD başarı notu değil, 15 cevap üzerinden ham doğruluk sunulur. Hören ve Lesen kayıtları aynı ilerleme özetinde sayılır.
 Offline: service worker HTTPS üzerinde MP3'leri önbelleğe alır; depolama kısıtları ve sesin henüz indirilememesi halinde offline çalışma garanti edilmez.
+
+## Bilinen sınırlama
+Dinleme sesi açık kaynak sentetik üretilmiştir, insan seslendirmesi değildir. Sesli kayıtların gerçek cihazlarda (Android Chrome / iOS Safari) yürütülmesi dağıtım sonrası ayrıca denenmelidir; tarayıcı servis çalışanının önbellek kotası ve arka plan davranışları cihazdan cihaza değişebilir.

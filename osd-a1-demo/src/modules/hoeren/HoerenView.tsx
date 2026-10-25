@@ -177,7 +177,7 @@ export default function HoerenView() {
    void listAll()
    setScreen('sets');setAudioError('');setShowTranscript(false)
  }
- const goto=(index:number)=>{audioRef.current?.pause();setPlaying(false);change(a=>({...a,currentIndex:index,updatedAt:new Date().toISOString()}))}
+ const goto=(index:number)=>{if(q&&questions[index]?.part!==q.part){audioRef.current?.pause();setPlaying(false)}change(a=>({...a,currentIndex:index,updatedAt:new Date().toISOString()}))}
  const sendAnswer=(val:string)=>{if(q)change(a=>updateAnswer(a,q.id,val))}
  const statusLabel=active?.mode==='exam' ? (hasPendingPlayback(active,part)?'Yarım kalan oynatmaya devam edebilirsin': (PLAY_LIMIT[part]-plays)+' oynatma hakkı kaldı') : 'Çalışma modunda tekrar sınırsız'
  return <div className="hoeren-app">
