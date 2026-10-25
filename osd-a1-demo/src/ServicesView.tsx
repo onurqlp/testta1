@@ -5,7 +5,7 @@ const contact=(subject:string)=>{
   const locale=window.AydaLocale?.get()||'tr'
   const translated=window.AydaLocale?.t(subject,locale)||subject
   const message=locale==='de'
-    ? `Hallo AYDA Dil Akademie, ich schreibe über Ihre ÖSD-A1-Lernplattform. Können Sie mich zu ${translated} informieren?`
+    ? `Hallo AYDA Sprachakademie, ich schreibe über Ihre ÖSD-A1-Lernplattform. Können Sie mich zu ${translated} informieren?`
     : locale==='en'
       ? `Hello AYDA Language Academy, I am contacting you from your ÖSD A1 practice platform. Could you tell me about ${translated}?`
       : `Merhaba AYDA Dil Akademisi, ÖSD A1 çalışma platformunuzdan ulaşıyorum. ${translated} hakkında bilgi alabilir miyim?`
