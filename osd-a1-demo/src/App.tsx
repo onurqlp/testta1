@@ -140,6 +140,7 @@ function App() {
             <span className="mini-label">KALDIĞIN YERDEN DEVAM ET</span>
             <strong>{lastModule ? lastModule.title + ' — ' + lastModule.subtitle : 'İlk çalışmanı seç'}</strong>
             <p>{lastModule ? 'Son açtığın bölüme geri dönebilirsin.' : 'Bir bölüm açtığında burada görünecek.'}</p>
+            <p>{loading ? 'Yerel ilerleme yükleniyor…' : 'Tamamlanan: '+progress.attempts+' çalışma · '+progress.wrong+' gerçek yanlış'}</p>
           </div>
           <button className="round-arrow" onClick={() => navigate(lastModule ? last!.path : '/works')} aria-label="Devam et"><Icon name="arrow" size={21}/></button>
         </section>

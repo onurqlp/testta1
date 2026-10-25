@@ -6,7 +6,7 @@ import {phraseBank} from '../sprechen/content'
 import SceneArt from '../sprechen/SceneArt'
 import {PARTS,PART_LABELS,answerExam,completePart,examCounts,finishHearingPlayback,
  hearingCanPlay,hearingPending,hearingResult,newExam,pauseExam,playHearing,readingResult,remaining,
- rememberHearing,resumeExam,selectedSet,suggestedRetakes,timeText,type ExamPart,type ExamRun,type Three} from './model'
+ rememberHearing,resumeExam,selectedSet,suggestedRetakes,timeText,type ExamRun} from './model'
 import './exam.css'
 
 type View='list'|'session'|'report'

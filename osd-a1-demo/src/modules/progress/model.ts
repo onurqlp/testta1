@@ -1,7 +1,7 @@
 import type {Attempt} from '../../storage/models'
 import type {WritingDraft} from '../schreiben/model'
 import type {SpeakingSession} from '../sprechen/model'
-import {PARTS,PART_LABELS,hearingResult,readingResult,examCounts,type ExamPart,type ExamRun} from '../exam/model'
+import {PARTS,PART_LABELS,hearingResult,readingResult,type ExamPart,type ExamRun} from '../exam/model'
 
 export interface ProgressEvent {
  id:string;title:string;module:ExamPart|'exam';date:string;kind:'finished'|'active'
