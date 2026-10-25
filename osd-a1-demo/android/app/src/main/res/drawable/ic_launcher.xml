@@ -1,6 +1,15 @@
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="108dp" android:height="108dp" android:viewportWidth="108" android:viewportHeight="108">
-    <path android:fillColor="#132747" android:pathData="M0,0h108v108h-108z"/>
-    <path android:fillColor="#FFFFFF" android:pathData="M27,79 L47,28 L60,28 L81,79 L67,79 L62,66 L44,66 L40,79 Z M48,55 L58,55 L53,42 Z"/>
-    <path android:fillColor="#D5AC68" android:pathData="M83,74h8v8h-8z"/>
-</vector>
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#102541"/>
+            <corners android:radius="18dp"/>
+        </shape>
+    </item>
+    <item android:left="6dp" android:right="6dp" android:top="38dp" android:bottom="38dp">
+        <bitmap android:src="@drawable/ayda_master_logo" android:gravity="fill"/>
+    </item>
+    <item android:left="42dp" android:right="42dp" android:top="91dp" android:bottom="13dp">
+        <shape android:shape="rectangle"><solid android:color="#E8C37B"/><corners android:radius="2dp"/></shape>
+    </item>
+</layer-list>

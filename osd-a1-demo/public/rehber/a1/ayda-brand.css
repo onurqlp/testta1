@@ -1,0 +1,52 @@
+/* AYDA official home visual identity: navy #102541, gold #e8c37b, light surfaces */
+:root {
+  --paper:#f5f8fb; --ink:#172e45; --blue:#102541;
+  --soft:#eaf0f5; --line:#dbe5ec; --muted:#52697c;
+  --ayda-navy:#102541; --ayda-gold:#e8c37b;
+}
+body {background:#f5f8fb;color:var(--ink)}
+header {background:#102541 !important;color:#fff;border-bottom:1px solid #314c68;box-shadow:0 6px 24px #0c1e351a}
+header .brand,header nav a {color:#fff}
+header .brand {display:flex;align-items:center;gap:12px;white-space:normal}
+header .brand img {width:124px;height:42px;max-width:124px;object-fit:contain;flex-shrink:0}
+header .brand span {margin-left:0;border-left:1px solid #e8c37b77;padding-left:12px;color:#e8c37b;font-weight:750;letter-spacing:.06em;line-height:1.35}
+header .level-switch {border:1px solid #e8c37b77;color:#ffe9bf;background:#ffffff0e;border-radius:10px;padding:9px 13px;text-decoration:none}
+header nav a.active {border-bottom-color:#e8c37b;color:#e8c37b}
+header .progress i {background:#e8c37b}
+.eyebrow {color:#957035}
+.hero {border-radius:22px;background:linear-gradient(110deg,#0c1e35,#102541,#224365);color:#fff;padding:46px 40px;margin-top:26px;box-shadow:0 18px 35px #10254120}
+.hero .eyebrow {color:#e8c37b}
+.hero h1 {color:#fff;margin-top:14px}
+.hero h1 em {color:#e8c37b}
+.hero .lead,.hero-note {color:#dce6ef}
+.hero-note span {border-color:#e8c37b77;color:#f5e7c8}
+.section-cards a {background:#fff;color:#172e45;border-color:#dbe5ec;box-shadow:0 9px 24px #10254110}
+.section-cards a:hover,.task-links a:hover {border-color:#bd9c67}
+.section-cards .card-number {color:#b58f55}
+.section-cards h2 small {color:#647d94}
+.chapter-head {border-radius:18px}
+.chapter-head .eyebrow {color:#9f7136}
+.task {border-color:#dbe5ec}
+.task .task-top {color:#a88043}
+.button,.next {background:#102541;color:#fff;border-color:#102541}
+.button:hover,.next:hover {background:#163452}
+.official-evidence {background:#f0f5f9;border-color:#cfdde8}
+.official-kicker {color:#906b33}
+.official-page-tab.is-active {border-color:#b58f55}
+.remember {border-left-color:#e8c37b}
+.tip {border-left-color:#e8c37b}
+a:focus-visible,button:focus-visible,summary:focus-visible {outline-color:#e8c37b}
+@media(max-width:760px){
+ header {padding:12px 14px 13px;gap:11px}
+ header .brand {gap:7px}
+ header .brand img {width:97px;height:33px;max-width:97px}
+ header .brand span {font-size:8px;padding-left:8px}
+ header .level-switch {top:5px;right:7px;padding:6px 8px;font-size:10px}
+ header nav {margin-top:10px}
+ .hero {border-radius:17px;margin-top:14px;padding:36px 22px 26px}
+ .hero h1 {font-size:35px}
+}
+@media(max-width:390px){
+ header .brand img {width:84px;height:30px}
+ header .brand span {font-size:7px}
+}

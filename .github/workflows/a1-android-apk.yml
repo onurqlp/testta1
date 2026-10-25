@@ -46,6 +46,13 @@ jobs:
           test -s dist/rehber/a1/content.js
           test -s dist/rehber/a1/app.js
           test -s dist/audio/alltag-01-aufgabe1.mp3
+          test -s dist/branding/ayda-logo.png
+          test -s dist/rehber/a1/ayda-brand.css
+          grep -q 'brand-logo' src/App.tsx
+          grep -q '#102541' src/brand.css
+          grep -q '#e8c37b' src/brand.css
+          test "$(sha256sum dist/branding/ayda-logo.png | cut -d ' ' -f1)" = "baa791945bb954a30bb415555e72f47b4425a861c7b7888999ee69f3d80642cd"
+          test "$(sha256sum android/app/src/main/res/drawable-nodpi/ayda_master_logo.png | cut -d ' ' -f1)" = "baa791945bb954a30bb415555e72f47b4425a861c7b7888999ee69f3d80642cd"
       - name: Embed official example paper images and AYDA teaching scenes inside APK
         shell: bash
         run: |
@@ -110,6 +117,8 @@ jobs:
             assets/web/rehber/a1/content.js \
             assets/web/rehber/a1/app.js \
             assets/web/rehber/a1/style.css \
+            assets/web/rehber/a1/ayda-brand.css \
+            assets/web/branding/ayda-logo.png \
             assets/web/rehber/a1/ux-review.css \
             assets/web/rehber/a1/assets/model/za1-page-02.jpg \
             assets/web/rehber/a1/assets/model/za1-page-12.jpg \
@@ -125,21 +134,21 @@ jobs:
           if grep -Eq 'android.permission.(CAMERA|ACCESS_FINE_LOCATION|READ_EXTERNAL_STORAGE)' permissions.txt; then
             echo "Unexpected Android permission" >&2; exit 1
           fi
-          cp "$apk" app/build/outputs/apk/debug/AYDA-OSD-A1-REHBER-v0.9.apk
-          sha256sum app/build/outputs/apk/debug/AYDA-OSD-A1-REHBER-v0.9.apk
+          cp "$apk" app/build/outputs/apk/debug/AYDA-OSD-A1-AYDA-UI-v0.10.apk
+          sha256sum app/build/outputs/apk/debug/AYDA-OSD-A1-AYDA-UI-v0.10.apk
       - name: Upload downloadable guide APK
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: AYDA-OSD-A1-REHBER-v0.9-APK
-          path: osd-a1-demo/android/app/build/outputs/apk/debug/AYDA-OSD-A1-REHBER-v0.9.apk
+          name: AYDA-OSD-A1-AYDA-UI-v0.10-APK
+          path: osd-a1-demo/android/app/build/outputs/apk/debug/AYDA-OSD-A1-AYDA-UI-v0.10.apk
           retention-days: 30
       - name: Publish GitHub demo APK prerelease
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create osd-a1-demo-v0.9.0 \
-            osd-a1-demo/android/app/build/outputs/apk/debug/AYDA-OSD-A1-REHBER-v0.9.apk \
+          gh release create osd-a1-demo-v0.10.0 \
+            osd-a1-demo/android/app/build/outputs/apk/debug/AYDA-OSD-A1-AYDA-UI-v0.10.apk \
             --target "$GITHUB_SHA" \
-            --title "AYDA ÖSD A1 v0.9 — APK with integrated ZA1 guide" \
-            --notes "Demo APK, Android WebView and the complete ÖSD A1 demo v0.9 frontend including 11-task guide embedded. The app keeps its existing HTTPS origin and local IndexedDB records, with no Vercel redeploy needed. Guide example paper images, teaching scenes, tasks and audio are packaged locally (third-party links and YouTube still require network); commercial distribution requires separate ÖSD rights review. Debug-signed for testing only, not for Play Store." \
+            --title "AYDA ÖSD A1 v0.10 — Official AYDA logo and branded exam guide" \
+            --notes "Demo APK, Android WebView and the complete ÖSD A1 demo v0.10 frontend including 11-task guide embedded. The app keeps its existing HTTPS origin and local IndexedDB records, with no Vercel redeploy needed. Guide example paper images, teaching scenes, tasks and audio are packaged locally (third-party links and YouTube still require network); commercial distribution requires separate ÖSD rights review. Uses the verified canonical AYDA homepage logo, brand palette and Android launcher icon. Debug-signed for testing only, not for Play Store." \
             --prerelease --latest=false

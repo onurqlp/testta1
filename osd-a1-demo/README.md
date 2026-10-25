@@ -108,3 +108,12 @@ Bağımsız AYDA hazırlık demosudur; resmî ÖSD ürünü değildir. Telifli �
 - Rehberin işaretleme ve devam durumu aynı demo kaynağında ayrı bir localStorage girdisinde kalır; ana sınavın IndexedDB puanlarına veya istatistiklerine katılmaz. Orijinal `osd.aydadil.com` sayfasındaki önceki işaretler bu demoya otomatik taşınmaz.
 - Derleme/QA: `npm run test` artık 4 bölüm / 11 görev ve rehber rotalarının smoke kontrolünü mevcut Vitest testleriyle beraber çalıştırır.
 - Resmî ÖSD model sınavı görselleri referans amaçlıdır; ticari Google Play dağıtımı öncesinde yeniden kullanım ve lisans koşulları ayrı doğrulanmalıdır.
+
+
+## AYDA kurumsal kimlik güncellemesi — 0.10.0 (25.10.2026)
+- **Kaynak:** `onurqlp/ayda-wordpress-sync/pages/homepage-v98-calendly-direct-booking-full-preview-20261020.html` üzerindeki ana sayfa renkleri: lacivert `#102541`, koyu lacivert `#0c1e35`, altın `#e8c37b`.
+- **Logo:** AYDA ana sayfasıyla SHA-256 hash'i birebir aynı olan resmî `ayda-home-v89-baa791945bb954a30b.png`, uygulamada `/branding/ayda-logo.png`; Android launcher'da aynı kaynağın ikili kopyası.
+- Uygulama başlığı, ana ekran, beceri kartları, ilerleme bölümü, deneme ve rehber iç sayfası AYDA temasıyla uyumlu.
+- APK içine tam web uygulaması, 11 görevli rehber, örnek kâğıtlar, ses dosyaları ve resmî AYDA logo var. Uzak Vercel sürümü dağıtılmasa dahi yerel APK arayüzü çalışır.
+- Mevcut öğrenci çalışmaları ve IndexedDB yapısı değiştirilmedi. Debug APK yalnız test içindir.
+- `npm run test` AYDA logo hash'ini, kaynak renkleri, rehber bağlarını ve görev kapsamını kontrol eder.

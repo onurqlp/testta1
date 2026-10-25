@@ -1,0 +1,81 @@
+/* AYDA canonical home page theme — source: onurqlp/ayda-wordpress-sync v98 and AYDA master logo v89 */
+:root {
+  --ayda-navy:#102541; --ayda-navy-2:#0c1e35; --ayda-navy-3:#163452;
+  --ayda-gold:#e8c37b; --ayda-ink:#172e45;
+  --ayda-border:#dbe5ec; --ayda-paper:#f5f8fb;
+  --navy:var(--ayda-navy); --navy2:var(--ayda-navy-3);
+  --dark:var(--ayda-navy-2); --gold:var(--ayda-gold); --ink:var(--ayda-ink);
+  --line:var(--ayda-border); --paper:var(--ayda-paper);
+  --shadow:0 13px 32px rgba(12,30,53,.075);
+}
+html {scroll-behavior:smooth}
+body {background:var(--ayda-paper)}
+.site-header {height:78px;background:var(--ayda-navy);border-bottom:1px solid #314c68;box-shadow:0 6px 20px rgba(8,26,45,.1)}
+.site-header .head-inner {width:min(1110px,calc(100% - 48px))}
+.site-header .brand {color:#fff;gap:16px;min-height:50px}
+.brand-logo {display:block;width:134px;height:45px;object-fit:contain;flex-shrink:0}
+.site-header .brand-copy {border-left:1px solid rgba(232,195,123,.38);padding-left:14px;gap:4px}
+.site-header .brand-copy strong {color:#fff;letter-spacing:.055em;font-size:17px}
+.site-header .brand-copy small {color:var(--ayda-gold);letter-spacing:.11em;font-size:8px}
+.site-header .demo-badge {color:#f5e5bf;background:#ffffff0e;border-color:#e8c37b44;letter-spacing:.05em}
+.site-header .status-light {background:var(--ayda-gold);box-shadow:0 0 0 3px #e8c37b22}
+.site-header .info-button {background:#fff1;border-color:#ffffff30;color:#fff}
+.site-header .info-button:hover {background:#fff2}
+.hero {background:linear-gradient(112deg,var(--ayda-navy-2),var(--ayda-navy) 52%,#224565);box-shadow:0 18px 37px #0c1e3528}
+.hero h1 em,.hero-level b {color:var(--ayda-gold)}
+.eyebrow,.hero .eyebrow {color:var(--ayda-gold)}
+.eyebrow-line {background:var(--ayda-gold)}
+.btn.light {background:var(--ayda-gold);color:var(--ayda-navy-2);box-shadow:0 5px 18px #e8c37b20}
+.btn.light:hover,.guide-open:hover {background:#f4d596}
+.btn.ghost {border-color:var(--ayda-border)}
+.round-arrow,.exam-wide {background:var(--ayda-navy)}
+.round-arrow:hover,.exam-wide:hover {background:var(--ayda-navy-3)}
+.module-card,.shortcut,.resume-card,.work-row,.guide-link,.panel,.support-service {border-color:var(--ayda-border)}
+.module-card:focus-visible,.shortcut:focus-visible,.work-row:focus-visible,.guide-link:focus-visible {outline-color:var(--ayda-gold)}
+.module-card:hover,.shortcut:hover,.work-row:hover {border-color:#b58f55}
+.module-card>strong,.work-copy strong,.shortcut strong,.section-heading h2 {color:var(--ayda-ink)}
+.module-number {color:#bfa77a}
+.module-icon,.work-icon {border-radius:14px}
+.module-card .module-icon,.work-icon {background:#eaf0f5;color:var(--ayda-navy)}
+.module-card.purple .module-icon,.work-icon.purple {background:#f2eff9;color:#71569a}
+.module-card.gold .module-icon,.work-icon.gold {background:#fff1d7;color:#906424}
+.module-card.mint .module-icon,.work-icon.mint {background:#e7f4ed;color:#267453}
+.module-bottom {border-top-color:#e9eceb;color:#86662f}
+.kicker,.mini-label,.support-banner span {color:#a77a3a}
+.resume-icon,.shortcut-symbol {background:#edf2f5;color:var(--ayda-navy)}
+.guide-feature {border-color:#e5ce9b;background:linear-gradient(115deg,#fff8e8,#fff)}
+.guide-feature-mark,.guide-icon {background:#f8e9c9;color:#6d5129}
+.guide-feature-copy small,.guide-eyebrow {color:#98703a}
+.guide-feature-copy strong {color:var(--ayda-navy)}
+.guide-intro {background:linear-gradient(113deg,var(--ayda-navy-2),var(--ayda-navy),#224565);box-shadow:0 13px 26px #0c1e3518}
+.guide-intro .guide-eyebrow {color:var(--ayda-gold)}
+.guide-open {background:var(--ayda-gold);color:var(--ayda-navy-2)}
+.guide-link:hover {border-color:#bfa77a;background:#fffdf7}
+.guide-info {border-color:var(--ayda-border)}
+.support-banner {background:#f0f5f9;border-color:var(--ayda-border)}
+.support-banner button,.legal a {color:#164b78}
+.support-shape {color:var(--ayda-gold)}
+.bottom-nav {border-top-color:var(--ayda-border)}
+.bottom-nav button.active {color:var(--ayda-navy)}
+.bottom-nav button.active:after {background:var(--ayda-gold)}
+button:focus-visible,a:focus-visible {outline-color:var(--ayda-gold)}
+@media(max-width:600px){
+ .site-header {height:69px}
+ .site-header .head-inner,.main-wrap {width:calc(100% - 30px)}
+ .brand-logo {width:103px;height:37px}
+ .site-header .brand {gap:9px}
+ .site-header .brand-copy {padding-left:9px;gap:3px}
+ .site-header .brand-copy strong {font-size:12px}
+ .site-header .brand-copy small {font-size:7px;letter-spacing:.055em}
+ .site-header .demo-badge {padding:7px 8px;font-size:8px}
+ .header-right {gap:7px}
+ .site-header .info-button {width:31px;height:31px}
+ .hero {padding:28px 22px}
+ .bottom-nav {box-shadow:0 -5px 20px #10254112}
+}
+@media(max-width:365px){
+ .brand-logo {width:86px;height:32px}
+ .site-header .brand-copy strong {font-size:11px}
+ .site-header .brand-copy small {font-size:6px}
+ .site-header .demo-badge {font-size:7px;padding:6px}
+}

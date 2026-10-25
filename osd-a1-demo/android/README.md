@@ -31,3 +31,12 @@
 - Aynı applicationId ile önceki sürümle imza uyumu Android kuruluma bağlıdır; GitHub debug anahtarı derlemeler arasında değişebilir. İmza değiştiğinde Android eski APK'nın üstüne kurmaya izin vermez. **Eski uygulamayı kaldırarak kayıtları kaybetmeyin.** Kalıcı imza ve veri taşıma stratejisi gerekir.
 - Fiziksel Android cihazda mikrofondan kayıt, audio Range, çevrim dışı mod, eski sürüm yükseltmesi, sınav/rehber gezinmesi ve geri tuşu test edilmelidir.
 - Resmî ÖSD materyallerinin kullanım lisansı ücretli mağaza dağıtımından önce ayrıca gözden geçirilmelidir.
+
+
+## AYDA kurumsal kimlik güncellemesi — 0.10.0 (25.10.2026)
+- **Kaynak:** `onurqlp/ayda-wordpress-sync/pages/homepage-v98-calendly-direct-booking-full-preview-20261020.html` üzerindeki ana sayfa renkleri: lacivert `#102541`, koyu lacivert `#0c1e35`, altın `#e8c37b`.
+- **Logo:** AYDA ana sayfasıyla SHA-256 hash'i birebir aynı olan resmî `ayda-home-v89-baa791945bb954a30b.png`, uygulamada `/branding/ayda-logo.png`; Android launcher'da aynı kaynağın ikili kopyası.
+- Uygulama başlığı, ana ekran, beceri kartları, ilerleme bölümü, deneme ve rehber iç sayfası AYDA temasıyla uyumlu.
+- APK içine tam web uygulaması, 11 görevli rehber, örnek kâğıtlar, ses dosyaları ve resmî AYDA logo var. Uzak Vercel sürümü dağıtılmasa dahi yerel APK arayüzü çalışır.
+- Mevcut öğrenci çalışmaları ve IndexedDB yapısı değiştirilmedi. Debug APK yalnız test içindir.
+- `npm run test` AYDA logo hash'ini, kaynak renkleri, rehber bağlarını ve görev kapsamını kontrol eder.
