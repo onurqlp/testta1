@@ -139,7 +139,7 @@
     'Ses dosyası yüklenemedi. Bağlantıyı kontrol edip yeniden dene. Oynatma kaydın silinmedi.':['Audio could not be loaded. Check your connection and try again. Your playback record has not been deleted.','Die Audiodatei konnte nicht geladen werden. Prüfe die Verbindung und versuche es erneut. Dein Wiedergabeverlauf wurde nicht gelöscht.'],
     'Tarayıcın ses oynatmayı desteklemiyor.':['Your browser does not support audio playback.','Dein Browser unterstützt keine Audiowiedergabe.'],
     'Sınav modu':['Exam mode','Prüfungsmodus'], 'Çalışma modu':['Practice mode','Übungsmodus'],
-    'Dil seçimi':['Language','Sprache'], 'Türkçe':['Türkçe','Türkçe'], 'Deutsch':['Deutsch','Deutsch'], 'English':['English','English']
+    'Dil seçimi':['Language','Sprache'], 'Türkçe':['Turkish','Türkisch'], 'Deutsch':['German','Deutsch'], 'English':['English','Englisch']
     ,
     'A1–B2 online grup kursu veya A1–C1 özel ders seçenekleri':['A1–B2 online group courses or A1–C1 private lessons','Online-Gruppenkurse A1–B2 oder Einzelunterricht A1–C1'],
     'Almanca–Türkçe yeminli tercüme ve gerektiğinde noter onayı hizmeti':['Certified German–Turkish translation and notarisation where required','Beglaubigte Deutsch-Türkisch-Übersetzung und bei Bedarf notarielle Beglaubigung'],
