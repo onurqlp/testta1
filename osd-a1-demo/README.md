@@ -1,6 +1,6 @@
 # AYDA ÖSD A1 Prüfungstraining — DEMO
 
-**Durum:** Aşama 4 / 8 · 25 Ekim 2026 · Yalnızca eğitim amaçlı demo
+**Durum:** Aşama 5 / 8 · 25 Ekim 2026 · Yalnızca eğitim amaçlı demo
 
 ## Kaynak ve dağıtım
 - Mevcut AYDA canlı uygulamalarından ayrı.
@@ -51,8 +51,18 @@ npm run preview
 - Öğretmen incelemesi düğmesi yalnız DEMO bilgi ekranı; satın alma ve gönderim aktif değildir
 - [Aşama 4 raporu](docs/schreiben-stage4.md)
 
+## Aşama 5 — SPRECHEN (çalışıyor)
+- ÖSD A1'in üç sözlü görevi: 6 konudan 4'üyle kendini tanıtma, 3 özgün SVG görselden birini anlatma, seçilen görselde üç turluk rol oyunu
+- 2 özgün prova seti (6 durum çizimi), Türkçe ipuçları ve Almanca A1 Redemittel
+- Serbest veya yaklaşık 10 dakikalık süreli prova
+- Web MediaRecorder + getUserMedia ile açık kullanıcı izni; tek görev başına en çok 2 dakikalık kayıt
+- Ses Blob'ları cihazın IndexedDB `recordings` deposunda saklanır; yeniden oynatma, indirme, değiştirme, silme ve tamamlanan kaydı arşivden açma
+- Aynı cihazda görev yeri, 4 konu seçimi, rol oynama aşaması, kişisel kontrol kutuları ve notlar korunur
+- Otomatik konuşma değerlendirme, ses çözümleme, haricî API, sunucuya dosya yükleme, ücret ve randevu yoktur
+- [Aşama 5 kaynak ve kılavuz](docs/sprechen-stage5.md)
+
 ## Önemli demo sınırlamaları
-Şu anda Sprechen alıştırmaları, gerçek rezervasyon ve ödeme yoktur. Kullanıcıya çalışıyor gibi sunulmaz. Aşama 5–7 arasında ayrı ayrı geliştirilecektir. Ana uygulama test edilmeden mevcut AYDA canlı sistemlerine aktarılmaz.
+Şu anda dört beceri için bağımsız çalışma modülleri açıktır. Tam bütünleşik sınav (Aşama 6), öğretmen hizmetleri (Aşama 7), gerçek rezervasyon ve ödeme aktif değildir. Aşama 6–7 ayrı ayrı geliştirilecektir. Ana uygulama test edilmeden mevcut AYDA canlı sistemlerine aktarılmaz.
 
 Öğrenci çalışma verisi demo sürümünde sadece tarayıcıdaki IndexedDB alanında tutulur; bulut senkronu yoktur ve tarayıcı verilerinin temizlenmesiyle kaybolabilir.
 

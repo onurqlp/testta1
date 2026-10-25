@@ -30,7 +30,7 @@ export const modules: StudyModule[] = [
   {
     id: 'sprechen', title: 'Sprechen', subtitle: 'Konuşma', summary: 'Redemittel ve prova',
     stage: 5, accent: 'mint',
-    detail: 'Özgün konuşma görevleri, kalıplar ve cihaz üstü ses kaydı Aşama 5’te eklenecek. Yapay zekâ puanı kullanılmayacak.'
+    detail: 'İki özgün ÖSD A1 sözlü prova seti, altı durum çizimi, Redemittel, cihazda saklanan mikrofon kayıtları.'
   }
 ]
 

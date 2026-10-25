@@ -1,4 +1,4 @@
-import {useEffect,useMemo,useRef,useState} from 'react'
+import {useEffect,useRef,useState} from 'react'
 import {deleteRecord,listRecords,putRecord,readRecord} from '../../storage/db'
 import {getScene,getSpeakingSet,phraseBank,speakingSets,type SpeakingMode,type SpeakingPart} from './content'
 import SceneArt from './SceneArt'
@@ -192,6 +192,7 @@ export default function SprechenView(){
  const navigatePart=async(next:SpeakingPart)=>{
    if(!current||recording||mediaBusy)return
    setShowExample(false);setRoleplayHelp(false)
+   if(current.finishedAt){setSession({...current,currentPart:next});return}
    change(s=>setPart(s,next))
  }
  const deleteAudio=async()=>{

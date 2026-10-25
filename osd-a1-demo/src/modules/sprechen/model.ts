@@ -18,7 +18,7 @@ export function makeSession(set:SpeakingSet,mode:SpeakingMode,at=Date.now()):Spe
  const date=new Date(at).toISOString()
  return {id:'sprechen:'+set.id+':'+mode+':session:'+at,module:'sprechen',setId:set.id,mode,
  startedAt:date,updatedAt:date,endsAt:mode==='timed'?new Date(at+SPEAKING_SECONDS*1000).toISOString():undefined,
- currentPart:1,selectedTopics:[],sceneId:set.scenes[0].id,roleplayStep:0,notes:{},selfChecks:{},recordings:{}}
+ currentPart:1,selectedTopics:[],sceneId:'',roleplayStep:0,notes:{},selfChecks:{},recordings:{}}
 }
 export function remainingSeconds(s:SpeakingSession,now=Date.now()):number{
  return !s.endsAt||s.finishedAt?SPEAKING_SECONDS:Math.max(0,Math.ceil((new Date(s.endsAt).getTime()-now)/1000))
