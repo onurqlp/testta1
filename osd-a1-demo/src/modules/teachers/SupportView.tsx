@@ -105,7 +105,7 @@ export default function SupportView(){
       <input type="checkbox" checked={selectedDrafts.includes(d.id)} onChange={()=>toggleDraft(d.id)}/>
       <span><strong>{d.taskId}</strong><small>{d.mode==='timed'?'Süreli':'Serbest'} çalışma · {new Date(d.updatedAt).toLocaleDateString('tr-TR')} · {d.email.trim().split(/\s+/).length} kelime</small><em lang="de">{d.email.trim().slice(0,120)}{d.email.trim().length>120?'…':''}</em></span>
      </label>)}</div>}
-     <small className="teach7-counter">{selectedDrafts.length} / {service.draftCount} seçili</small>
+     <small className="teach7-counter">{selectedDrafts.length+' / '+service.draftCount+' seçili'}</small>
     </div>:<div className="teach7-panel">
      <p>İstediğin tarihi ve örnek saati işaretle. <strong>Hiçbir saat gerçek müsaitlik ya da ayrılmış randevu değildir.</strong> Öğretmen takvimi bağlanmadı.</p>
      <div className="teach7-date-grid">
