@@ -117,3 +117,11 @@ Bağımsız AYDA hazırlık demosudur; resmî ÖSD ürünü değildir. Telifli �
 - APK içine tam web uygulaması, 11 görevli rehber, örnek kâğıtlar, ses dosyaları ve resmî AYDA logo var. Uzak Vercel sürümü dağıtılmasa dahi yerel APK arayüzü çalışır.
 - Mevcut öğrenci çalışmaları ve IndexedDB yapısı değiştirilmedi. Debug APK yalnız test içindir.
 - `npm run test` AYDA logo hash'ini, kaynak renkleri, rehber bağlarını ve görev kapsamını kontrol eder.
+
+
+## Site v0.11 — AYDA hizmetleri (APK koduna dokunulmadı)
+- React uygulamasında `#/services` rotası ve altta **Hizmetler** sekmesi; öğretmen desteği `#/support` üzerinden korunur.
+- Kurumsal logo ve renkler `/branding/ayda-logo.png`, `brand.css`, `services.css`.
+- A1–B2 online grup, A1–C1 özel ders, ÖSD/telc/Goethe hazırlık; Almanca–Türkçe yeminli tercüme ve noter onayı süreç desteği; Almanya başvuru/denklik yönlendirmesi.
+- WhatsApp bağlantıları ve resmî AYDA sayfalarına yönlendirme. Demo içinde belge yüklemesi, ödeme veya randevu kayıt sistemi eklenmedi.
+- Android kabuk ve imza, uygulama kimliği, WebView ayarları, dosyaları **değiştirilmedi**; yeni UI web dağıtımında görünür.

@@ -12,14 +12,16 @@ import SprechenView from './modules/sprechen/SprechenView'
 import ExamView from './modules/exam/ExamView'
 import ProgressView, {ExamMistakes} from './modules/progress/ProgressView'
 import SupportView from './modules/teachers/SupportView'
+import ServicesView from './ServicesView'
 
-type IconName = 'book' | 'headphones' | 'pen' | 'mic' | 'home' | 'grid' | 'chart' | 'help' | 'arrow' | 'clock' | 'check' | 'alert' | 'layers' | 'refresh' | 'spark' | 'shield' | 'back' | 'chevron'
-type TabId = 'home' | 'guide' | 'works' | 'progress' | 'support'
+type IconName = 'briefcase' | 'book' | 'headphones' | 'pen' | 'mic' | 'home' | 'grid' | 'chart' | 'help' | 'arrow' | 'clock' | 'check' | 'alert' | 'layers' | 'refresh' | 'spark' | 'shield' | 'back' | 'chevron'
+type TabId = 'home' | 'guide' | 'works' | 'progress' | 'services'
 const emptyProgress: ProgressOverview = { completed: 0, attempts: 0, wrong: 0 }
 
 function Icon({ name, size = 22 }: { name: IconName; size?: number }) {
   const common = { width: size, height: size, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const, 'aria-hidden': true as const }
   const paths: Record<IconName, React.ReactNode> = {
+    briefcase: <><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18m-10 0v3h2v-3"/></>,
     book: <><path d="M4 5.5C6.5 4.7 9 4.8 12 6.8c3-2 5.5-2.1 8-.9V19c-2.5-1.1-5-.9-8 1-3-1.9-5.5-2.1-8-1V5.5Z" /><path d="M12 7v13"/></>,
     headphones: <><path d="M4 14v-3a8 8 0 0 1 16 0v3"/><path d="M4 14h2.5v6H6a2 2 0 0 1-2-2v-4ZM20 14h-2.5v6H18a2 2 0 0 0 2-2v-4Z"/></>,
     pen: <><path d="m4 20 4.7-1.1L20 7.6 16.4 4 5.1 15.3 4 20Z"/><path d="m14.7 5.7 3.6 3.6M4 20h16"/></>,
@@ -44,7 +46,7 @@ function Icon({ name, size = 22 }: { name: IconName; size?: number }) {
 
 const getPath = () => {
   const raw = window.location.hash.replace(/^#/, '') || '/home'
-  if (['/home', '/works', '/progress', '/support', '/about', '/exam', '/mistakes', '/guide'].includes(raw)) return raw
+  if (['/home', '/works', '/progress', '/support', '/about', '/exam', '/mistakes', '/guide', '/services'].includes(raw)) return raw
   if(raw.startsWith('/exam?run='))return raw
   if(raw.startsWith('/support?'))return raw
   if (raw.startsWith('/module/') && findModule(raw.split('/')[2])) return raw
@@ -138,7 +140,7 @@ function App() {
     return()=>{alive=false;window.removeEventListener('ayda:progress-changed',load)}
   },[path])
   const section = useMemo(() => path.startsWith('/module/') ? findModule(path.split('/')[2]) : undefined, [path])
-  const activeTab: TabId = path === '/home' ? 'home' : path === '/guide' ? 'guide' : (path === '/progress' || path === '/mistakes') ? 'progress' : path.startsWith('/support') ? 'support' : 'works'
+  const activeTab: TabId = path === '/home' ? 'home' : path === '/guide' ? 'guide' : (path === '/progress' || path === '/mistakes') ? 'progress' : (path.startsWith('/support') || path === '/services') ? 'services' : 'works'
   const lastModule = last?.path ? findModule(last.path.split('/')[2]) : undefined
 
   return <div className="app-shell">
@@ -149,7 +151,7 @@ function App() {
           <img className="brand-logo" src="/branding/ayda-logo.png" width="134" height="45" alt="AYDA Dil Akademisi" />
           <span className="brand-copy"><strong>ÖSD A1</strong><small>SINAV HAZIRLIĞI</small></span>
         </button>
-        <div className="header-right"><span className="demo-badge"><span className="status-light"/> A1 · DEMO</span><button className="info-button" aria-label="Hakkında" onClick={() => navigate('/about')}><Icon name="help" size={21}/></button></div>
+        <div className="header-right"><button className="header-services-link" onClick={() => navigate('/services')} aria-label="AYDA kurs ve tercüme hizmetleri"><Icon name="briefcase" size={17}/><span>Hizmetler</span></button><span className="demo-badge"><span className="status-light"/> A1 · DEMO</span><button className="info-button" aria-label="Hakkında" onClick={() => navigate('/about')}><Icon name="help" size={21}/></button></div>
       </div>
     </header>
     <main id="main" className="main-wrap">
@@ -192,8 +194,13 @@ function App() {
         <div className="section-heading second-section"><div><span className="kicker">SINAV YOLCULUĞU</span><h2>Hedefine giden yol</h2></div></div>
         <div className="shortcuts">{stageCards.map((card) => <button key={card.path} className="shortcut" onClick={() => navigate(card.path)}>
           <span className="shortcut-symbol"><Icon name={card.icon} size={22}/></span><span><strong>{card.title}</strong><small>{card.sub}</small></span><Icon name="chevron" size={18}/></button>)}</div>
+        <section className="ayda-home-services" aria-label="AYDA eğitim ve tercüme hizmetleri">
+          <div className="ayda-home-services-copy"><span className="kicker">AYDA İLE DEVAM ET</span><h2>Sınavdan sonraki adımda da yanındayız.</h2><p>Canlı Almanca kursları, sınav hazırlığı ve Almanca–Türkçe yeminli tercüme hizmetlerini keşfet.</p></div>
+          <button className="ayda-home-services-link" onClick={() => navigate('/services')}>AYDA hizmetlerini keşfet <Icon name="arrow" size={18}/></button>
+        </section>
         <section className="support-banner"><div><span>AYDA DESTEĞİ</span><h3>Bir öğretmenle çalışmak ister misin?</h3><p>A1 konuşma provası ve yazı değerlendirme hizmetlerini demo ekranda incele.</p><button onClick={() => navigate('/support')}>Destek seçenekleri <Icon name="arrow" size={16}/></button></div><div className="support-shape"><Icon name="spark" size={42}/></div></section>
       </>}
+      {path === '/services' && <ServicesView onNavigate={navigate}/>}
       {path === '/works' && <>
         <div className="page-head"><span className="kicker">A1 ÇALIŞMA ALANI</span><h1>Çalışmalar</h1><p>Her beceriyi ayrı ayrı geliştireceğiz. Hazır olduğunda ilgili alana dokun.</p></div>
         <button type="button" className="guide-feature guide-feature-slim" onClick={() => navigate('/guide')}><span className="guide-feature-mark"><Icon name="book" size={24}/></span><span className="guide-feature-copy"><small>ÖSD A1 SINAV REHBERİ</small><strong>11 görevlik sınav rehberi</strong><span>Örnek sınav sayfaları ve öğretmen tavsiyeleri</span></span><Icon name="chevron" size={19}/></button>
@@ -211,7 +218,7 @@ function App() {
             {id:'sprechen',name:'Sprechen',tr:'Konuşma',detail:'3 görev · yaklaşık 10 dakika',icon:'mic' as IconName}
           ]).map(item=><a key={item.id} href={'/rehber/a1/#'+item.id} className="guide-link"><span className="guide-icon"><Icon name={item.icon} size={24}/></span><span><strong>{item.name} <small>· {item.tr}</small></strong><em>{item.detail}</em></span><Icon name="chevron" size={19}/></a>)}
         </div>
-        <div className="guide-info"><h2>Rehberde başka neler var?</h2><p>Sınav günü kontrolü, yazılı ve sözlü puanlama koşulları, sınav kâğıtlarını büyütme, hazırlık kontrol listesi ve kaldığın göreve dönme.</p><p><strong>Bilgi:</strong> Rehberdeki işaretler bu tarayıcıda ayrıca kaydedilir; deneme puanını değiştirmez. Örnek ÖSD görselleri ve video için internet gerekir.</p><a href="https://osd.aydadil.com/a1/" target="_blank" rel="noopener noreferrer">AYDA kaynak rehberi ↗</a></div>
+        <div className="guide-info"><h2>Rehberde başka neler var?</h2><p>Sınav günü kontrolü, yazılı ve sözlü puanlama koşulları, sınav kâğıtlarını büyütme, hazırlık kontrol listesi ve kaldığın göreve dönme.</p><p><strong>Bilgi:</strong> Rehberdeki işaretler bu tarayıcıda ayrıca kaydedilir; deneme puanını değiştirmez. Rehberin temel içeriği ve görselleri APK sürümünde yerel olarak da bulunabilir; web sürümünde ilk açılış için internet gerekir.</p><a href="https://osd.aydadil.com/a1/" target="_blank" rel="noopener noreferrer">AYDA kaynak rehberi ↗</a></div>
       </>}
       {section && <>
         <div className="breadcrumb"><button onClick={()=>navigate('/works')}><Icon name="back" size={16}/> Çalışmalar</button><Icon name="chevron" size={15}/><b>{section.title}</b></div>
@@ -223,14 +230,14 @@ function App() {
       {path === '/progress' && <ProgressView/>}
       {path.startsWith('/support') && <SupportView key={path}/>}
       {path === '/about' && <>
-        <div className="page-head"><span className="kicker">BİLGİ VE YASAL</span><h1>Uygulama hakkında</h1><p>ÖSD A1 Prüfungstraining · AYDA Dil Akademisi · Demo 0.10</p></div>
+        <div className="page-head"><span className="kicker">BİLGİ VE YASAL</span><h1>Uygulama hakkında</h1><p>ÖSD A1 Prüfungstraining · AYDA Dil Akademisi · Demo 0.11</p></div>
         <div className="panel legal"><h2>Bağımsız hazırlık materyali</h2><p>Bu uygulama AYDA Dil Akademisinin bağımsız eğitim demosudur. Resmî ÖSD ürünü değildir; ÖSD tarafından onaylandığı iddia edilmez.</p><h2>Kaynaklar ve sınav biçimi</h2><p>ÖSD Zertifikat A1 sınavının resmî yapısı ve süreleri ÖSD'nin yayımladığı güncel sınav sayfası, modellsatz broşürü ve yürütme kurallarından kontrol edilmiştir.</p><a href="https://www.osd.at/portfolio-item/osd-zertifikat-a1-za1/" target="_blank" rel="noopener noreferrer">ÖSD resmî bilgilendirme sayfası ↗</a><h2>Gizlilik</h2><p>Bu demo üyelik, ödeme ve öğrenci verisi toplamaz. Yerel çalışma bilgileri yalnızca kullandığın tarayıcının veri alanında saklanır; silersen kaybolabilir.</p><h2>Hazırlık planı</h2><p>Lesen, Hören, Schreiben ve Sprechen çalışmalarına ek olarak tam demo denemesi, gerçek ilerleme paneli, JSON yedek ve yalnız cihazda saklanan öğretmen hizmeti seçim demosu aktiftir. Gerçek eğitmen takvimi, ödeme, dosya gönderimi, öğretmen değerlendirmesi veya onaylanmış rezervasyon yoktur. Android test APK'sı üretilmiştir; Google Play Store yayını henüz yoktur.</p></div>
       </>}
     </main>
     <nav className="bottom-nav" aria-label="Alt gezinme">
-      {([{id:'home',label:'Ana Sayfa',icon:'home',to:'/home'},{id:'guide',label:'Rehber',icon:'book',to:'/guide'},{id:'works',label:'Çalışmalar',icon:'grid',to:'/works'},{id:'progress',label:'İlerlemem',icon:'chart',to:'/progress'},{id:'support',label:'Destek',icon:'help',to:'/support'}] as {id:TabId;label:string;icon:IconName;to:string}[]).map(tab=><button key={tab.id} className={activeTab===tab.id?'active':''} aria-current={activeTab===tab.id?'page':undefined} onClick={()=>navigate(tab.to)}><Icon name={tab.icon} size={22}/><span>{tab.label}</span></button>)}
+      {([{id:'home',label:'Ana Sayfa',icon:'home',to:'/home'},{id:'guide',label:'Rehber',icon:'book',to:'/guide'},{id:'works',label:'Çalışmalar',icon:'grid',to:'/works'},{id:'progress',label:'İlerlemem',icon:'chart',to:'/progress'},{id:'services',label:'Hizmetler',icon:'briefcase',to:'/services'}] as {id:TabId;label:string;icon:IconName;to:string}[]).map(tab=><button key={tab.id} className={activeTab===tab.id?'active':''} aria-current={activeTab===tab.id?'page':undefined} onClick={()=>navigate(tab.to)}><Icon name={tab.icon} size={22}/><span>{tab.label}</span></button>)}
     </nav>
-    <footer className="desktop-footer">AYDA DİL AKADEMİSİ <span>·</span> ÖSD A1 Prüfungstraining <span>·</span> Demo 0.10 — 25.10.2026</footer>
+    <footer className="desktop-footer"><button className="footer-services" onClick={() => navigate('/services')}>Kurslar ve tercüme</button> <span>·</span> AYDA DİL AKADEMİSİ <span>·</span> ÖSD A1 Prüfungstraining <span>·</span> Demo 0.11 — 25.10.2026</footer>
   </div>
 }
 
