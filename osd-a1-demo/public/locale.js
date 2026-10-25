@@ -195,6 +195,98 @@
     'Görev açıklamalarını göstermek için tarayıcında JavaScript’i etkinleştir. İnternet gerekmez; content.js ve app.js dosyaları index.html ile aynı klasörde olmalıdır.':['Enable JavaScript in your browser to show task explanations. No internet is needed; content.js and app.js must be in the same folder as index.html.','Aktiviere JavaScript im Browser, um die Aufgabenerklärungen anzuzeigen. Internet ist nicht nötig; content.js und app.js müssen im selben Ordner wie index.html liegen.'],
     'Merhaba AYDA Dil Akademisi, ÖSD A1 çalışma platformunuzdan ulaşıyorum.':['Hello AYDA Language Academy, I am contacting you from your ÖSD A1 practice platform.','Hallo AYDA Dil Akademie, ich schreibe über Ihre ÖSD-A1-Lernplattform.']
     ,
+    'ÖĞRETMEN DESTEĞİ':['TEACHER SUPPORT','UNTERSTÜTZUNG DURCH LEHRKRÄFTE'],
+    'AŞAMA 7 · ÖĞRETMEN DESTEĞİ':['STAGE 7 · TEACHER SUPPORT','STUFE 7 · UNTERSTÜTZUNG DURCH LEHRKRÄFTE'],
+    'Bir öğretmenle çalışmayı planla.':['Plan your learning with a teacher.','Plane dein Lernen mit einer Lehrkraft.'],
+    'A1 mektup değerlendirmesi veya canlı Sprechen/Schreiben desteğini keşfet. Bu ekran yalnızca hizmet ve rezervasyon':['Explore A1 writing feedback or live speaking and writing support. This screen is only a service and booking','Entdecke A1-Schreibfeedback oder Live-Unterstützung beim Sprechen und Schreiben. Diese Seite dient nur der Vorstellung von Angeboten und Buchungen'],
+    'demonstrasyonudur.':['demonstration.','Demonstrationszwecken.'],
+    '6 demo hizmet':['6 demo services','6 Demo-Angebote'],
+    'Gerçek ödeme yok':['No real payment','Keine echte Zahlung'],
+    'Demo bilgilendirmesi':['Demo information','Demo-Hinweis'],
+    'Fiyatlar henüz onaylanmamış öneridir. Takvimde görülen saatler gerçek öğretmen uygunluğu değildir; talep gönderilmez, ödeme alınmaz ve hiçbir rezervasyon kesinleşmez.':['Prices are unapproved suggestions. Times shown are not actual teacher availability. No request is sent, payment is taken or booking confirmed.','Die Preise sind unverbindliche Vorschläge. Die angezeigten Zeiten entsprechen keiner tatsächlichen Verfügbarkeit. Es wird keine Anfrage gesendet, Zahlung vorgenommen oder Buchung bestätigt.'],
+    '01 · HİZMETİ SEÇ':['01 · CHOOSE A SERVICE','01 · ANGEBOT AUSWÄHLEN'],
+    'Nasıl destek almak istersin?':['What kind of support would you like?','Welche Unterstützung möchtest du?'],
+    'Schreiben':['Writing','Schreiben'],
+    'Sprechen':['Speaking','Sprechen'],
+    'Kombine':['Combined','Kombiniert'],
+    'Seçili':['Selected','Ausgewählt'],
+    'Seç ›':['Select ›','Auswählen ›'],
+    '1 mektup öğretmen kontrolü':['Teacher review of 1 letter','Lehrkraft-Feedback zu 1 Brief'],
+    'Bir A1 e-postasını öğretmenin sonradan incelemesi için örnek talep.':['A demo request for a teacher to review one A1 email later.','Eine Demo-Anfrage zur späteren Korrektur einer A1-E-Mail durch eine Lehrkraft.'],
+    'Asenkron metin değerlendirmesi':['Written feedback (not live)','Schriftliches Feedback (nicht live)'],
+    '3 mektup kontrol paketi':['Teacher review of 3 letters','Lehrkraft-Feedback zu 3 Briefen'],
+    'Üç farklı kaydedilmiş A1 metni için örnek paket.':['A demo package for three different saved A1 texts.','Ein Demo-Paket für drei verschiedene gespeicherte A1-Texte.'],
+    'Canlı Schreiben çalışması':['Live writing practice','Live-Schreibtraining'],
+    'A1 form ve kısa e-posta çalışması için canlı görüşme taslağı.':['A demo live session for A1 forms and short emails.','Ein Demo-Livegespräch zu A1-Formularen und kurzen E-Mails.'],
+    'Canlı Sprechen sınav provası':['Live speaking exam practice','Live-Sprechprüfungstraining'],
+    'Üç sözlü Aufgabe için öğretmenle prova planı.':['A demo teacher-led practice plan for three speaking tasks.','Ein Demo-Übungsplan mit einer Lehrkraft für drei mündliche Aufgaben.'],
+    'Canlı Sprechen çalışması':['Live speaking practice','Live-Sprechtraining'],
+    'A1 konuşma ve soru-cevap pratiği için uzun görüşme.':['A longer session for A1 speaking and question-and-answer practice.','Ein längeres Gespräch für A1-Sprech- und Frage-Antwort-Übungen.'],
+    'Sprechen + Schreiben':['Speaking + writing','Sprechen + Schreiben'],
+    'İki beceri için ortak canlı çalışma planı.':['A combined live practice plan for both skills.','Ein gemeinsamer Live-Übungsplan für beide Fertigkeiten.'],
+    'ÖNERİ FİYAT · DEMO':['SUGGESTED PRICE · DEMO','PREISVORSCHLAG · DEMO'],
+    '02 · DETAYLARI BELİRLE':['02 · SET THE DETAILS','02 · DETAILS FESTLEGEN'],
+    'Kayıtlı mektuplarını seç':['Choose your saved letters','Wähle deine gespeicherten Briefe'],
+    'Demo tarih ve saat seç':['Choose a demo date and time','Demo-Datum und Uhrzeit wählen'],
+    ' farklı taslak seçmelisin.':[' different drafts must be selected.',' verschiedene Entwürfe müssen ausgewählt werden.'],
+    'Aşağıda yalnız cihazda kayıtlı ve metni olan Schreiben taslakları gösterilir. Bir taslak seçilince içeriği hiçbir yere gönderilmez.':['Only saved writing drafts that contain text are shown here. Selecting a draft does not send its contents anywhere.','Hier werden nur gespeicherte Schreibentwürfe mit Text angezeigt. Beim Auswählen wird ihr Inhalt nirgendwohin gesendet.'],
+    'Taslaklar okunuyor…':['Loading drafts…','Entwürfe werden geladen …'],
+    'Henüz uygun bir mektup taslağın yok.':['You do not have an eligible saved letter draft yet.','Du hast noch keinen passenden gespeicherten Briefentwurf.'],
+    "Schreiben'de mektup yaz ›":['Write a letter in Writing ›','Schreibe einen Brief unter Schreiben ›'],
+    'Serbest':['Untimed','Ohne Zeitlimit'],
+    'Süreli':['Timed','Mit Zeitlimit'],
+    ' çalışma':[' practice',' üben'],
+    ' seçili':[' selected',' ausgewählt'],
+    'İstediğin tarihi ve örnek saati işaretle.':['Choose a date and a sample time.','Wähle ein Datum und eine Beispieluhrzeit.'],
+    'Hiçbir saat gerçek müsaitlik ya da ayrılmış randevu değildir.':['No time shown is actual availability or a booked appointment.','Keine angezeigte Uhrzeit steht für tatsächliche Verfügbarkeit oder einen gebuchten Termin.'],
+    'Öğretmen takvimi bağlanmadı.':['No teacher calendar is connected.','Es ist kein Lehrkraft-Kalender verbunden.'],
+    'Tercih edilen tarih (DEMO)':['Preferred date (DEMO)','Wunschdatum (DEMO)'],
+    'Örnek saat (DEMO SLOT)':['Sample time (DEMO SLOT)','Beispieluhrzeit (DEMO-SLOT)'],
+    'Demo saat seç':['Choose a demo time','Demo-Uhrzeit wählen'],
+    'Tarih ve saat sadece yerel örnek talep özetinde görünecek.':['The date and time appear only in the local sample request summary.','Datum und Uhrzeit erscheinen nur in der lokalen Demo-Anfrageübersicht.'],
+    '03 · ÖZET VE YEREL KAYIT':['03 · SUMMARY AND LOCAL SAVE','03 · ÜBERSICHT UND LOKALE SPEICHERUNG'],
+    'Örnek talep özeti':['Sample request summary','Demo-Anfrageübersicht'],
+    'Hizmet':['Service','Angebot'],
+    'Teslim':['Delivery','Leistung'],
+    'Seçilen metinler':['Selected texts','Ausgewählte Texte'],
+    'Henüz seçilmedi':['Not selected yet','Noch nicht ausgewählt'],
+    'Örnek zaman':['Sample time','Beispielzeit'],
+    'Öneri fiyat · kesinleşmiş değil':['Suggested price · not final','Preisvorschlag · unverbindlich'],
+    'Kaydetme işlemi sadece bu tarayıcıdaki demo geçmişine kayıt açar; gerçek talep, ödeme, toplantı bağlantısı veya teslimat oluşturmaz.':['Saving adds an entry only to this browser’s demo history. It does not create a real request, payment, meeting link or delivery.','Beim Speichern wird nur ein Eintrag im Demo-Verlauf dieses Browsers angelegt. Es entstehen keine echte Anfrage, Zahlung, Meeting-Verbindung oder Lieferung.'],
+    'Kaydediliyor…':['Saving…','Wird gespeichert …'],
+    'Yerel demo talebini kaydet':['Save demo request on this device','Demo-Anfrage lokal speichern'],
+    'Ödeme adımı (DEMO)':['Payment step (DEMO)','Zahlungsschritt (DEMO)'],
+    '04 · KAYITLARIM':['04 · MY REQUESTS','04 · MEINE ANFRAGEN'],
+    'Bu cihazdaki demo taleplerim':['My demo requests on this device','Meine Demo-Anfragen auf diesem Gerät'],
+    'Aşağıdaki durumlar yalnızca iş akışını göstermek içindir. “Teslim edildi / inceleniyor / tamamlandı” adımlarında hiçbir gerçek öğretmen işlem yapmaz.':['The statuses below only demonstrate the workflow. No teacher takes action when a request is marked delivered, under review or completed.','Die folgenden Statuswerte dienen nur zur Veranschaulichung. Bei „übermittelt / in Prüfung / abgeschlossen“ wird keine echte Lehrkraft tätig.'],
+    'Kayıtlar okunuyor…':['Loading saved requests…','Anfragen werden geladen …'],
+    'Henüz kaydedilmiş demo talebi bulunmuyor.':['There are no saved demo requests yet.','Es gibt noch keine gespeicherten Demo-Anfragen.'],
+    'Demo hizmet':['Demo service','Demo-Angebot'],
+    'müsaitlik doğrulanmadı':['availability not confirmed','Verfügbarkeit nicht bestätigt'],
+    ' yerel mektup seçimi':[' local letter selected',' lokaler Brief ausgewählt'],
+    'Demo durumunu ilerlet':['Advance demo status','Demo-Status weiterstellen'],
+    'Bu kaydı sil':['Delete this entry','Diesen Eintrag löschen'],
+    'Gerçek hizmet için sonraki entegrasyonlar: öğretmen takvimi, güvenli dosya gönderimi, ödeme altyapısı, bildirimler ve öğretmen değerlendirme paneli. Bu demo AYDA\'nın gerçek randevu sistemine bağlı değildir.':['Future integrations for real services include a teacher calendar, secure file sharing, payment processing, notifications and a teacher review panel. This demo is not connected to AYDA’s live booking system.','Für echte Angebote sind später ein Lehrkraft-Kalender, sicherer Dateiversand, Zahlungsabwicklung, Benachrichtigungen und ein Lehrkraft-Bewertungsbereich vorgesehen. Diese Demo ist nicht mit AYDAs echtem Buchungssystem verbunden.'],
+    'Cihazda demo taslağı':['Demo draft saved on this device','Demo-Entwurf auf diesem Gerät gespeichert'],
+    'DEMO · Teslim edildi (simülasyon)':['DEMO · Delivered (simulation)','DEMO · Übermittelt (Simulation)'],
+    'DEMO · İnceleniyor (simülasyon)':['DEMO · Under review (simulation)','DEMO · In Prüfung (Simulation)'],
+    'DEMO · Tamamlandı (simülasyon)':['DEMO · Completed (simulation)','DEMO · Abgeschlossen (Simulation)'],
+    'Demo tarihini ve saatini seç.':['Choose a demo date and time.','Wähle ein Demo-Datum und eine Uhrzeit.'],
+    'Geçmişte olmayan bir demo tarih/saat seç.':['Choose a demo date and time in the future.','Wähle ein zukünftiges Demo-Datum und eine Uhrzeit.'],
+    'Seçili mektupların tamamı cihazda kayıtlı ve dolu olmalı.':['All selected letters must be saved on this device and contain text.','Alle ausgewählten Briefe müssen auf diesem Gerät gespeichert sein und Text enthalten.'],
+    'Yerel taslaklar veya demo talepleri okunamadı.':['Could not read local drafts or demo requests.','Lokale Entwürfe oder Demo-Anfragen konnten nicht gelesen werden.'],
+    'Demo seçim kaydedildi. Gerçek öğretmene iletilmedi, ödeme veya randevu oluşturulmadı.':['Demo selection saved. It was not sent to a teacher and no payment or appointment was created.','Demo-Auswahl gespeichert. Sie wurde keiner Lehrkraft übermittelt; es wurde weder bezahlt noch ein Termin erstellt.'],
+    'Demo isteği kaydedilemedi.':['Could not save the demo request.','Die Demo-Anfrage konnte nicht gespeichert werden.'],
+    'Yalnızca cihazındaki DEMO durum göstergesi değişti. Herhangi bir öğretmen işlem yapmadı.':['Only the DEMO status on this device changed. No teacher took action.','Nur der DEMO-Status auf diesem Gerät wurde geändert. Keine Lehrkraft wurde tätig.'],
+    'Demo durum değişikliği kaydedilemedi.':['Could not save the demo status change.','Die Änderung des Demo-Status konnte nicht gespeichert werden.'],
+    'Bu demo istek kaydını cihazından silmek istiyor musun? Çalışma taslakları silinmeyecek.':['Delete this demo request from your device? Your practice drafts will not be deleted.','Möchtest du diese Demo-Anfrage von deinem Gerät löschen? Deine Übungsentwürfe bleiben erhalten.'],
+    'Yalnızca seçilen demo istek kaydı silindi.':['Only the selected demo request was deleted.','Nur die ausgewählte Demo-Anfrage wurde gelöscht.'],
+    'Demo kayıt silinemedi.':['Could not delete the demo request.','Die Demo-Anfrage konnte nicht gelöscht werden.'],
+    'Demo: ödeme entegrasyonu aktif değil. Kart bilgisi alınmıyor; hiçbir ödeme yapılmadı.':['Demo: payment processing is not active. No card details are collected and no payment was made.','Demo: Die Zahlungsabwicklung ist nicht aktiv. Es werden keine Kartendaten erfasst und es wurde nichts bezahlt.'],
+    'Ödeme entegrasyonu aktif değil. Kart bilgisi alınmıyor; hiçbir ödeme yapılmadı.':['Payment processing is not active. No card details are collected and no payment was made.','Die Zahlungsabwicklung ist nicht aktiv. Es werden keine Kartendaten erfasst und es wurde nichts bezahlt.'],
+    'Taslak cihazda bulunamadı':['Draft not found on this device','Entwurf auf diesem Gerät nicht gefunden'],
+    'Bu demo istek kaydını cihazından silmek istiyor musun? Çalışma taslakları silinmeyecek.':['Delete this demo request from your device? Your practice drafts will not be deleted.','Möchtest du diese Demo-Anfrage von deinem Gerät löschen? Deine Übungsentwürfe bleiben erhalten.'],
+    'Kurs, tercüme, randevu ve fiyat talepleri AYDA\'nın iletişim kanallarından yürütülür.':['Course, translation, appointment and pricing enquiries are handled through AYDA’s contact channels.','Anfragen zu Kursen, Übersetzungen, Terminen und Preisen werden über die AYDA-Kontaktkanäle bearbeitet.'],
     'Kısa metinler ve sorular':['Short texts and questions','Kurze Texte und Fragen'],
     'Dinle, anla, cevapla':['Listen, understand, answer','Hören, verstehen, antworten'],
     'Form ve kısa e-posta':['Form and short email','Formular und kurze E-Mail'],
@@ -307,7 +399,44 @@
     const questionLabel = source.match(/^Soru (\d+)$/);
     if (questionLabel) return to === 'de' ? `Frage ${questionLabel[1]}` : `Question ${questionLabel[1]}`;
     const stage = source.match(/^AŞAMA (\d+) · (.+)$/);
-    if (stage) return `${to === 'de' ? 'STUFE' : 'STAGE'} ${stage[1]} · ${stage[2]}`;
+    if (stage) return `${to === 'de' ? 'STUFE' : 'STAGE'} ${stage[1]} · ${translate(stage[2], to)}`;
+    const price = source.match(/^([\d.]+) TL$/);
+    if (price) {
+      const amount = Number(price[1].replace(/\./g, ''));
+      return to === 'de' ? `${new Intl.NumberFormat('de-DE').format(amount)} TRY` : `TRY ${new Intl.NumberFormat('en-US').format(amount)}`;
+    }
+    const duration = source.match(/^(\d+) dk görüşme$/);
+    if (duration) return to === 'de' ? `${duration[1]} Min. Gespräch` : `${duration[1]} min session`;
+    const textCount = source.match(/^(\d+) metin$/);
+    if (textCount) return to === 'de' ? `${textCount[1]} Texte` : `${textCount[1]} texts`;
+    const draftCount = source.match(/^(\d+) farklı taslak seçmelisin\.$/);
+    if (draftCount) return to === 'de' ? `Wähle ${draftCount[1]} verschiedene Entwürfe aus.` : `Select ${draftCount[1]} different drafts.`;
+    const selectedCount = source.match(/^(\d+) \/ (\d+) seçili$/);
+    if (selectedCount) return to === 'de' ? `${selectedCount[1]} / ${selectedCount[2]} ausgewählt` : `${selectedCount[1]} / ${selectedCount[2]} selected`;
+    const localLetterCount = source.match(/^(\d+) yerel mektup seçimi$/);
+    if (localLetterCount) return to === 'de' ? `${localLetterCount[1]} lokal ausgewählte Briefe` : `${localLetterCount[1]} local letters selected`;
+    const availability = source.match(/^(.+) · (\d{2}:\d{2}) · müsaitlik doğrulanmadı$/);
+    if (availability) return `${availability[1]} · ${availability[2]} · ${to === 'de' ? 'Verfügbarkeit nicht bestätigt' : 'availability not confirmed'}`;
+    const sampleTime = source.match(/^(.+) · (\d{2}:\d{2}) \(DEMO SLOT\)$/);
+    if (sampleTime) return `${sampleTime[1]} · ${sampleTime[2]} (DEMO SLOT)`;
+    const longDate = source.match(/^(\d{1,2}) (Ocak|Şubat|Mart|Nisan|Mayıs|Haziran|Temmuz|Ağustos|Eylül|Ekim|Kasım|Aralık) (\d{4})$/);
+    if (longDate) {
+      const months = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+      const date = new Date(Number(longDate[3]), months.indexOf(longDate[2]), Number(longDate[1]));
+      return new Intl.DateTimeFormat(to === 'de' ? 'de-DE' : 'en-US', {day:'numeric',month:'long',year:'numeric'}).format(date);
+    }
+    const shortDate = source.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
+    if (shortDate) {
+      const date = new Date(Number(shortDate[3]), Number(shortDate[2]) - 1, Number(shortDate[1]));
+      return new Intl.DateTimeFormat(to === 'de' ? 'de-DE' : 'en-US').format(date);
+    }
+    const dateTime = source.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4}) (\d{2}:\d{2})(?::\d{2})?$/);
+    if (dateTime) {
+      const date = new Date(Number(dateTime[3]), Number(dateTime[2]) - 1, Number(dateTime[1]), Number(dateTime[4].slice(0,2)), Number(dateTime[4].slice(3,5)));
+      return new Intl.DateTimeFormat(to === 'de' ? 'de-DE' : 'en-US', {dateStyle:'medium',timeStyle:'short'}).format(date);
+    }
+    const draftSummary = source.match(/^(.+) · (timed|free) · (\d+) kelime$/);
+    if (draftSummary) return to === 'de' ? `${draftSummary[1]} · ${draftSummary[2] === 'timed' ? 'mit Zeitlimit' : 'ohne Zeitlimit'} · ${draftSummary[3]} Wörter` : `${draftSummary[1]} · ${draftSummary[2] === 'timed' ? 'timed' : 'untimed'} · ${draftSummary[3]} words`;
     return value;
   }
   function setLocale(next) {
