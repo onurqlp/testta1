@@ -1,4 +1,4 @@
-import type { FormField, WritingTask } from './content'
+import type { WritingTask } from './content'
 
 export type Severity = 'error' | 'suggestion' | 'info'
 export interface Issue {
