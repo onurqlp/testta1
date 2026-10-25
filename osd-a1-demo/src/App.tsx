@@ -1,7 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
 import { findModule, modules, type ModuleId } from './data/modules'
-import { openDatabase, readLastView, readProgressOverview, saveLastView } from './storage/db'
-import type { LastView, ProgressOverview } from './storage/models'
+import { openDatabase, listRecords, readLastView, readProgressOverview, saveLastView } from './storage/db'
+import type { Attempt, LastView, ProgressOverview } from './storage/models'
+import { PART_LABELS, type ExamRun } from './modules/exam/model'
+import type { WritingDraft } from './modules/schreiben/model'
+import type { SpeakingSession } from './modules/sprechen/model'
 import LesenView, { LesenMistakes } from './modules/lesen/LesenView'
 import HoerenView, { HoerenMistakes } from './modules/hoeren/HoerenView'
 import SchreibenView from './modules/schreiben/SchreibenView'
@@ -41,6 +44,7 @@ function Icon({ name, size = 22 }: { name: IconName; size?: number }) {
 const getPath = () => {
   const raw = window.location.hash.replace(/^#/, '') || '/home'
   if (['/home', '/works', '/progress', '/support', '/about', '/exam', '/mistakes'].includes(raw)) return raw
+  if(raw.startsWith('/exam?run='))return raw
   if (raw.startsWith('/module/') && findModule(raw.split('/')[2])) return raw
   return '/home'
 }
@@ -74,6 +78,7 @@ function App() {
   const [progress, setProgress] = useState(emptyProgress)
   const [dbError, setDbError] = useState('')
   const [loading, setLoading] = useState(true)
+  const [resumeTarget,setResumeTarget]=useState<{path:string;title:string;detail:string}|null>(null)
 
   useEffect(() => {
     if (!window.location.hash) window.location.hash = '#/home'
@@ -105,6 +110,31 @@ function App() {
     saveLastView(path).then(() => setLast(view)).catch(() => setDbError('Yerel kayıt devre dışı. Tarayıcı izinlerini kontrol et.'))
   }, [path])
 
+  useEffect(()=>{
+    let alive=true
+    const load=async()=>{
+      try{
+        const [exams,attempts,drafts,sessions]=await Promise.all([
+          listRecords<ExamRun>('examSessions'),listRecords<Attempt>('attempts'),
+          listRecords<WritingDraft>('drafts'),listRecords<SpeakingSession>('sessions')
+        ])
+        const open:{updatedAt:string;path:string;title:string;detail:string}[]=[]
+        for(const e of exams.filter(x=>x?.kind==='integrated-exam'&&x.version===1&&x.status!=='finished'))
+          open.push({updatedAt:e.updatedAt,path:'/exam?run='+encodeURIComponent(e.id),title:'Tam deneme · Set '+(e.setIndex+1),detail:PART_LABELS[e.part]+' bölümünden devam et'})
+        for(const a of attempts.filter(x=>!x.finishedAt&&(x.module==='lesen'||x.module==='hoeren')))
+          open.push({updatedAt:a.updatedAt,path:'/module/'+a.module,title:PART_LABELS[a.module as 'lesen'|'hoeren']+' çalışması',detail:'Kaldığın soru setini aç'})
+        for(const d of drafts.filter(x=>x?.module==='schreiben'&&!x.finishedAt))
+          open.push({updatedAt:d.updatedAt,path:'/module/schreiben',title:'Schreiben taslağı',detail:'Kayıtlı e-postaya devam et'})
+        for(const v of sessions.filter(x=>x?.module==='sprechen'&&!x.finishedAt))
+          open.push({updatedAt:v.updatedAt,path:'/module/sprechen',title:'Sprechen provası',detail:'Sözlü prova kaydına devam et'})
+        open.sort((a,b)=>b.updatedAt.localeCompare(a.updatedAt))
+        if(alive)setResumeTarget(open[0]||null)
+      }catch{if(alive)setResumeTarget(null)}
+    }
+    void load()
+    window.addEventListener('ayda:progress-changed',load)
+    return()=>{alive=false;window.removeEventListener('ayda:progress-changed',load)}
+  },[path])
   const section = useMemo(() => path.startsWith('/module/') ? findModule(path.split('/')[2]) : undefined, [path])
   const activeTab: TabId = path === '/home' ? 'home' : (path === '/progress' || path === '/mistakes') ? 'progress' : path === '/support' ? 'support' : 'works'
   const lastModule = last?.path ? findModule(last.path.split('/')[2]) : undefined
@@ -138,11 +168,11 @@ function App() {
           <div className="resume-icon"><Icon name="refresh" size={24}/></div>
           <div className="resume-copy">
             <span className="mini-label">KALDIĞIN YERDEN DEVAM ET</span>
-            <strong>{lastModule ? lastModule.title + ' — ' + lastModule.subtitle : 'İlk çalışmanı seç'}</strong>
-            <p>{lastModule ? 'Son açtığın bölüme geri dönebilirsin.' : 'Bir bölüm açtığında burada görünecek.'}</p>
+            <strong>{resumeTarget?.title||(lastModule ? lastModule.title + ' — ' + lastModule.subtitle : 'İlk çalışmanı seç')}</strong>
+            <p>{resumeTarget?.detail||(lastModule ? 'Son açtığın bölüme geri dönebilirsin.' : 'Bir bölüm açtığında burada görünecek.')}</p>
             <p>{loading ? 'Yerel ilerleme yükleniyor…' : 'Tamamlanan: '+progress.attempts+' çalışma · '+progress.wrong+' gerçek yanlış'}</p>
           </div>
-          <button className="round-arrow" onClick={() => navigate(lastModule ? last!.path : '/works')} aria-label="Devam et"><Icon name="arrow" size={21}/></button>
+          <button className="round-arrow" onClick={() => navigate(resumeTarget?.path||(lastModule ? last!.path : '/works'))} aria-label="Devam et"><Icon name="arrow" size={21}/></button>
         </section>
         <section className="module-grid" aria-label="Çalışma modülleri">
           {modules.map((module, i) => <button className={'module-card '+module.accent} key={module.id} onClick={() => navigate('/module/'+module.id)}>
@@ -168,7 +198,7 @@ function App() {
         <div className={'module-title-panel '+section.accent}><span className="module-title-icon"><ModuleIcon id={section.id} size={30}/></span><div><span>A1 · {section.subtitle.toUpperCase()}</span><h1>{section.title}</h1><p>{section.summary}</p></div></div>
         {section.id==='lesen'?<LesenView/>:section.id==='hoeren'?<HoerenView/>:section.id==='schreiben'?<SchreibenView/>:section.id==='sprechen'?<SprechenView/>:<EmptyState icon="layers" title={section.title + ' çalışmaları hazırlanıyor'} description={section.detail} stage={section.stage}/>}
       </>}
-      {path === '/exam' && <ExamView/>}
+      {path.startsWith('/exam') && <ExamView key={path}/>}
       {path === '/mistakes' && <><div className="page-head"><span className="kicker">TEKRAR ALANI</span><h1>Yanlışlarım</h1><p>Gerçek çözdüğün sorulardan oluşacak kişisel tekrar listen.</p></div><><LesenMistakes/><HoerenMistakes/><ExamMistakes/></></>}
       {path === '/progress' && <ProgressView/>}
       {path === '/support' && <>
