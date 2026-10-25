@@ -32,6 +32,7 @@ export interface Attempt {
   finishedAt?: string
   answers: Answer[]
   correctCount?: number
+  answeredCount?: number
   questionCount?: number
 }
 

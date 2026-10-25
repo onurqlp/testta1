@@ -156,7 +156,7 @@ export default function LesenView() {
     {screen === 'taking' && set && question && attempt && <>
       <div className="lesen-session-head">
         <button className="lesen-text-button" onClick={()=>{void loadAll();setScreen('sets')}}>‹ Setlere dön</button>
-        <div className="lesen-session-right"><span className="lesen-save-status" aria-live="polite">{saving?'Kaydediliyor…':'Cihazda kayıtlı'}</span>{attempt.mode==='exam' ? <strong className={'lesen-clock '+(remaining<120?'urgent':'')} aria-label={'Kalan süre '+formatSeconds(remaining)}>{formatSeconds(remaining)}</strong> : <span className="lesen-mode-tag">ÇALIŞMA</span>}</div>
+        <div className="lesen-session-right"><span className="lesen-save-status" aria-live="polite">{error?'Kayıt hatası':saving?'Kaydediliyor…':'Cihazda kayıtlı'}</span>{attempt.mode==='exam' ? <strong className={'lesen-clock '+(remaining<120?'urgent':'')} aria-label={'Kalan süre '+formatSeconds(remaining)}>{formatSeconds(remaining)}</strong> : <span className="lesen-mode-tag">ÇALIŞMA</span>}</div>
       </div>
       <div className="lesen-progress-head"><strong>{set.title}</strong><span>{grade?.answered || 0} / 16 yanıt</span></div>
       <div className="lesen-progress-bar"><span style={{width:((grade?.answered||0)/16*100)+'%'}}/></div>
