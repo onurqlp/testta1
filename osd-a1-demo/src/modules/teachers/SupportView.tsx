@@ -100,7 +100,7 @@ export default function SupportView(){
   </section>
   <section className="teach7-block"><div className="teach7-heading"><span>02 · DETAYLARI BELİRLE</span><h2>{service.kind==='writing-review'?'Kayıtlı mektuplarını seç':'Demo tarih ve saat seç'}</h2></div>
    {service.kind==='writing-review'?<div className="teach7-panel">
-     <p><strong>{service.draftCount} farklı taslak seçmelisin.</strong> Aşağıda yalnız cihazda kayıtlı ve metni olan Schreiben taslakları gösterilir. Bir taslak seçilince içeriği hiçbir yere gönderilmez.</p>
+     <p><strong>{service.draftCount+' farklı taslak seçmelisin.'}</strong> Aşağıda yalnız cihazda kayıtlı ve metni olan Schreiben taslakları gösterilir. Bir taslak seçilince içeriği hiçbir yere gönderilmez.</p>
      {loading?<p>Taslaklar okunuyor…</p>:eligibleDrafts.length===0?<div className="teach7-empty"><p>Henüz uygun bir mektup taslağın yok.</p><a href="#/module/schreiben">Schreiben'de mektup yaz ›</a></div>:<div className="teach7-draft-list">{eligibleDrafts.map(d=><label key={d.id} className={'teach7-draft '+(selectedDrafts.includes(d.id)?'selected':'')}>
       <input type="checkbox" checked={selectedDrafts.includes(d.id)} onChange={()=>toggleDraft(d.id)}/>
       <span><strong>{d.taskId}</strong><small>{d.mode==='timed'?'Süreli':'Serbest'} çalışma · {new Date(d.updatedAt).toLocaleDateString('tr-TR')} · {d.email.trim().split(/\s+/).length} kelime</small><em lang="de">{d.email.trim().slice(0,120)}{d.email.trim().length>120?'…':''}</em></span>
