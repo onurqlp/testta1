@@ -1,0 +1,28 @@
+plugins {
+    id 'com.android.application'
+}
+android {
+    namespace 'com.aydadil.osda1.demo'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'com.aydadil.osda1.demo'
+        minSdk 26
+        targetSdk 34
+        versionCode 8
+        versionName '0.8.0-demo'
+    }
+    buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+        }
+        release {
+            minifyEnabled false
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
