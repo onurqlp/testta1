@@ -412,7 +412,7 @@
     const textCount = source.match(/^(\d+) metin$/);
     if (textCount) return to === 'de' ? `${textCount[1]} ${textCount[1] === '1' ? 'Text' : 'Texte'}` : `${textCount[1]} ${textCount[1] === '1' ? 'text' : 'texts'}`;
     const draftCount = source.match(/^(\d+) farklı taslak seçmelisin\.$/);
-    if (draftCount) return to === 'de' ? `Wähle ${draftCount[1]} verschiedene Entwürfe aus.` : `Select ${draftCount[1]} different drafts.`;
+    if (draftCount) return to === 'de' ? (draftCount[1] === '1' ? 'Wähle einen gespeicherten Briefentwurf aus.' : `Wähle ${draftCount[1]} verschiedene gespeicherte Briefentwürfe aus.`) : `Select ${draftCount[1]} saved letter draft${draftCount[1] === '1' ? '' : 's'}.`;
     const draftValidation = source.match(/^Bu paket için (\d+) farklı, kayıtlı mektup taslağı seç\.$/);
     if (draftValidation) return to === 'de' ? (draftValidation[1] === '1' ? 'Wähle für dieses Paket einen gespeicherten Briefentwurf aus.' : `Wähle für dieses Paket ${draftValidation[1]} verschiedene gespeicherte Briefentwürfe aus.`) : `Select ${draftValidation[1]} saved letter draft${draftValidation[1] === '1' ? '' : 's'} for this package.`;
     const selectedCount = source.match(/^(\d+) \/ (\d+) seçili$/);
