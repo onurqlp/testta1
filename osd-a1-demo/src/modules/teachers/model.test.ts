@@ -17,6 +17,8 @@ describe('Aşama 7 öğretmen desteği — yalnız demo',()=>{
  it('geçmişe rezervasyon istenemez; seçilen saat müsaitlik değildir',()=>{
   const live=findService('speaking-live-30')!
   expect(validateRequest(live,[],'2026-10-24','10:00',now)).toBeTruthy()
+  expect(validateRequest(live,[],'2026-11-31','10:00',now)).toBeTruthy()
+  expect(validateRequest(live,[],'2026-02-29','10:00',now)).toBeTruthy()
   expect(validateRequest(live,[],'2026-11-02','14:00',now)).toBeNull()
   const req=createDemoRequest(live,[],'2026-11-02','14:00',now,'test-id')
   expect(req).toMatchObject({status:'saved',kind:'teacher-service-demo',proposedPriceTry:1250,preferredTime:'14:00'})
