@@ -226,6 +226,7 @@ export default function SprechenView(){
    </article>)}
    {loading&&<p className="spr-hint">Kayıtlar yükleniyor…</p>}
    {sessions.some(s=>s.finishedAt)&&<section className="spr-history"><h3>Bitirdiğin provalar</h3>{sessions.filter(s=>s.finishedAt).slice(0,6).map(s=><button key={s.id} onClick={()=>{setSession(s);setScreen('complete')}}><span><b>{getSpeakingSet(s.setId)?.title}</b><small>{new Date(s.finishedAt!).toLocaleDateString('tr-TR')} · {Object.keys(s.recordings).length} ses</small></span><span>Dinle ›</span></button>)}</section>}
+   <aside className="spr-note"><strong>Gerçek öğretmenle sözlü prova · DEMO</strong><p>30 veya 60 dakikalık çevrim içi öğretmen hizmetinin fiyat ve rezervasyon tasarımını görebilirsin. Kayıtlar öğretmene iletilmez.</p><a href="#/support?service=speaking-live-30">Sprechen öğretmen desteği demosu ›</a></aside>
    <aside className="spr-note"><strong>Sınav notu yerine gerçek prova</strong><p>Resmî ÖSD sözlü sınavını görevliler değerlendirir. Bu uygulama sesini kaydetmene, tekrar dinlemene ve kendi kontrol listeni doldurmana yardımcı olur. Ses metne çevrilmez, puanlanmaz ve yüklenmez.</p></aside>
   </>}
   {(screen==='session'||screen==='complete')&&current&&activeSet&&<>
