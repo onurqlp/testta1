@@ -21,6 +21,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.webkit.WebResourceRequest;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
