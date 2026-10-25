@@ -1,11 +1,8 @@
 import {useEffect,useRef,useState} from 'react'
 import {listRecords,putRecord,readRecord} from '../../storage/db'
-import {readingSets} from '../lesen/content'
 import Picture from '../lesen/Pictures'
-import {hearingSets} from '../hoeren/content'
-import {writingTasks} from '../schreiben/content'
 import {analyzeEmail,checkForm,wordCount} from '../schreiben/rules'
-import {speakingSets,phraseBank} from '../sprechen/content'
+import {phraseBank} from '../sprechen/content'
 import SceneArt from '../sprechen/SceneArt'
 import {PARTS,PART_LABELS,answerExam,completePart,examCounts,finishHearingPlayback,
  hearingCanPlay,hearingPending,hearingResult,newExam,pauseExam,playHearing,readingResult,remaining,
@@ -23,6 +20,7 @@ export default function ExamView(){
  const [error,setError]=useState('')
  const [loading,setLoading]=useState(true)
  const [saving,setSaving]=useState(false)
+ const [finishing,setFinishing]=useState(false)
  const [now,setNow]=useState(Date.now)
  const [showAudioError,setShowAudioError]=useState('')
  const [isPlaying,setIsPlaying]=useState(false)
@@ -104,7 +102,7 @@ export default function ExamView(){
      const name=s.part==='sprechen'&&s.speaking.phase==='prep'?'hazırlık süresi':PART_LABELS[s.part]
      if(!window.confirm(name+' bölümünü bitirip sonraki aşamaya geçmek istiyor musun? Önceki bölüme geri dönülemez.'))return
    }
-   lock.current=true
+   lock.current=true;setFinishing(true)
    try{
      if(recording)await afterRecord()
      stopAudio()
@@ -116,7 +114,7 @@ export default function ExamView(){
      setNow(Date.now());setIsPlaying(false);setPhraseOpen(false);setHintOpen(false)
      if(next.status==='finished'){setView('report');window.dispatchEvent(new Event('ayda:progress-changed'))}
    }catch{setError('Bölüm geçişi kaydedilemedi; yanıtların korundu. Tekrar deneyebilirsin.')}
-   finally{lock.current=false}
+   finally{lock.current=false;setFinishing(false)}
  }
  useEffect(()=>{
   if(view!=='session'||active?.status!=='active')return
@@ -279,7 +277,7 @@ export default function ExamView(){
       </div>
       <h3 lang="de">{hörenQuestion.prompt}</h3>
       {hörenQuestion.kind==='picture'?<div className="exam6-images">{hörUnit.pictures?.map(pic=><label className={hörenAnswer===pic.value?'chosen':''} key={pic.value}><input type="radio" name={'exam-h-'+hörenQuestion.id} checked={hörenAnswer===pic.value} onChange={()=>edit(s=>answerExam(s,hörenQuestion.id,pic.value))}/><Picture kind={pic.kind}/><span>Bild {pic.value}</span></label>)}</div>:hörenQuestion.kind==='fill'?<input className="exam6-input" lang="de" placeholder="Duyduğun kısa bilgiyi yaz" value={hörenAnswer} onChange={e=>edit(s=>answerExam(s,hörenQuestion.id,e.target.value))}/>:<div className="exam6-choices">{hörenQuestion.options?.map(opt=><label key={opt.value} className={hörenAnswer===opt.value?'chosen':''}><input type="radio" name={'exam-h-'+hörenQuestion.id} checked={hörenAnswer===opt.value} onChange={()=>edit(s=>answerExam(s,hörenQuestion.id,opt.value))}/>{opt.value.toUpperCase()} · {opt.text}</label>)}</div>}
-      <div className="exam6-question-nav"><button disabled={hSection!.questionIndex===0} onClick={()=>{stopAudio();edit(s=>({...s,sections:{...s.sections,hoeren:{...s.sections.hoeren,questionIndex:s.sections.hoeren.questionIndex-1}}}))}}>‹ Önceki</button><button disabled={hSection!.questionIndex===hQuestions.length-1} onClick={()=>{stopAudio();edit(s=>({...s,sections:{...s.sections,hoeren:{...s.sections.hoeren,questionIndex:s.sections.hoeren.questionIndex+1}}}))}}>Sonraki ›</button></div>
+      <div className="exam6-question-nav"><button disabled={hSection!.questionIndex===0} onClick={()=>{stopAudio();edit(s=>({...s,sections:{...s.sections,hoeren:{...s.sections.hoeren,questionIndex:s.sections.hoeren.questionIndex-1}},hearing:{...s.hearing,part:hQuestions[s.sections.hoeren.questionIndex-1].part}}))}}>‹ Önceki</button><button disabled={hSection!.questionIndex===hQuestions.length-1} onClick={()=>{stopAudio();edit(s=>({...s,sections:{...s.sections,hoeren:{...s.sections.hoeren,questionIndex:s.sections.hoeren.questionIndex+1}},hearing:{...s.hearing,part:hQuestions[s.sections.hoeren.questionIndex+1].part}}))}}>Sonraki ›</button></div>
       <div className="exam6-number-grid">{hQuestions.map((q,i)=><button key={q.id} className={(hSection?.questionIndex===i?'selected ':'')+(hSection?.answers[q.id]?'answered':'')} onClick={()=>{stopAudio();edit(s=>({...s,sections:{...s.sections,hoeren:{...s.sections.hoeren,questionIndex:i}},hearing:{...s.hearing,part:q.part}}))}}>{i+1}</button>)}</div>
      </section>}
      {currentPart==='schreiben'&&<section className="exam6-question"><div className="exam6-question-head"><b>Aufgabe 1 · Formular</b><span>{checklist?.formFilled}/10 alan</span></div>
