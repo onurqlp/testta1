@@ -112,7 +112,6 @@ export default function HoerenView() {
  const result=set&&active?countResults(active,set):undefined
  const part=q?.part??1
  const plays=active?.plays[part]||0
- const done=active?.completedPlays?.[part]||0
  const canPlay=active?canReplay(active,part):false
 
  useEffect(()=>{
