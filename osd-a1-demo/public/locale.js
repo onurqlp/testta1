@@ -206,6 +206,8 @@
     'Fiyatlar henüz onaylanmamış öneridir. Takvimde görülen saatler gerçek öğretmen uygunluğu değildir; talep gönderilmez, ödeme alınmaz ve hiçbir rezervasyon kesinleşmez.':['Prices are unapproved suggestions. Times shown are not actual teacher availability. No request is sent, payment is taken or booking confirmed.','Die Preise sind unverbindliche Vorschläge. Die angezeigten Zeiten entsprechen keiner tatsächlichen Verfügbarkeit. Es wird keine Anfrage gesendet, Zahlung vorgenommen oder Buchung bestätigt.'],
     '01 · HİZMETİ SEÇ':['01 · CHOOSE A SERVICE','01 · ANGEBOT AUSWÄHLEN'],
     'Nasıl destek almak istersin?':['What kind of support would you like?','Welche Unterstützung möchtest du?'],
+    '✍ Schreiben':['✍ Writing','✍ Schreiben'], '◉ Sprechen':['◉ Speaking','◉ Sprechen'], '◇ Kombine':['◇ Combined','◇ Kombiniert'],
+    '✓ Seçili':['✓ Selected','✓ Ausgewählt'],
     'Schreiben':['Writing','Schreiben'],
     'Sprechen':['Speaking','Sprechen'],
     'Kombine':['Combined','Kombiniert'],
@@ -411,6 +413,8 @@
     if (textCount) return to === 'de' ? `${textCount[1]} Texte` : `${textCount[1]} texts`;
     const draftCount = source.match(/^(\d+) farklı taslak seçmelisin\.$/);
     if (draftCount) return to === 'de' ? `Wähle ${draftCount[1]} verschiedene Entwürfe aus.` : `Select ${draftCount[1]} different drafts.`;
+    const draftValidation = source.match(/^Bu paket için (\d+) farklı, kayıtlı mektup taslağı seç\.$/);
+    if (draftValidation) return to === 'de' ? `Wähle für dieses Paket ${draftValidation[1]} verschiedene gespeicherte Briefentwürfe aus.` : `Select ${draftValidation[1]} different saved letter drafts for this package.`;
     const selectedCount = source.match(/^(\d+) \/ (\d+) seçili$/);
     if (selectedCount) return to === 'de' ? `${selectedCount[1]} / ${selectedCount[2]} ausgewählt` : `${selectedCount[1]} / ${selectedCount[2]} selected`;
     const localLetterCount = source.match(/^(\d+) yerel mektup seçimi$/);
@@ -435,8 +439,13 @@
       const date = new Date(Number(dateTime[3]), Number(dateTime[2]) - 1, Number(dateTime[1]), Number(dateTime[4].slice(0,2)), Number(dateTime[4].slice(3,5)));
       return new Intl.DateTimeFormat(to === 'de' ? 'de-DE' : 'en-US', {dateStyle:'medium',timeStyle:'short'}).format(date);
     }
-    const draftSummary = source.match(/^(.+) · (timed|free) · (\d+) kelime$/);
-    if (draftSummary) return to === 'de' ? `${draftSummary[1]} · ${draftSummary[2] === 'timed' ? 'mit Zeitlimit' : 'ohne Zeitlimit'} · ${draftSummary[3]} Wörter` : `${draftSummary[1]} · ${draftSummary[2] === 'timed' ? 'timed' : 'untimed'} · ${draftSummary[3]} words`;
+    const draftSummary = source.match(/^(.+) · (Süreli|Serbest|timed|free) çalışma · (\d{1,2}\.\d{1,2}\.\d{4}) · (\d+) (?:kelime|word|words|Wörter)$/);
+    if (draftSummary) {
+      const timed = draftSummary[2] === 'Süreli' || draftSummary[2] === 'timed';
+      const date = new Date(draftSummary[3].split('.').reverse().join('-')+'T12:00:00');
+      const localizedDate = new Intl.DateTimeFormat(to === 'de' ? 'de-DE' : 'en-US').format(date);
+      return to === 'de' ? `${draftSummary[1]} · ${timed ? 'Übung mit Zeitlimit' : 'Übung ohne Zeitlimit'} · ${localizedDate} · ${draftSummary[4]} Wörter` : `${draftSummary[1]} · ${timed ? 'timed practice' : 'untimed practice'} · ${localizedDate} · ${draftSummary[4]} words`;
+    }
     return value;
   }
   function setLocale(next) {
@@ -461,9 +470,9 @@
       const tr = sourceFor(node, raw);
       if (locale === 'tr') {
         if (node.nodeValue !== originals.get(node)) node.nodeValue = originals.get(node);
-      } else if (catalog[tr] || tr !== raw) {
+      } else {
         const translated = translate(tr);
-        if (node.nodeValue.trim() !== translated) node.nodeValue = node.nodeValue.replace(raw, translated);
+        if ((catalog[tr] || translated !== tr) && node.nodeValue.trim() !== translated) node.nodeValue = node.nodeValue.replace(raw, translated);
       }
     }
     const elements = root.nodeType === 1 ? [root, ...root.querySelectorAll('*')] : [...root.querySelectorAll('*')];
