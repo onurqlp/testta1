@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { hearingSets, validateHearingSets, matchesAnswer } from './content'
-import {canReplay,countResults,draftId,finishAttempt,makeAttempt,registerPlay,remaining,updateAnswer} from './logic'
+import {canReplay,completePlayback,countResults,draftId,finishAttempt,hasPendingPlayback,makeAttempt,registerPlay,rememberPlayback,remaining,updateAnswer} from './logic'
 
 describe('ÖSD A1 Hören özgün içerik',()=>{
  it('iki set / 3 görev / toplam 30 soru',()=>{
@@ -33,13 +33,21 @@ describe('ÖSD A1 dinleme denemesi',()=>{
  it('sınavda 1 / 2 / 1 oynatma hakkını aşmaz',()=>{
    let a=makeAttempt(set,'exam')
    a=registerPlay(a,1)
-   expect(canReplay(a,1)).toBe(false)
+   expect(canReplay(a,1)).toBe(true) // yarım kalan aynı ses sürdürülebilir
    expect(registerPlay(a,1).plays[1]).toBe(1)
+   a=rememberPlayback(a,1,4)
+   expect(a.audioPositions[1]).toBe(4)
+   a=completePlayback(a,1)
+   expect(hasPendingPlayback(a,1)).toBe(false)
+   expect(canReplay(a,1)).toBe(false)
    a=registerPlay(a,2)
    expect(canReplay(a,2)).toBe(true)
    a=registerPlay(a,2)
+   a=completePlayback(a,2)
+   a=completePlayback(a,2)
    expect(canReplay(a,2)).toBe(false)
    a=registerPlay(a,3)
+   a=completePlayback(a,3)
    expect(canReplay(a,3)).toBe(false)
  })
  it('çalışma modunda tekrar sınırsızdır',()=>{
