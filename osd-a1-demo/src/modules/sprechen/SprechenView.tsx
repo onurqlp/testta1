@@ -211,7 +211,7 @@ export default function SprechenView(){
      return {...s,selfChecks:{...s.selfChecks,[part]:checks.includes(text)?checks.filter(x=>x!==text):[...checks,text]},updatedAt:new Date().toISOString()}
    })
  }
- const fresh=()=>{setScreen('sets');setSession(null);setMessage('');setShowExample(false)}
+ const fresh=async()=>{if(recording||mediaBusy){await stopRecording()}setScreen('sets');setSession(null);setMessage('');setShowExample(false)}
  return <div className="spr-app">
   {message&&<div className="spr-alert" role="alert">{message}<button aria-label="Kapat" onClick={()=>setMessage('')}>×</button></div>}
   {screen==='sets'&&<>
@@ -229,7 +229,7 @@ export default function SprechenView(){
    <aside className="spr-note"><strong>Sınav notu yerine gerçek prova</strong><p>Resmî ÖSD sözlü sınavını görevliler değerlendirir. Bu uygulama sesini kaydetmene, tekrar dinlemene ve kendi kontrol listeni doldurmana yardımcı olur. Ses metne çevrilmez, puanlanmaz ve yüklenmez.</p></aside>
   </>}
   {(screen==='session'||screen==='complete')&&current&&activeSet&&<>
-   <div className="spr-top"><button className="spr-back" onClick={fresh}>‹ Setlere dön</button><div><small>{saving?'Kaydediliyor…':'Yerel kayıt'}</small>{current.mode==='timed'&&screen==='session'?<strong className={'spr-clock '+(remainingSeconds(current,now)<90?'warning':'')}>{durationText(remainingSeconds(current,now))}</strong>:<span className="spr-tag">{current.mode==='practice'?'SERBEST':'SÜRELİ'}</span>}</div></div>
+   <div className="spr-top"><button className="spr-back" disabled={mediaBusy} onClick={()=>void fresh()}>‹ Setlere dön</button><div><small>{saving?'Kaydediliyor…':'Yerel kayıt'}</small>{current.mode==='timed'&&screen==='session'?<strong className={'spr-clock '+(remainingSeconds(current,now)<90?'warning':'')}>{durationText(remainingSeconds(current,now))}</strong>:<span className="spr-tag">{current.mode==='practice'?'SERBEST':'SÜRELİ'}</span>}</div></div>
    <div className="spr-current"><h2>{activeSet.title}</h2><span>{Object.keys(current.recordings).length}/3 ses kaydı</span></div>
    <nav className="spr-parts" aria-label="Sprechen görevleri">{([1,2,3] as SpeakingPart[]).map(n=><button key={n} className={part===n?'selected':''} aria-current={part===n?'step':undefined} disabled={recording||mediaBusy} onClick={()=>void navigatePart(n)}><span>Aufgabe {n}</span><small>{n===1?'Tanışma':n===2?'Resim': 'Rol oyunu'}</small></button>)}</nav>
    {part===1&&<section className="spr-work"><span className="spr-kicker">AUFGABE 1 · SICH VORSTELLEN</span><h3>Dört konu seç, kendini tanıt</h3><p>Altı başlıktan dört tanesini seç. Her konu hakkında birkaç basit Almanca cümle kur. Sonra sesini kaydet.</p>
@@ -261,7 +261,7 @@ export default function SprechenView(){
    <section className="spr-self"><h3>Öz değerlendirme kontrolü</h3><p>Bu kutular senin kendine verdiğin işaretlerdir; sistem doğru telaffuz ettiğini doğrulamaz.</p>{speakingHints[part].map(hint=><label key={hint}><input type="checkbox" checked={Boolean(current.selfChecks[part]?.includes(hint))} disabled={!canEdit} onChange={()=>toggleCheck(hint)}/>{hint}</label>)}</section>
    <section className="spr-notes"><label htmlFor="spr-note">Kendi notların (isteğe bağlı)</label><textarea id="spr-note" rows={3} value={current.notes[part]||''} disabled={!canEdit} onChange={e=>change(s=>({...s,notes:{...s.notes,[part]:e.target.value},updatedAt:new Date().toISOString()}))} placeholder="Unuttuğun kelimeler veya sonraki provada dikkat edeceğin şeyler…"/></section>
    {screen==='session'&&<div className="spr-footer-actions">{part<3?<button className="spr-btn-main" disabled={recording||mediaBusy} onClick={()=>void navigatePart((part+1) as SpeakingPart)}>Sonraki Aufgabe ›</button>:<button className="spr-btn-main" disabled={finishing||recording||mediaBusy} onClick={()=>void finish()}>{finishing?'Kaydediliyor…':'Provayı tamamla ✓'}</button>}<button className="spr-btn-outline" disabled={finishing||recording||mediaBusy} onClick={()=>void finish()}>Burada bitir ve kaydet</button></div>}
-   {screen==='complete'&&<div className="spr-done"><span>✓ Prova tamamlandı</span><h3>{activeSet.title}</h3><p>{Object.keys(current.recordings).length} ses dosyası saklandı. Değerlendirme ve puan üretilmedi; yukarıdaki sekmelerden kendi kayıtlarını tekrar dinleyebilirsin.</p><button className="spr-btn-main" onClick={fresh}>Yeni çalışma seç</button></div>}
+   {screen==='complete'&&<div className="spr-done"><span>✓ Prova tamamlandı</span><h3>{activeSet.title}</h3><p>{Object.keys(current.recordings).length} ses dosyası saklandı. Değerlendirme ve puan üretilmedi; yukarıdaki sekmelerden kendi kayıtlarını tekrar dinleyebilirsin.</p><button className="spr-btn-main" onClick={()=>void fresh()}>Yeni çalışma seç</button></div>}
   </>}
  </div>
 }
