@@ -1,6 +1,7 @@
 // AYDA ÖSD A1 demo v0.8: offline cache is strictly same-origin and contains no personal records.
 // Index navigation uses network-first so an updated web demo does not remain stuck on an old build.
-const CACHE='ayda-a1-demo-v8-static';
+const CACHE='ayda-a1-demo-v9-guide';
+const GUIDE=['/rehber/a1/','/rehber/a1/index.html','/rehber/a1/content.js','/rehber/a1/app.js','/rehber/a1/style.css','/rehber/a1/ux-review.css','/rehber/a1/ux-review.js'];
 const AUDIO=[
  '/audio/alltag-01-aufgabe1.mp3','/audio/alltag-01-aufgabe2.mp3','/audio/alltag-01-aufgabe3.mp3',
  '/audio/unterwegs-02-aufgabe1.mp3','/audio/unterwegs-02-aufgabe2.mp3','/audio/unterwegs-02-aufgabe3.mp3'
@@ -9,7 +10,7 @@ const OFFLINE_TEXT='İnternet bağlantısı yok. Önce çevrim içi açılan der
 self.addEventListener('install',event=>{
  event.waitUntil((async()=>{
   const cache=await caches.open(CACHE);
-  await Promise.allSettled(['/',...AUDIO].map(url=>cache.add(url)));
+  await Promise.allSettled(['/',...AUDIO,...GUIDE].map(url=>cache.add(url)));
   await self.skipWaiting();
  })());
 });
@@ -48,7 +49,9 @@ self.addEventListener('fetch',event=>{
  const audio=url.pathname.startsWith('/audio/')&&url.pathname.endsWith('.mp3');
  const asset=url.pathname.startsWith('/assets/');
  const nav=r.mode==='navigate';
- if(!(audio||asset||nav))return;
+ const guideAsset=url.pathname.startsWith('/rehber/a1/')&&/\.(?:js|css)$/.test(url.pathname);
+ const guideNav=nav&&url.pathname.startsWith('/rehber/a1/');
+ if(!(audio||asset||nav||guideAsset))return;
  event.respondWith((async()=>{
   const cache=await caches.open(CACHE);
   if(audio&&r.headers.has('range')){
@@ -56,14 +59,14 @@ self.addEventListener('fetch',event=>{
    catch{return (await fromCachedRange(r,cache))||offline()}
   }
   const hit=await cache.match(r);
-  if((audio||asset)&&hit)return hit;
+  if((audio||asset||guideAsset)&&hit)return hit;
   try{
    const response=await fetch(r);
-   if(isOK(response))await cache.put(nav?'/':r,response.clone());
+   if(isOK(response))await cache.put(nav?(guideNav?'/rehber/a1/':'/'):r,response.clone());
    return response;
   }catch{
    if(hit)return hit;
-   if(nav)return (await cache.match('/'))||offline();
+   if(nav)return (await cache.match(guideNav?'/rehber/a1/':'/'))||offline();
    return offline();
   }
  })());

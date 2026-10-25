@@ -1,12 +1,12 @@
 # AYDA ÖSD A1 Prüfungstraining — DEMO
 
-**Durum:** Aşama 8 / 8 — final demo · 25 Ekim 2026 · Yalnızca eğitim amaçlı demo
+**Durum:** Aşama 8 / 8 + ÖSD A1 Sınav Rehberi (v0.9) — final demo · 25 Ekim 2026 · Yalnızca eğitim amaçlı demo
 
 ## Kaynak ve dağıtım
 - Mevcut AYDA canlı uygulamalarından ayrı.
 - GitHub test deposunda yalnızca `demo/osd-a1-stage1-20261025` dalının `osd-a1-demo/` klasöründe tutulur; `main` değişmez.
 - Mobil-önce React 19 + Vite 6 + TypeScript, sistem fontları ve sıfır yapay zekâ API çağrısı.
-- Android APK henüz yok. İleride Android WebView kabuğu ayrı ele alınacak.
+- Android test APK derlemesi mevcuttur; Google Play Store yayını henüz yoktur.
 
 ## Lokal çalıştırma
 ```sh
@@ -98,3 +98,13 @@ Bağımsız AYDA hazırlık demosudur; resmî ÖSD ürünü değildir. Telifli �
 - [Kaynak kod incelemesi](docs/source-audit.md)
 - [Resmî A1 sınav yapısı](docs/osd-a1-format.md)
 - [Mimari ve sonraki aşamalar](docs/architecture.md)
+
+
+## Entegre ÖSD A1 Sınav Rehberi (25.10.2026, v0.9)
+- Uygulama ana ekranı, Çalışmalar ve mobil alt menüden **Rehber** bağlantısı bulunur.
+- `/rehber/a1/` altında aynı demo alanından açılır: 4 beceri ve **11 görev**, açıklamalı özgün örnekler, resmî model kâğıt sayfası referansları, sınav stratejileri, puanlama, sınav günü kontrolü, yerel kaldığım görev ve kontrol listesi.
+- Metin, tasarım ve öğrenci rehberi kod kaynağı `onurqlp/osda1rehber` (`a1/`, 25.10.2026). Kaynak repo, `osd.aydadil.com`, WordPress ve diğer AYDA siteleri **değiştirilmedi**.
+- Resmî örnek sınav JPG dosyaları ve özgün çalışma fotoğrafları demo reposuna kopyalanmadı; resimler `osd.aydadil.com` adresinden çağrılır ve internet gerektirir. Rehberin metin, HTML, JS ve CSS dosyaları service worker tarafından önbelleğe alınır.
+- Rehberin işaretleme ve devam durumu aynı demo kaynağında ayrı bir localStorage girdisinde kalır; ana sınavın IndexedDB puanlarına veya istatistiklerine katılmaz. Orijinal `osd.aydadil.com` sayfasındaki önceki işaretler bu demoya otomatik taşınmaz.
+- Derleme/QA: `npm run test` artık 4 bölüm / 11 görev ve rehber rotalarının smoke kontrolünü mevcut Vitest testleriyle beraber çalıştırır.
+- Resmî ÖSD model sınavı görselleri referans amaçlıdır; ticari Google Play dağıtımı öncesinde yeniden kullanım ve lisans koşulları ayrı doğrulanmalıdır.
