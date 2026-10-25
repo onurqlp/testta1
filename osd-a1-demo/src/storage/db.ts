@@ -82,8 +82,8 @@ export async function readProgressOverview(): Promise<ProgressOverview> {
     attempts: finished.length,
     completed: new Set(finished.map((item) => item.taskId)).size,
     wrong: finished.reduce((count, item) => count + (
-      item.questionCount !== undefined && item.correctCount !== undefined
-        ? Math.max(0, item.questionCount - item.correctCount) : 0
+      item.correctCount !== undefined
+        ? Math.max(0, (item.answeredCount ?? item.answers.length) - item.correctCount) : 0
     ), 0)
   }
 }

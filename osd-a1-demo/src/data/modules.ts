@@ -15,7 +15,7 @@ export const modules: StudyModule[] = [
   {
     id: 'lesen', title: 'Lesen', subtitle: 'Okuma', summary: 'Kısa metinler ve sorular',
     stage: 2, accent: 'blue',
-    detail: 'Özgün okuma metinleri, soru çözme, cevap açıklamaları ve yanlış takibi Aşama 2’de etkinleşecek.'
+    detail: 'ÖSD A1 düzeninde iki özgün set, çalışma ve süreli sınav seçenekleri, açıklamalar ve yanlış takibi.'
   },
   {
     id: 'hoeren', title: 'Hören', subtitle: 'Dinleme', summary: 'Dinle, anla, cevapla',
