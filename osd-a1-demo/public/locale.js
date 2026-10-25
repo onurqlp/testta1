@@ -10,6 +10,7 @@
     'Ana Sayfa':['Home','Startseite'], 'Rehber':['Guide','Leitfaden'],
     'AYDA DİL AKADEMİSİ':['AYDA LANGUAGE ACADEMY','AYDA SPRACHAKADEMIE'],
     'Prüfungstraining':['Exam preparation','Prüfungstraining'],
+    'ÖSD A1 Prüfungstraining':['ÖSD A1 exam preparation','ÖSD-A1-Prüfungsvorbereitung'],
     'ÖSD SINAV HAZIRLIĞI':['ÖSD EXAM PREPARATION','ÖSD-PRÜFUNGSVORBEREITUNG'],
     'Almancana güven.':['Trust your German.','Vertrau auf dein Deutsch.'],
     'Sınava hazır ol.':['Be ready for the exam.','Mach dich prüfungsbereit.'],

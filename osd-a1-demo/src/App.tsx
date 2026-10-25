@@ -244,7 +244,7 @@ function App() {
     <nav className="bottom-nav" aria-label="Alt gezinme">
       {([{id:'home',label:'Ana Sayfa',icon:'home',to:'/home'},{id:'guide',label:'Rehber',icon:'book',to:'/guide'},{id:'works',label:'Çalışmalar',icon:'grid',to:'/works'},{id:'progress',label:'İlerlemem',icon:'chart',to:'/progress'},{id:'services',label:'Hizmetler',icon:'briefcase',to:'/services'}] as {id:TabId;label:string;icon:IconName;to:string}[]).map(tab=><button key={tab.id} className={activeTab===tab.id?'active':''} aria-current={activeTab===tab.id?'page':undefined} onClick={()=>navigate(tab.to)}><Icon name={tab.icon} size={22}/><span>{tab.label}</span></button>)}
     </nav>
-    <footer className="desktop-footer"><button className="footer-services" onClick={() => navigate('/services')}>Kurslar ve tercüme</button> <span>·</span> AYDA DİL AKADEMİSİ <span>·</span> ÖSD A1 Prüfungstraining <span>·</span> Demo 0.13 — 26.10.2026</footer>
+    <footer className="desktop-footer"><button className="footer-services" onClick={() => navigate('/services')}>Kurslar ve tercüme</button> <span>·</span> <span>AYDA DİL AKADEMİSİ</span> <span>·</span> <span>ÖSD A1 Prüfungstraining</span> <span>·</span> Demo 0.13 — 26.10.2026</footer>
   </div>
 }
 
