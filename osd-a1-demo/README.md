@@ -1,6 +1,6 @@
 # AYDA ÖSD A1 Prüfungstraining — DEMO
 
-**Durum:** Aşama 6 / 8 · 25 Ekim 2026 · Yalnızca eğitim amaçlı demo
+**Durum:** Aşama 7 / 8 · 25 Ekim 2026 · Yalnızca eğitim amaçlı demo
 
 ## Kaynak ve dağıtım
 - Mevcut AYDA canlı uygulamalarından ayrı.
@@ -69,8 +69,17 @@ npm run preview
 - Tüm yerel veriyi (ses Blobları dahil) Base64 içerikli JSON yedeğine aktarma; iki onayla veriyi sıfırlama.
 - [Aşama 6 teknik dokümantasyonu](docs/exam-stage6.md)
 
+## Aşama 7 — ÖĞRETMEN HİZMETLERİ + REZERVASYON DEMOSU
+- 6 ücretli hizmet türü, süre/teslim biçimi ve açıkça **onaylanmamış öneri fiyat** etiketi.
+- Schreiben'den mektup taslağıyla demo değerlendirme talebi; 1 veya 3 farklı taslak seçimi, yalnız cihazda saklama.
+- Canlı Sprechen ve Schreiben için gerçek müsaitlik olmayan demo tarih/saat seçimi, özet ve yerel talep geçmişi.
+- "Ödeme adımı" bilgilendirme gösterir, kart veya gerçek para almaz; görüşme URL'si ve onaylanmış rezervasyon oluşturulmaz.
+- "Teslim edildi / inceleniyor / tamamlandı" adımları yalnız açıkça etiketlenmiş simülasyon, gerçek öğretmen işlemi değildir.
+- Önceki eğitim ve kayıt depoları korunur; öğretmen talepleri mevcut `teacherRequests` içinde tutulur.
+- [Aşama 7 kabul raporu](docs/teachers-stage7.md) · [Gelecekteki entegrasyon sözleşmesi](docs/teacher-integrations.md)
+
 ## Önemli demo sınırlamaları
-Şu anda dört beceri için bağımsız çalışma ve bütünleşik demo denemesi aktiftir. Öğretmen hizmetleri, randevu ve ödeme Aşama 7 kapsamındadır, henüz açık değildir. Ana uygulama test edilmeden mevcut AYDA canlı sistemlerine aktarılmaz.
+Şu anda dört beceri, bütünleşik demo deneme ve öğretmen hizmeti *gösterim akışı* aktiftir. Gerçek öğretmen değerlendirmesi, takvimden müsaitlik doğrulama, rezervasyon, para tahsilatı ve sunucuya dosya gönderimi aktif değildir. Ana uygulama test edilmeden mevcut AYDA canlı sistemlerine aktarılmaz.
 
 Öğrenci çalışma verisi demo sürümünde sadece tarayıcıdaki IndexedDB alanında tutulur; bulut senkronu yoktur ve tarayıcı verilerinin temizlenmesiyle kaybolabilir.
 
