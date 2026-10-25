@@ -1,7 +1,16 @@
 import type { ReactNode } from 'react'
 
 const BASE='https://wa.me/905409122503?text='
-const contact=(subject:string)=>BASE+encodeURIComponent('Merhaba AYDA Dil Akademisi, ÖSD A1 çalışma platformunuzdan ulaşıyorum. '+subject+' hakkında bilgi alabilir miyim?')
+const contact=(subject:string)=>{
+  const locale=window.AydaLocale?.get()||'tr'
+  const translated=window.AydaLocale?.t(subject,locale)||subject
+  const message=locale==='de'
+    ? `Hallo AYDA Dil Akademie, ich schreibe über Ihre ÖSD-A1-Lernplattform. Können Sie mich zu ${translated} informieren?`
+    : locale==='en'
+      ? `Hello AYDA Language Academy, I am contacting you from your ÖSD A1 practice platform. Could you tell me about ${translated}?`
+      : `Merhaba AYDA Dil Akademisi, ÖSD A1 çalışma platformunuzdan ulaşıyorum. ${translated} hakkında bilgi alabilir miyim?`
+  return BASE+encodeURIComponent(message)
+}
 const attrs={target:'_blank',rel:'noopener noreferrer'} as const
 
 function ServiceCard({eyebrow,title,children,tags,whatsApp,detailUrl,detailText,icon}:{

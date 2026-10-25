@@ -126,3 +126,10 @@ Bağımsız AYDA hazırlık demosudur; resmî ÖSD ürünü değildir. Telifli �
 - WhatsApp bağlantıları ve resmî AYDA sayfalarına yönlendirme. Demo içinde belge yüklemesi, ödeme veya randevu kayıt sistemi eklenmedi.
 - Android kabuk ve imza, uygulama kimliği, WebView ayarları ve APK dosyaları **değiştirilmedi**. APK, `assets/web/` içindeki gömülü web dosyalarını önce kullandığı için bu web güncellemesini otomatik almaz; mevcut APK ayrı kalır.
 - Service worker önbellek sürümü v0.12 olarak yenilendi; mevcut kullanıcı kayıtları ayrı IndexedDB alanında korunur.
+
+## Site v0.13 — Türkçe / Deutsch / English (26.10.2026)
+
+- Added a shared TR/DE/EN selector for the application and the standalone A1 guide.
+- Language preference uses its own `aydaOsdA1Locale` localStorage key and does not alter exam answers or progress storage.
+- Service cards create WhatsApp enquiry links in the selected language; the contact number and existing destinations are unchanged.
+- Service worker cache is refreshed to v0.13 and includes the shared locale script.

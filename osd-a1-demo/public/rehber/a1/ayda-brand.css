@@ -11,6 +11,10 @@ header .brand {display:flex;align-items:center;gap:12px;white-space:normal}
 header .brand img {width:124px;height:42px;max-width:124px;object-fit:contain;flex-shrink:0}
 header .brand span {margin-left:0;border-left:1px solid #e8c37b77;padding-left:12px;color:#e8c37b;font-weight:750;letter-spacing:.06em;line-height:1.35}
 header .level-switch {border:1px solid #e8c37b77;color:#ffe9bf;background:#ffffff0e;border-radius:10px;padding:9px 13px;text-decoration:none}
+.locale-picker{display:flex;align-items:center;gap:2px;padding:3px;border:1px solid #ffffff38;border-radius:999px;background:#ffffff0d}
+.locale-picker button{border:0;border-radius:999px;background:transparent;color:#fff;padding:7px 8px;font-size:10px;font-weight:800;white-space:nowrap}
+.locale-picker button[aria-pressed="true"]{background:#e8c37b;color:#102541}
+.locale-picker button:focus-visible{outline:2px solid #fff;outline-offset:2px}
 header nav a.active {border-bottom-color:#e8c37b;color:#e8c37b}
 header .progress i {background:#e8c37b}
 .eyebrow {color:#957035}
@@ -42,6 +46,8 @@ a:focus-visible,button:focus-visible,summary:focus-visible {outline-color:#e8c37
  header .brand img {width:97px;height:33px;max-width:97px}
  header .brand span {font-size:8px;padding-left:8px}
  header .level-switch {top:5px;right:7px;padding:6px 8px;font-size:10px}
+ header .locale-picker{position:absolute;top:5px;right:130px;padding:2px}
+ header .locale-picker button{font-size:9px;padding:6px 5px}
  header nav {margin-top:10px}
  .hero {border-radius:17px;margin-top:14px;padding:36px 22px 26px}
  .hero h1 {font-size:35px}

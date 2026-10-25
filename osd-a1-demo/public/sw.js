@@ -1,7 +1,7 @@
-// AYDA ÖSD A1 demo v0.12: offline cache is strictly same-origin and contains no personal records.
+// AYDA ÖSD A1 demo v0.13: offline cache is strictly same-origin and contains no personal records.
 // Index navigation uses network-first so an updated web demo does not remain stuck on an old build.
-const CACHE='ayda-a1-demo-v12-brand';
-const GUIDE=['/rehber/a1/','/rehber/a1/index.html','/rehber/a1/content.js','/rehber/a1/app.js','/rehber/a1/style.css','/rehber/a1/ux-review.css','/rehber/a1/ux-review.js','/rehber/a1/ayda-brand.css','/branding/ayda-logo.png'];
+const CACHE='ayda-a1-demo-v13-locale';
+const GUIDE=['/locale.js','/rehber/a1/','/rehber/a1/index.html','/rehber/a1/content.js','/rehber/a1/app.js','/rehber/a1/style.css','/rehber/a1/ux-review.css','/rehber/a1/ux-review.js','/rehber/a1/ayda-brand.css','/branding/ayda-logo.png'];
 const AUDIO=[
  '/audio/alltag-01-aufgabe1.mp3','/audio/alltag-01-aufgabe2.mp3','/audio/alltag-01-aufgabe3.mp3',
  '/audio/unterwegs-02-aufgabe1.mp3','/audio/unterwegs-02-aufgabe2.mp3','/audio/unterwegs-02-aufgabe3.mp3'

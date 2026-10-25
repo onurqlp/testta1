@@ -78,6 +78,7 @@ function EmptyState({ icon = 'layers', title, description, stage }: { icon?: Ico
 
 function App() {
   const [path, setPath] = useState(getPath)
+  const [locale, setLocale] = useState<'tr'|'de'|'en'>(() => window.AydaLocale?.get() || 'tr')
   const [last, setLast] = useState<LastView | undefined>()
   const [progress, setProgress] = useState(emptyProgress)
   const [dbError, setDbError] = useState('')
@@ -89,6 +90,12 @@ function App() {
     const update = () => { setPath(getPath()); window.scrollTo({ top: 0, behavior: 'instant' }) }
     window.addEventListener('hashchange', update)
     return () => window.removeEventListener('hashchange', update)
+  }, [])
+
+  useEffect(() => {
+    const updateLocale = (event: Event) => setLocale((event as CustomEvent<'tr'|'de'|'en'>).detail)
+    window.addEventListener('ayda:locale', updateLocale)
+    return () => window.removeEventListener('ayda:locale', updateLocale)
   }, [])
 
   useEffect(() => {
@@ -151,7 +158,7 @@ function App() {
           <img className="brand-logo" src="/branding/ayda-logo.png" width="134" height="45" alt="AYDA Dil Akademisi" />
           <span className="brand-copy"><strong>ÖSD A1</strong><small>SINAV HAZIRLIĞI</small></span>
         </button>
-        <div className="header-right"><button className="header-services-link" onClick={() => navigate('/services')} aria-label="AYDA kurs ve tercüme hizmetleri"><Icon name="briefcase" size={17}/><span>Hizmetler</span></button><span className="demo-badge"><span className="status-light"/> A1 · DEMO</span><button className="info-button" aria-label="Hakkında" onClick={() => navigate('/about')}><Icon name="help" size={21}/></button></div>
+        <div className="header-right"><div className="locale-picker" role="group" aria-label="Dil seçimi">{([{code:'tr',flag:'🇹🇷',label:'TR'},{code:'de',flag:'🇩🇪',label:'DE'},{code:'en',flag:'🌐',label:'EN'}] as const).map(option=><button key={option.code} type="button" aria-label={option.code==='tr'?'Türkçe':option.code==='de'?'Deutsch':'English'} aria-pressed={locale===option.code} className={locale===option.code?'selected':''} onClick={()=>window.AydaLocale?.set(option.code)}><span aria-hidden="true">{option.flag}</span> {option.label}</button>)}</div><button className="header-services-link" onClick={() => navigate('/services')} aria-label="AYDA kurs ve tercüme hizmetleri"><Icon name="briefcase" size={17}/><span>Hizmetler</span></button><span className="demo-badge"><span className="status-light"/> A1 · DEMO</span><button className="info-button" aria-label="Hakkında" onClick={() => navigate('/about')}><Icon name="help" size={21}/></button></div>
       </div>
     </header>
     <main id="main" className="main-wrap">
@@ -230,14 +237,14 @@ function App() {
       {path === '/progress' && <ProgressView/>}
       {path.startsWith('/support') && <SupportView key={path}/>}
       {path === '/about' && <>
-        <div className="page-head"><span className="kicker">BİLGİ VE YASAL</span><h1>Uygulama hakkında</h1><p>ÖSD A1 Prüfungstraining · AYDA Dil Akademisi · Demo 0.12</p></div>
+        <div className="page-head"><span className="kicker">BİLGİ VE YASAL</span><h1>Uygulama hakkında</h1><p>ÖSD A1 Prüfungstraining · AYDA Dil Akademisi · Demo 0.13</p></div>
         <div className="panel legal"><h2>Bağımsız hazırlık materyali</h2><p>Bu uygulama AYDA Dil Akademisinin bağımsız eğitim demosudur. Resmî ÖSD ürünü değildir; ÖSD tarafından onaylandığı iddia edilmez.</p><h2>Kaynaklar ve sınav biçimi</h2><p>ÖSD Zertifikat A1 sınavının resmî yapısı ve süreleri ÖSD'nin yayımladığı güncel sınav sayfası, modellsatz broşürü ve yürütme kurallarından kontrol edilmiştir.</p><a href="https://www.osd.at/portfolio-item/osd-zertifikat-a1-za1/" target="_blank" rel="noopener noreferrer">ÖSD resmî bilgilendirme sayfası ↗</a><h2>Gizlilik</h2><p>Bu demo üyelik, ödeme ve öğrenci verisi toplamaz. Yerel çalışma bilgileri yalnızca kullandığın tarayıcının veri alanında saklanır; silersen kaybolabilir.</p><h2>Hazırlık planı</h2><p>Lesen, Hören, Schreiben ve Sprechen çalışmalarına ek olarak tam demo denemesi, gerçek ilerleme paneli, JSON yedek ve yalnız cihazda saklanan öğretmen hizmeti seçim demosu aktiftir. Gerçek eğitmen takvimi, ödeme, dosya gönderimi, öğretmen değerlendirmesi veya onaylanmış rezervasyon yoktur. Android test APK'sı üretilmiştir; Google Play Store yayını henüz yoktur.</p></div>
       </>}
     </main>
     <nav className="bottom-nav" aria-label="Alt gezinme">
       {([{id:'home',label:'Ana Sayfa',icon:'home',to:'/home'},{id:'guide',label:'Rehber',icon:'book',to:'/guide'},{id:'works',label:'Çalışmalar',icon:'grid',to:'/works'},{id:'progress',label:'İlerlemem',icon:'chart',to:'/progress'},{id:'services',label:'Hizmetler',icon:'briefcase',to:'/services'}] as {id:TabId;label:string;icon:IconName;to:string}[]).map(tab=><button key={tab.id} className={activeTab===tab.id?'active':''} aria-current={activeTab===tab.id?'page':undefined} onClick={()=>navigate(tab.to)}><Icon name={tab.icon} size={22}/><span>{tab.label}</span></button>)}
     </nav>
-    <footer className="desktop-footer"><button className="footer-services" onClick={() => navigate('/services')}>Kurslar ve tercüme</button> <span>·</span> AYDA DİL AKADEMİSİ <span>·</span> ÖSD A1 Prüfungstraining <span>·</span> Demo 0.12 — 26.10.2026</footer>
+    <footer className="desktop-footer"><button className="footer-services" onClick={() => navigate('/services')}>Kurslar ve tercüme</button> <span>·</span> AYDA DİL AKADEMİSİ <span>·</span> ÖSD A1 Prüfungstraining <span>·</span> Demo 0.13 — 26.10.2026</footer>
   </div>
 }
 

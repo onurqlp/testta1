@@ -91,7 +91,8 @@ function route(){
  else if(id==='sozlu-video'){document.querySelector('#sprechen').hidden=false;document.getElementById(id).hidden=false;}
  else{const el=document.getElementById(id);el.hidden=false;if(el.tagName==='DETAILS')el.open=true;if(id==='baslangic')document.querySelector('.orientation').hidden=false;}
  document.querySelectorAll('header nav a').forEach(a=>{const active=section&&a.hash==='#'+section.id;a.classList.toggle('active',!!active);if(active)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
- document.title=(task?task.title:section?section.tr:id==='ana-sayfa'?'ÖSD A1 Sınav Rehberi':'ÖSD A1 Rehberi')+' · Adım adım';
+ const pageTitle=(task?task.title:section?section.tr:id==='ana-sayfa'?'ÖSD A1 Sınav Rehberi':'ÖSD A1 Rehberi');
+ document.title=(window.AydaLocale?.t(pageTitle)||pageTitle)+' · '+(window.AydaLocale?.t('Adım adım')||'Adım adım');
  scrollTo({top:0,behavior:'instant'});progress();const title=task?document.querySelector('#'+task.id+' .title'):section?document.querySelector('#'+section.id+' h2'):document.querySelector('#'+id+' h2');if(title){title.tabIndex=-1;title.focus({preventScroll:true});}
 }
 addEventListener('hashchange',route);route();
