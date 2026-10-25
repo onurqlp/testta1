@@ -11,6 +11,7 @@ import SchreibenView from './modules/schreiben/SchreibenView'
 import SprechenView from './modules/sprechen/SprechenView'
 import ExamView from './modules/exam/ExamView'
 import ProgressView, {ExamMistakes} from './modules/progress/ProgressView'
+import SupportView from './modules/teachers/SupportView'
 
 type IconName = 'book' | 'headphones' | 'pen' | 'mic' | 'home' | 'grid' | 'chart' | 'help' | 'arrow' | 'clock' | 'check' | 'alert' | 'layers' | 'refresh' | 'spark' | 'shield' | 'back' | 'chevron'
 type TabId = 'home' | 'works' | 'progress' | 'support'
@@ -45,6 +46,7 @@ const getPath = () => {
   const raw = window.location.hash.replace(/^#/, '') || '/home'
   if (['/home', '/works', '/progress', '/support', '/about', '/exam', '/mistakes'].includes(raw)) return raw
   if(raw.startsWith('/exam?run='))return raw
+  if(raw.startsWith('/support?'))return raw
   if (raw.startsWith('/module/') && findModule(raw.split('/')[2])) return raw
   return '/home'
 }
@@ -136,7 +138,7 @@ function App() {
     return()=>{alive=false;window.removeEventListener('ayda:progress-changed',load)}
   },[path])
   const section = useMemo(() => path.startsWith('/module/') ? findModule(path.split('/')[2]) : undefined, [path])
-  const activeTab: TabId = path === '/home' ? 'home' : (path === '/progress' || path === '/mistakes') ? 'progress' : path === '/support' ? 'support' : 'works'
+  const activeTab: TabId = path === '/home' ? 'home' : (path === '/progress' || path === '/mistakes') ? 'progress' : path.startsWith('/support') ? 'support' : 'works'
   const lastModule = last?.path ? findModule(last.path.split('/')[2]) : undefined
 
   return <div className="app-shell">
@@ -186,7 +188,7 @@ function App() {
         <div className="section-heading second-section"><div><span className="kicker">SINAV YOLCULUĞU</span><h2>Hedefine giden yol</h2></div></div>
         <div className="shortcuts">{stageCards.map((card) => <button key={card.path} className="shortcut" onClick={() => navigate(card.path)}>
           <span className="shortcut-symbol"><Icon name={card.icon} size={22}/></span><span><strong>{card.title}</strong><small>{card.sub}</small></span><Icon name="chevron" size={18}/></button>)}</div>
-        <section className="support-banner"><div><span>AYDA DESTEĞİ</span><h3>Bir öğretmenle çalışmak ister misin?</h3><p>Birebir prova ve yazı değerlendirme hizmetleri sonraki aşamada burada olacak.</p><button onClick={() => navigate('/support')}>Destek seçenekleri <Icon name="arrow" size={16}/></button></div><div className="support-shape"><Icon name="spark" size={42}/></div></section>
+        <section className="support-banner"><div><span>AYDA DESTEĞİ</span><h3>Bir öğretmenle çalışmak ister misin?</h3><p>A1 konuşma provası ve yazı değerlendirme hizmetlerini demo ekranda incele.</p><button onClick={() => navigate('/support')}>Destek seçenekleri <Icon name="arrow" size={16}/></button></div><div className="support-shape"><Icon name="spark" size={42}/></div></section>
       </>}
       {path === '/works' && <>
         <div className="page-head"><span className="kicker">A1 ÇALIŞMA ALANI</span><h1>Çalışmalar</h1><p>Her beceriyi ayrı ayrı geliştireceğiz. Hazır olduğunda ilgili alana dokun.</p></div>
@@ -201,21 +203,16 @@ function App() {
       {path.startsWith('/exam') && <ExamView key={path}/>}
       {path === '/mistakes' && <><div className="page-head"><span className="kicker">TEKRAR ALANI</span><h1>Yanlışlarım</h1><p>Gerçek çözdüğün sorulardan oluşacak kişisel tekrar listen.</p></div><><LesenMistakes/><HoerenMistakes/><ExamMistakes/></></>}
       {path === '/progress' && <ProgressView/>}
-      {path === '/support' && <>
-        <div className="page-head"><span className="kicker">AYDA EĞİTMENLERİ</span><h1>Öğretmen Desteği</h1><p>Gerektiğinde gerçek bir öğretmenle sınava hazırlanman için planlanan hizmetler.</p></div>
-        <div className="support-service"><span className="work-icon mint"><Icon name="mic" size={25}/></span><div><strong>Canlı Sprechen Provası</strong><p>Gerçek öğretmenle konuşma hazırlığı. Randevu sistemi Aşama 7'de açılacak.</p></div></div>
-        <div className="support-service"><span className="work-icon gold"><Icon name="pen" size={25}/></span><div><strong>Schreiben Öğretmen Kontrolü</strong><p>Yazını eğitmenin incelemesi için ayrı hizmet. Şu anda talep ve ödeme alınmıyor.</p></div></div>
-        <div className="notice-card"><Icon name="alert" size={21}/><div><strong>Demo aşaması</strong><p>Buradaki hizmetler tanıtım amaçlıdır; takvim, ödeme ve öğretmen değerlendirmesi henüz aktif değildir.</p></div></div>
-      </>}
+      {path.startsWith('/support') && <SupportView key={path}/>}
       {path === '/about' && <>
-        <div className="page-head"><span className="kicker">BİLGİ VE YASAL</span><h1>Uygulama hakkında</h1><p>ÖSD A1 Prüfungstraining · AYDA Dil Akademisi · Demo 0.6</p></div>
-        <div className="panel legal"><h2>Bağımsız hazırlık materyali</h2><p>Bu uygulama AYDA Dil Akademisinin bağımsız eğitim demosudur. Resmî ÖSD ürünü değildir; ÖSD tarafından onaylandığı iddia edilmez.</p><h2>Kaynaklar ve sınav biçimi</h2><p>ÖSD Zertifikat A1 sınavının resmî yapısı ve süreleri ÖSD'nin yayımladığı güncel sınav sayfası, modellsatz broşürü ve yürütme kurallarından kontrol edilmiştir.</p><a href="https://www.osd.at/portfolio-item/osd-zertifikat-a1-za1/" target="_blank" rel="noopener noreferrer">ÖSD resmî bilgilendirme sayfası ↗</a><h2>Gizlilik</h2><p>Bu demo üyelik, ödeme ve öğrenci verisi toplamaz. Yerel çalışma bilgileri yalnızca kullandığın tarayıcının veri alanında saklanır; silersen kaybolabilir.</p><h2>Hazırlık planı</h2><p>Lesen, Hören, Schreiben ve Sprechen modüllerine ek olarak dört becerili tam demo denemesi, gerçek ilerleme paneli ve JSON yedekleme aktiftir. Öğretmen hizmetleri ve ödeme sonraki aşamadır. APK ve Play Store yayını henüz yoktur.</p></div>
+        <div className="page-head"><span className="kicker">BİLGİ VE YASAL</span><h1>Uygulama hakkında</h1><p>ÖSD A1 Prüfungstraining · AYDA Dil Akademisi · Demo 0.7</p></div>
+        <div className="panel legal"><h2>Bağımsız hazırlık materyali</h2><p>Bu uygulama AYDA Dil Akademisinin bağımsız eğitim demosudur. Resmî ÖSD ürünü değildir; ÖSD tarafından onaylandığı iddia edilmez.</p><h2>Kaynaklar ve sınav biçimi</h2><p>ÖSD Zertifikat A1 sınavının resmî yapısı ve süreleri ÖSD'nin yayımladığı güncel sınav sayfası, modellsatz broşürü ve yürütme kurallarından kontrol edilmiştir.</p><a href="https://www.osd.at/portfolio-item/osd-zertifikat-a1-za1/" target="_blank" rel="noopener noreferrer">ÖSD resmî bilgilendirme sayfası ↗</a><h2>Gizlilik</h2><p>Bu demo üyelik, ödeme ve öğrenci verisi toplamaz. Yerel çalışma bilgileri yalnızca kullandığın tarayıcının veri alanında saklanır; silersen kaybolabilir.</p><h2>Hazırlık planı</h2><p>Lesen, Hören, Schreiben ve Sprechen çalışmalarına ek olarak tam demo denemesi, gerçek ilerleme paneli, JSON yedek ve yalnız cihazda saklanan öğretmen hizmeti seçim demosu aktiftir. Gerçek eğitmen takvimi, ödeme, dosya gönderimi, öğretmen değerlendirmesi veya onaylanmış rezervasyon yoktur. APK ve Play Store yayını henüz yoktur.</p></div>
       </>}
     </main>
     <nav className="bottom-nav" aria-label="Alt gezinme">
       {([{id:'home',label:'Ana Sayfa',icon:'home',to:'/home'},{id:'works',label:'Çalışmalar',icon:'grid',to:'/works'},{id:'progress',label:'İlerlemem',icon:'chart',to:'/progress'},{id:'support',label:'Destek',icon:'help',to:'/support'}] as {id:TabId;label:string;icon:IconName;to:string}[]).map(tab=><button key={tab.id} className={activeTab===tab.id?'active':''} aria-current={activeTab===tab.id?'page':undefined} onClick={()=>navigate(tab.to)}><Icon name={tab.icon} size={22}/><span>{tab.label}</span></button>)}
     </nav>
-    <footer className="desktop-footer">AYDA DİL AKADEMİSİ <span>·</span> ÖSD A1 Prüfungstraining <span>·</span> Demo 0.6 — 25.10.2026</footer>
+    <footer className="desktop-footer">AYDA DİL AKADEMİSİ <span>·</span> ÖSD A1 Prüfungstraining <span>·</span> Demo 0.7 — 25.10.2026</footer>
   </div>
 }
 
