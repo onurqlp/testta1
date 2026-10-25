@@ -1,0 +1,35 @@
+name: Verify AYDA ÖSD A1 Stage 6
+on:
+  push:
+    branches:
+      - demo/osd-a1-stage1-20261025
+    paths:
+      - 'osd-a1-demo/**'
+      - '.github/workflows/osd-a1-stage6-check.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout demo
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Install
+        working-directory: osd-a1-demo
+        run: npm install --no-audit --no-fund
+      - name: Test real learning rules and exam progress
+        working-directory: osd-a1-demo
+        run: npm run test
+      - name: Verify six MP3 assets
+        working-directory: osd-a1-demo
+        run: npm run check:audio
+      - name: Type check and production build
+        working-directory: osd-a1-demo
+        run: npm run build
