@@ -1,6 +1,6 @@
 # AYDA ÖSD A1 Prüfungstraining — DEMO
 
-**Durum:** Aşama 7 / 8 · 25 Ekim 2026 · Yalnızca eğitim amaçlı demo
+**Durum:** Aşama 8 / 8 — final demo · 25 Ekim 2026 · Yalnızca eğitim amaçlı demo
 
 ## Kaynak ve dağıtım
 - Mevcut AYDA canlı uygulamalarından ayrı.
@@ -77,6 +77,15 @@ npm run preview
 - "Teslim edildi / inceleniyor / tamamlandı" adımları yalnız açıkça etiketlenmiş simülasyon, gerçek öğretmen işlemi değildir.
 - Önceki eğitim ve kayıt depoları korunur; öğretmen talepleri mevcut `teacherRequests` içinde tutulur.
 - [Aşama 7 kabul raporu](docs/teachers-stage7.md) · [Gelecekteki entegrasyon sözleşmesi](docs/teacher-integrations.md)
+
+## Aşama 8 — FİNAL DEMO, ÇOKLU EKRAN QA ve ANDROID KABUĞU
+- Chromium ile 360x800, 390x844, 768x1024 ve 1440x900 cihaz profillerinde 11 rota, toplam 96 tarayıcı kontrolü.
+- A1 sınavını duraklatıp tekrar açma, örnek öğretmen talebini kaydetme, kayıt geçmişi, çevrim dışı uygulama kabuğu doğrulandı.
+- Service worker önbellek sürümü 8: HTML gezinmede ağ öncelikli, sesin range isteklerinde çevrim dışı kalan önbelleğe destek.
+- Öğretmen örnek tarih/saatleri geçersiz (31 Kasım, 29 Şubat 2026) olduğunda reddedilir.
+- Vitest test bağımlılığı güvenlik açıkları giderilerek güncellendi; npm audit 0 raporu.
+- `android/` altında demo WebView kabuğu ve Github Actions debug APK üretim hattı, Play Store yayını YOK.
+- [Final kalite raporu](docs/final-stage8.md) · [Android kabuğu](android/README.md)
 
 ## Önemli demo sınırlamaları
 Şu anda dört beceri, bütünleşik demo deneme ve öğretmen hizmeti *gösterim akışı* aktiftir. Gerçek öğretmen değerlendirmesi, takvimden müsaitlik doğrulama, rezervasyon, para tahsilatı ve sunucuya dosya gönderimi aktif değildir. Ana uygulama test edilmeden mevcut AYDA canlı sistemlerine aktarılmaz.
