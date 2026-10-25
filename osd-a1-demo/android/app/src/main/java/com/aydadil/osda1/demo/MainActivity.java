@@ -19,17 +19,6 @@ import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebResourceResponse;
-import android.webkit.ServiceWorkerClient;
-import android.webkit.ServiceWorkerController;
-import android.content.res.AssetManager;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -39,8 +28,8 @@ import android.widget.TextView;
 
 /**
  * Independent AYDA A1 DEMO, never a payment or student-account client.
- * APK-bundled v0.9 web application and ZA1 guide are served inside WebView on
- * the original HTTPS demo origin. Preserves existing IndexedDB origin/data.
+ * Loads the live AYDA A1 website inside WebView on the original HTTPS origin.
+ * Preserves existing IndexedDB origin/data while web deployments update the app.
  * Only external HTTPS links leave for the system browser.
  */
 public class MainActivity extends Activity {
@@ -69,7 +58,6 @@ public class MainActivity extends Activity {
             ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
         setContentView(root);
         configureWebView();
-        configureBundledServiceWorker();
         if(savedInstanceState!=null) {
             web.restoreState(savedInstanceState);
         }else{
@@ -88,72 +76,6 @@ public class MainActivity extends Activity {
     }
 
 
-    /**
-     * All web frontend files, the A1 exam guide and audio are embedded in this APK.
-     * Intercepting the original HTTPS origin preserves IndexedDB and recording data
-     * across a v0.8 to v0.9 APK update (unlike switching to file:// or appassets).
-     * The APK does not require a new Vercel deployment to show the guide.
-     */
-    private WebResourceResponse bundledResponse(Uri uri, String method, String range) {
-        if (!trusted(uri) || !"GET".equalsIgnoreCase(method)) return null;
-        String path = uri.getPath();
-        if(path == null || path.isEmpty() || "/".equals(path)) path = "/index.html";
-        if("/rehber/a1/".equals(path)) path="/rehber/a1/index.html";
-        // Disallow arbitrary file access or traversal through crafted URLs.
-        if(!path.matches("/[A-Za-z0-9._/-]+") || path.contains("..") || path.contains("//")) return null;
-        String filename="web"+path;
-        try(InputStream input=getAssets().open(filename, AssetManager.ACCESS_STREAMING)) {
-            String mime;
-            if(path.endsWith(".html")) mime="text/html";
-            else if(path.endsWith(".js")) mime="application/javascript";
-            else if(path.endsWith(".css")) mime="text/css";
-            else if(path.endsWith(".mp3")) mime="audio/mpeg";
-            else if(path.endsWith(".json")) mime="application/json";
-            else if(path.endsWith(".svg")) mime="image/svg+xml";
-            else if(path.endsWith(".png")) mime="image/png";
-            else if(path.endsWith(".jpg")||path.endsWith(".jpeg")) mime="image/jpeg";
-            else if(path.endsWith(".webp")) mime="image/webp";
-            else mime="application/octet-stream";
-            Map<String,String> headers=new HashMap<>();
-            headers.put("Cache-Control","no-cache");
-            headers.put("Access-Control-Allow-Origin","https://"+HOST);
-            // Android WebView may request ranges for MP3 playback.
-            if(path.endsWith(".mp3") && range != null && range.startsWith("bytes=")) {
-                ByteArrayOutputStream out=new ByteArrayOutputStream();
-                byte[] buffer=new byte[8192];int n;
-                while((n=input.read(buffer))!=-1)out.write(buffer,0,n);
-                byte[] bytes=out.toByteArray();
-                String[] values=range.substring(6).split("-",2);
-                if(values.length!=2) return new WebResourceResponse(mime,null,416,"Range Not Satisfiable",headers,new ByteArrayInputStream(new byte[0]));
-                try {
-                    long from=values[0].isEmpty()?Math.max(0L,bytes.length-Long.parseLong(values[1])):Long.parseLong(values[0]);
-                    long to=values[0].isEmpty()?bytes.length-1L:(values[1].isEmpty()?bytes.length-1L:Math.min(bytes.length-1L,Long.parseLong(values[1])));
-                    if(from<0 || from>=bytes.length || to<from || to>=bytes.length) return new WebResourceResponse(mime,null,416,"Range Not Satisfiable",headers,new ByteArrayInputStream(new byte[0]));
-                    int start=(int)from,length=(int)(to-from+1);
-                    headers.put("Content-Range","bytes "+start+"-"+to+"/"+bytes.length);
-                    headers.put("Accept-Ranges","bytes");
-                    headers.put("Content-Length",String.valueOf(length));
-                    return new WebResourceResponse(mime,null,206,"Partial Content",headers,new ByteArrayInputStream(bytes,start,length));
-                }catch(NumberFormatException error){
-                    return new WebResourceResponse(mime,null,416,"Range Not Satisfiable",headers,new ByteArrayInputStream(new byte[0]));
-                }
-            }
-            return new WebResourceResponse(mime,"UTF-8",200,"OK",headers,getAssets().open(filename,AssetManager.ACCESS_STREAMING));
-        }catch(IOException missing){
-            // Only absent assets fall back to the previous hosted demo source.
-            return null;
-        }
-    }
-
-    private void configureBundledServiceWorker(){
-        // Service Worker (offline shell) requests need the same bundled interception.
-        ServiceWorkerController.getInstance().setServiceWorkerClient(new ServiceWorkerClient(){
-            @Override public WebResourceResponse shouldInterceptRequest(WebResourceRequest request){
-                return bundledResponse(request.getUrl(), request.getMethod(), request.getRequestHeaders().get("Range"));
-            }
-        });
-    }
-
     private void configureWebView(){
         web.getSettings().setJavaScriptEnabled(true);
         web.getSettings().setDomStorageEnabled(true); // IndexedDB: records remain on this device
@@ -167,10 +89,6 @@ public class MainActivity extends Activity {
         CookieManager.getInstance().setAcceptThirdPartyCookies(web,false);
 
         web.setWebViewClient(new WebViewClient(){
-            @Override public WebResourceResponse shouldInterceptRequest(WebView view,WebResourceRequest request){
-                return bundledResponse(request.getUrl(),request.getMethod(),request.getRequestHeaders().get("Range"));
-            }
-
             @Override public boolean shouldOverrideUrlLoading(WebView view,WebResourceRequest request){
                 Uri uri=request.getUrl();
                 if(trusted(uri))return false;
