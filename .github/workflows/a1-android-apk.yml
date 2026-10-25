@@ -18,12 +18,19 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - name: Android SDK tools
-        uses: android-actions/setup-android@v3
-      - name: Install API 35 and build tools
+      - name: Use preinstalled Ubuntu runner Android SDK
+        shell: bash
         run: |
-          sdkmanager --install "platforms;android-35" "build-tools;35.0.0"
-          yes | sdkmanager --licenses > /dev/null || true
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          test -d "$ANDROID_HOME"
+          SDK_MANAGER="$(find "$ANDROID_HOME/cmdline-tools" -type f -name sdkmanager | sort -V | tail -1)"
+          test -x "$SDK_MANAGER"
+          echo "SDK_MANAGER=$SDK_MANAGER" >> "$GITHUB_ENV"
+      - name: Install API 35 and build tools
+        shell: bash
+        run: |
+          yes | "$SDK_MANAGER" --licenses > /dev/null || true
+          "$SDK_MANAGER" --install "platforms;android-35" "build-tools;35.0.0"
       - name: Gradle 8.9
         uses: gradle/actions/setup-gradle@v4
         with:
